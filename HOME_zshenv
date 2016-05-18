@@ -1,0 +1,6 @@
+# Link this file in your $HOME dir
+ZDOTDIR=$0:A:h
+
+source $ZDOTDIR/.zshenv
+
+# vim:ft=zsh

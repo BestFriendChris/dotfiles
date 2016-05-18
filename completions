@@ -1,0 +1,17 @@
+COMPLETIONS_FILE=$0:A
+
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _complete _ignored
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+zstyle ':completion:*' menu select=3
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle :compinstall filename "$COMPLETIONS_FILE"
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# vim:ft=zsh

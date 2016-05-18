@@ -1,0 +1,13 @@
+
+if [[ $TERM == xterm* ]]; then
+  function title {
+    print -Pn "\e]0;$*\a"
+  }
+
+  function _precmd_update_xterm_title {
+    title "%n@%m:%~"
+  }
+  precmd_functions+=_precmd_update_xterm_title
+fi
+
+# vim:ft=zsh
