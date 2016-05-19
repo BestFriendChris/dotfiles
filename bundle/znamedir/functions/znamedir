@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-NAMEDIR_FILE=${NAMEDIR_FILE:-$ZDOTDIR/.znamedirs}
+ZNAMEDIR_FILE=${ZNAMEDIR_FILE:-$ZDOTDIR/.znamedirs}
 
 typeset -gA _namedir_mappings
 local -H _name=$0
@@ -15,12 +15,12 @@ function _namedir_usage {
 }
 
 function _namedir_list {
-  if [[ -r $NAMEDIR_FILE ]]; then
+  if [[ -r $ZNAMEDIR_FILE ]]; then
     echo "Current namedir bindings:"
 
     local -H name_grep_pattern
     [[ -n $1 ]] && name_grep_pattern="^$1" || name_grep_pattern='.*'
-    cat $NAMEDIR_FILE | grep $name_grep_pattern | sed "s/^/    /"
+    cat $ZNAMEDIR_FILE | grep $name_grep_pattern | sed "s/^/    /"
   else
     echo "No current namedir bindings"
   fi
@@ -29,14 +29,14 @@ function _namedir_list {
 function _namedir_read {
   # Clean out the namedir mappings
   _namedir_mappings=()
-  if [[ -f $NAMEDIR_FILE ]]; then
+  if [[ -f $ZNAMEDIR_FILE ]]; then
     local -H IFS='='
     while read key val; do
       _namedir_mappings[$key]=$val
-    done < $NAMEDIR_FILE
+    done < $ZNAMEDIR_FILE
 
     if [[ -z $_namedir_mappings ]]; then
-      rm $NAMEDIR_FILE
+      rm $ZNAMEDIR_FILE
     fi
   fi
 }
@@ -63,7 +63,7 @@ function _namedir_refresh {
 function _namedir_write {
   for key in ${(k)_namedir_mappings}; do
     print "$key=$_namedir_mappings[$key]"
-  done >| $NAMEDIR_FILE
+  done >| $ZNAMEDIR_FILE
 
   _namedir_refresh
 }

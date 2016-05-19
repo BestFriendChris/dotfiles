@@ -1,0 +1,4 @@
+function _precmd_znamedir_refresh { znamedir refresh }
+precmd_functions+=_precmd_znamedir_refresh
+
+# vim:ft=zsh
