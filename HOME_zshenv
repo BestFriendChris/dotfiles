@@ -1,5 +1,6 @@
 # Link this file in your $HOME dir
-ZDOTDIR=$0:A:h
+#   $ ln -s ~/.installed/chris-config-vim/HOME_zshenv ~/.zshenv
+ZDOTDIR="$(echo ~/.zshenv(:A:h))"
 
 source $ZDOTDIR/.zshenv
 
