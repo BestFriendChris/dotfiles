@@ -6,9 +6,10 @@ if [[ "$terminfo[colors]" -ge 8 ]]; then
     colors
 fi
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-    eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
-    eval PR_LIGHT_$color='%{$fg[${(L)color}]%}'
-    eval PR_BG_$color='%{$bg[${(L)color}]%}'
+    eval PR_$color='%{$fg_no_bold[${(L)color}]%}'
+    eval PR_BOLD_$color='%{$fg_bold[${(L)color}]%}'
+    eval PR_BG_$color='%{$bg_no_bold[${(L)color}]%}'
+    eval PR_BG_BOLD_$color='%{$bg_bold[${(L)color}]%}'
 done
 PR_NO_COLOUR="%{$terminfo[sgr0]%}"
 
@@ -26,8 +27,8 @@ function __prompt_update_from_keymap {
 
 # define the prompt
 PROMPT='\
-$PR_LIGHT_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_YELLOW%~
-%(?..$PR_RED(%?%))$PR_LIGHT_CYAN%#$PR_NO_COLOUR '
+$PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
+%(?..$PR_BOLD_RED(%?%))$PR_CYAN%(!.◊.⁂)$PR_NO_COLOUR '
 
 PS2='$PR_BLUE%_$PR_WHITE>$PR_NO_COLOUR '
 
