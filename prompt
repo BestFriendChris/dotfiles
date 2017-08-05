@@ -28,9 +28,32 @@ function __prompt_update_from_keymap {
 # define the prompt
 PROMPT='\
 $PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
-%(?..$PR_BOLD_RED(%?%))$PR_CYAN%(!.◊.⁂)$PR_NO_COLOUR '
+%(?..$PR_BOLD_RED(%?%))$PR_CYAN%(!.◊.»)$PR_NO_COLOUR '
+ORIGINAL_PROMPT=$PROMPT
 
-PS2='$PR_BLUE%_$PR_WHITE>$PR_NO_COLOUR '
+PS2='$PR_GREEN%_$PR_CYAN›$PR_NO_COLOUR '
+
+function __prompt_show_terraform_env {
+  if [ -r .terraform/environment ]; then
+    TF_ENV="$(cat .terraform/environment)"
+    if [[ 'prod' = "$TF_ENV" ]]; then
+      echo -n "${PR_RED}"
+    else
+      echo -n "${PR_YELLOW}"
+    fi
+    echo -n "[${TF_ENV}]"
+  fi
+}
+
+function __prompt_enable_terraform {
+  PROMPT='\
+$PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
+%(?..$PR_BOLD_RED(%?%))$(__prompt_show_terraform_env)$PR_CYAN%(!.◊.»)$PR_NO_COLOUR '
+}
+
+function __prompt_reset {
+  PROMPT=$ORIGINAL_PROMPT
+}
 
 # keymap reset
 function _precmd_prompt_update { __prompt_update_from_keymap main }
