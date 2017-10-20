@@ -1,0 +1,17 @@
+if has_command fasd; then
+  eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+
+  if has_command fzf; then
+    # cd recent
+    cdr() {
+      local dir
+      dir="$(fasd -Rdl $* | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+    }
+
+    # cd recent local
+    cdrl() {
+      local dir
+      dir="$(fasd -Rdl $PWD/ $* | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+    }
+  fi
+fi

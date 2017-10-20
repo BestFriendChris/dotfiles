@@ -1,0 +1,54 @@
+if has_command fzf; then
+
+  # fuzzyfind homebrew packages
+  if has_command brew; then
+    # Install (one or multiple) selected application(s)
+    # using "brew search" as source input
+    # mnemonic [B]rew [I]nstall [P]lugin
+    brew-ip() {
+      local inst=$(brew search | fzf -m --preview 'brew info {} | head -n 4')
+
+      if [[ $inst ]]; then
+        for prog in $(echo $inst);
+        do; brew install $prog; done;
+      fi
+    }
+
+    # Update (one or multiple) selected application(s)
+    # mnemonic [B]rew [U]pdate [P]lugin
+    brew-up() {
+      local upd=$(brew leaves | fzf -m)
+
+      if [[ $upd ]]; then
+        for prog in $(echo $upd);
+        do; brew upgrade $prog; done;
+      fi
+    }
+  fi
+
+  # fuzzyfind recent vim files
+  _fzf_viminfo() {
+    grep '^>' ~/.viminfo | cut -c3- |
+      while read line; do
+        [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
+      done | fzf -m -q "$*" -1 --print0
+  }
+
+  vr() {
+    _fzf_viminfo $* | xargs -0 -t -o vim -p
+  }
+
+  mvr() {
+    _fzf_viminfo $* | xargs -0 -t mvim -p
+  }
+
+  vrl() {
+    vr $PWD $*
+  }
+
+  mvrl() {
+    mvr $PWD $*
+  }
+fi
+
+# vim:ft=zsh
