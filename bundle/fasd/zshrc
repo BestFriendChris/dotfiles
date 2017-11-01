@@ -1,36 +1,43 @@
 if has_command fasd; then
   eval "$(fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
 
-  # Rebinding these as `cdr` and `cdrl`
+  # Rebinding these as `cdr` and `cdri`
   unalias z zz 2>/dev/null
 
+  alias cdr='fasd_cd -d'
+
   if has_command fzf; then
-    unalias s sd sf z zz 2>/dev/null
+    unalias s sd sf 2>/dev/null
     s() {
-      fasd -Rl $* | fzf -1 -0 --no-sort +m
+      fasd -Rl $* | fzf -e -1 -0 --no-sort +m
     }
 
     sd() {
-      fasd -Rld $* | fzf -1 -0 --no-sort +m
+      fasd -Rld $* | fzf -e -1 -0 --no-sort +m
     }
 
     sf() {
-      fasd -Rlf $* | fzf -1 -0 --no-sort +m
+      fasd -Rlf $* | fzf -e -1 -0 --no-sort +m
     }
 
     # cd recent
-    cdr() {
+    cdri() {
       local dir
-      dir="$(fasd -Rdl $* | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+      dir="$(fasd -Rdl $* | fzf -e -1 -0 --no-sort +m)" && cd "${dir}" || return 1
     }
 
     # cd recent local
-    cdrl() {
+    cdrli() {
       local dir
-      dir="$(fasd -Rdl $PWD/ $* | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+      dir="$(fasd -Rdl $PWD/ $* | fzf -e -1 -0 --no-sort +m)" && cd "${dir}" || return 1
     }
   else
-    alias cdr='fasd_cd -d'
-    alias cdrl='fasd_cd -d -i'
+    alias cdri='fasd_cd -d -i'
+  fi
+
+  alias v='f -e vim'
+
+  if has_command mvim; then
+    alias vv='f -e mvim'
   fi
 fi
