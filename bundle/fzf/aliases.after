@@ -57,7 +57,7 @@ if has_command fzf; then
       local change session mysession
       [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
       mysession=$(tmux list-panes -a -F '#{pane_tty} #{session_name}' | grep "$(tty)" | awk '{print $2}')
-      session=$(tmux list-sessions -F "#{session_name}" | grep -v "^${mysession:-OR_NOTHING}$" | fzf -q "$1" -0) \
+      session=$(tmux list-sessions -F "#{session_name}" | grep -v "^$mysession$" | fzf -q "$1" -0) \
         && tmux $change -t "$session" \
         && return
       if [ $1 ]; then
@@ -74,7 +74,7 @@ if has_command fzf; then
       current_pane=$(tmux display-message -p '#I:#P')
       current_window=$(tmux display-message -p '#I')
 
-      target=$(echo "$panes" | grep -v "$current_pane" | fzf +m -0 --reverse) || return
+      target=$(echo "$panes" | grep -v "$current_pane" | fzf -q "$*" +m -0 -1 --reverse) || return
 
       target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
       target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
