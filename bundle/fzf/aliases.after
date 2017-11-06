@@ -51,6 +51,43 @@ if has_command fzf; then
       mvr $PWD $*
     }
   fi
+
+  if has_command tmux; then
+    tm() {
+      local change session mysession
+      [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+      mysession=$(tmux list-panes -a -F '#{pane_tty} #{session_name}' | grep "$(tty)" | awk '{print $2}')
+      session=$(tmux list-sessions -F "#{session_name}" | grep -v "^${mysession:-OR_NOTHING}$" | fzf -q "$1" -0) \
+        && tmux $change -t "$session" \
+        && return
+      if [ $1 ]; then
+        tmux new -d -s "$1" && tmux $change -t "$1"
+      else
+        return $?
+      fi
+    }
+    tmux bind-key s run "tmux split-window -l 12 'zsh -ci tm'" 2>/dev/null
+
+    tmpane() {
+      local panes current_window current_pane target target_window target_pane
+      panes=$(tmux list-panes -s -F '#I:#P - #W ◊$ #{pane_current_command}' | column -ts ◊)
+      current_pane=$(tmux display-message -p '#I:#P')
+      current_window=$(tmux display-message -p '#I')
+
+      target=$(echo "$panes" | grep -v "$current_pane" | fzf +m -0 --reverse) || return
+
+      target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
+      target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+
+      if [[ $current_window -eq $target_window ]]; then
+        tmux select-pane -t ${target_window}.${target_pane}
+      else
+        tmux select-pane -t ${target_window}.${target_pane} &&
+          tmux select-window -t $target_window
+      fi
+    }
+    tmux bind-key p run "tmux split-window -l 12 'zsh -ci tmpane'" 2>/dev/null
+  fi
 fi
 
 # vim:ft=zsh
