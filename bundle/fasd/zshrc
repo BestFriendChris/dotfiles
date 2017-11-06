@@ -23,13 +23,13 @@ if has_command fasd; then
     # cd recent
     cdri() {
       local dir
-      dir="$(fasd -Rdl $* | fzf -e -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+      dir="$(fasd -Rdl $* | fzf -e -1 -0 --no-sort +m)" && cd "${dir}"
     }
 
     # cd recent local
     cdrli() {
       local dir
-      dir="$(fasd -Rdl $PWD/ $* | fzf -e -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+      dir="$(fasd -Rdl $* | grep "^$PWD/" | fzf -e -1 -0 --no-sort +m)" && cd "${dir}"
     }
   else
     alias cdri='fasd_cd -d -i'
