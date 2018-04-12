@@ -10,3 +10,6 @@ source-all bindings
 
 # Import completions
 source-all completions
+
+# Import prompt
+source-all prompt
