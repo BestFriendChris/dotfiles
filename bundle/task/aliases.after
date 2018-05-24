@@ -1,0 +1,11 @@
+# Aliases for Taskwarrior (https://taskwarrior.org)
+
+if has_command task; then
+  alias t="task"
+  alias ta="task rc.context:"
+  alias tap="task rc.context: pending"
+
+  alias tw="task rc.context:work"
+fi
+
+# vim:ft=zsh
