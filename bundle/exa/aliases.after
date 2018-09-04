@@ -1,0 +1,7 @@
+if has_command exa; then
+  alias exag="exa --long --git"
+  alias exat="exa --tree"
+  alias exatl="exa --tree -L"
+fi
+
+# vim:ft=zsh
