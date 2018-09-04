@@ -29,7 +29,7 @@ if has_command fasd; then
     # cd recent local
     cdrli() {
       local dir
-      dir="$(fasd -Rdl $* | grep "^$PWD/" | fzf -e -1 -0 --no-sort +m)" && cd "${dir}"
+      dir="$(fasd -Rdl $* | grep "^$PWD/" | sed "s,^$PWD/,./," | fzf -e -1 -0 --no-sort +m)" && cd "${dir}"
     }
   else
     alias cdri='fasd_cd -d -i'
