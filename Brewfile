@@ -16,6 +16,10 @@ brew "bat"
 # certbot - Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
 
+#tap "crisidev/homebrew-chunkwm"
+# chunkwm - Tiling window manager for macOS based on plugin architecture
+#brew "chunkwm"
+
 # cmake - Cross-platform make
 brew "cmake"
 
