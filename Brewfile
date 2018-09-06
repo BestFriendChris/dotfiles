@@ -16,9 +16,6 @@ brew "bat"
 # certbot - Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
 
-# chromedriver - Tool for automated testing of webapps across many browsers
-brew "chromedriver"
-
 # cmake - Cross-platform make
 brew "cmake"
 
@@ -80,6 +77,9 @@ brew "imagemagick@6", link: true
 # jq - Lightweight and flexible command-line JSON processor
 brew "jq"
 
+# kitty - the fast, featureful, GPU based, terminal emulator
+cask "kitty"
+
 # libtool - Generic library support script
 brew "libtool"
 
@@ -121,10 +121,14 @@ brew "python@2"
 brew "reattach-to-user-namespace"
 
 # redis - Persistent key-value database, with built-in net interface
-brew "redis", restart_service: true
+brew "redis", restart_service: :changed
 
 # ripgrep - Search tool like grep and The Silver Searcher
 brew "ripgrep"
+
+tap "koekeishiya/formulae"
+# skhd - Simple hotkey-daemon for macOS
+brew "koekeishiya/formulae/skhd", restart_service: :changed
 
 # spark - Sparklines for the shell
 brew "spark"
