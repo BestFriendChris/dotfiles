@@ -18,7 +18,7 @@ brew "certbot"
 
 #tap "crisidev/homebrew-chunkwm"
 # chunkwm - Tiling window manager for macOS based on plugin architecture
-#brew "chunkwm"
+#brew "chunkwm", restart_service: :changed
 
 # cmake - Cross-platform make
 brew "cmake"
