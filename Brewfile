@@ -149,6 +149,9 @@ brew "tasksh"
 # tfenv - Terraform version manager inspired by rbenv
 brew "tfenv"
 
+# thefuck - Programatically correct mistyped console commands
+brew "thefuck"
+
 # the_silver_searcher - Code-search similar to ack
 brew "the_silver_searcher"
 
