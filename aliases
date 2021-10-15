@@ -3,6 +3,8 @@ alias la="ls -a"
 alias ll="ls -lh"
 alias lla="ll -a"
 
+alias rfrm="rm -rf"
+
 if has_command tree; then
   alias treep="tree -Fn"
   alias tree="tree -FC"
