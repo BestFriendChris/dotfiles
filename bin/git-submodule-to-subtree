@@ -1,0 +1,105 @@
+#!/usr/bin/env zsh
+
+set -e
+
+CWD=$PWD
+
+function _pr_header { echo "~~~~~" $@ "~~~~~" }
+function _pr_error { echo "ERROR:" $@ >&2 }
+function _pr_note { echo "NOTE:" $@ }
+
+function _main {
+  if git status --porcelain >/dev/null 2>&1; then
+  else
+    _pr_error "Not a git repository"; exit 1
+  fi
+
+  if [[ $(git status --porcelain | wc -l) -ne 0 ]]; then
+    _pr_error "Not a clean working copy"; exit 1
+  fi
+
+  if [[ -f $CWD/.gitmodules ]]; then
+    _add_submodules
+  fi
+}
+
+function _add_submodules {
+  cat "$CWD/.gitmodules" \
+  | sed -e '/\[submodule "/s/\./_/g' \
+  | git config -f - -l \
+  | awk '
+      /\.path=|\.url=/ {
+        split($0, a, /=/);
+        split(a[1], b, /\./);
+        if (b[3] == "path") {
+          foo[b[2]] = a[2] "," foo[b[2]]
+        }
+        if (b[3] == "url") {
+          foo[b[2]] = foo[b[2]] "," a[2]
+        }
+      }
+
+      END {
+        for (v in foo) {
+          print foo[v]
+        }
+      }' \
+  | sed -E -e 's/,+/,/g' -e 's/^,|,$//g' \
+  | while IFS=, read submodule_path submodule_url; do
+    git submodule status \
+    | grep --fixed-strings "$submodule_path" \
+    | sed 's/^.//' \
+    | read submodule_hash submodule_path
+
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    _pr_header "Fetching $submodule_url"
+    git fetch -q -n "$submodule_url" "$submodule_hash"
+
+    _pr_header "Squashing commit $submodule_hash"
+    noglob git commit-tree $submodule_hash^{tree} -m "
+Squashed '$submodule_path' content from commit $(git rev-parse --short $submodule_hash)
+
+git-subtree-dir: $submodule_path
+git-subtree-split: $submodule_hash
+git-subtree-repo: $submodule_url
+" \
+    | read squashed_hash
+
+    cat .git/HEAD | read current_hash
+
+    _pr_header "Checking if any .gitmodules in $squashed_hash"
+    if [[ $(git ls-tree $squashed_hash .gitmodules | wc -l) -eq 1 ]]; then
+      git checkout -q --detach $squashed_hash
+
+      (_add_submodules) | sed 's,^,    ,'
+
+      _pr_header "Updated submodules"
+
+      cat .git/HEAD | read squashed_hash
+
+      if [[ "$current_hash" == "ref"* ]]; then
+        git checkout -q $(echo $current_hash | sed 's,^.*refs/heads/,,')
+      else
+        git checkout -q --detach $current_hash
+      fi
+    fi
+
+    _pr_header "Merging squashed commit $squashed_hash"
+    git merge -q -s ours --no-commit --allow-unrelated-histories $squashed_hash 2>&1 \
+      | sed -e '/Automatic merge went well/d'
+
+    _pr_header "Removing submodule $submodule_path"
+    git rm -q -r $submodule_path
+    if [[ $(cat "$CWD/.gitmodules" | wc -l) -eq 0 ]]; then
+      git rm -q -f "$CWD/.gitmodules"
+    fi
+
+    _pr_header "Reading squashed commit onto path '$submodule_path'"
+    git read-tree --prefix="$submodule_path" -u $squashed_hash
+
+    _pr_header "Commiting merge"
+    git commit -m "Merge submodule '$submodule_path' to subtree"
+  done
+}
+
+_main

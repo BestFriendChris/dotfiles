@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# Need to copy some scripts out of the working directry when we mess with the repo
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BIN_DIR="$SCRIPT_DIR/bin"
+SAFE_BIN_DIR="$SCRIPT_DIR/.git/subforest-bin"
+
+mkdir -p "$SAFE_BIN_DIR"
+trap "rm -r $SAFE_BIN_DIR" EXIT
+
+cp -f $BIN_DIR/git-sub* "$SAFE_BIN_DIR"
+
+$SAFE_BIN_DIR/git-subforest $@
