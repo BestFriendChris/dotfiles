@@ -3,9 +3,11 @@
 # Need to copy some scripts out of the working directry when we mess with the repo
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BIN_DIR="$SCRIPT_DIR/bin"
-SAFE_BIN_DIR="$SCRIPT_DIR/.git/subforest-bin"
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+BIN_DIR="$BASE_DIR/bin"
+SAFE_BIN_DIR="$BASE_DIR/.git/subforest-bin"
+
+cd "$BASE_DIR"
 
 mkdir -p "$SAFE_BIN_DIR"
 trap "rm -r $SAFE_BIN_DIR" EXIT
