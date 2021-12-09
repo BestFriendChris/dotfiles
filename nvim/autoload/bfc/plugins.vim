@@ -1,5 +1,10 @@
 function! bfc#plugins#load(plugin)
-  execute 'source ~/.config/nvim/plugins/' . a:plugin . '.vim'
+  let plugin_file = expand('~/.config/nvim/plugins/' . a:plugin . '.vim')
+  if filereadable(plugin_file)
+    execute 'source ' . plugin_file
+  else
+    execute 'packadd! ' . a:plugin
+  endif
 endfunction
 
 function! bfc#plugins#colorscheme(cs_name)
