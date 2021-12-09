@@ -9,3 +9,4 @@ vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vi
 vim/speeddating,nvim/pack/external/opt/vim-speeddating,https://github.com/tpope/vim-speeddating.git,master
 vim/surround,nvim/pack/external/opt/vim-surround,https://github.com/tpope/vim-surround.git,master
 vim/unimpaired,nvim/pack/external/opt/vim-unimpaired,https://github.com/tpope/vim-unimpaired.git,master
+vim/vim-exchange,nvim/pack/external/opt/vim-exchange,https://github.com/tommcdo/vim-exchange.git,master
