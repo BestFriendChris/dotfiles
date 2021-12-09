@@ -10,4 +10,8 @@ BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 cd "${BASEDIR}"
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" \
+  -d "${BASEDIR}" \
+  --plugin-dir ".dotbot-plugins/brewfile" \
+  -c "${CONFIG}" \
+  "${@}"

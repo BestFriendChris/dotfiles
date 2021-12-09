@@ -1,0 +1,11 @@
+brew "bat"
+brew "git-branchless"
+brew "gron"
+brew "neovim"
+brew "nnn"
+brew "ripgrep"
+brew "zsh"
+
+cask "kitty"
+
+# ft=ruby

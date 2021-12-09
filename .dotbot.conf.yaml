@@ -8,3 +8,8 @@
       path: kitty/*
       glob: true
     ~/.config/nvim: nvim
+
+- brewfile:
+    file: homebrew/Brewfile
+    stdout: true
+    stderr: true
