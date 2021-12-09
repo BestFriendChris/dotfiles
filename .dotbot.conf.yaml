@@ -7,3 +7,4 @@
     ~/.config/kitty/:
       path: kitty/*
       glob: true
+    ~/.config/nvim: nvim
