@@ -1,5 +1,6 @@
 dotbot,.dotbot,https://github.com/anishathalye/dotbot,master
 vim/dracula,nvim/pack/external/opt/dracula,git@github.com:dracula/vim.git,master
+vim/repeat,nvim/pack/external/opt/vim-repeat,https://github.com/tpope/vim-repeat.git,master
 vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vim-scriptease.git,master
 vim/speeddating,nvim/pack/external/opt/vim-speeddating,https://github.com/tpope/vim-speeddating.git,master
 vim/surround,nvim/pack/external/opt/vim-surround,https://github.com/tpope/vim-surround.git,master
