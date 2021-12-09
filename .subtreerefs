@@ -1,4 +1,5 @@
 dotbot,.dotbot,https://github.com/anishathalye/dotbot,master
+dotbot/brewfile,.dotbot-plugins/brewfile,https://github.com/sobolevn/dotbot-brewfile.git,master
 vim/commentary,nvim/pack/external/opt/vim-commentary,https://github.com/tpope/vim-commentary.git,master
 vim/context-commentstring,nvim/pack/external/opt/vim-context-commentstring,https://github.com/suy/vim-context-commentstring.git,master
 vim/dracula,nvim/pack/external/opt/dracula,git@github.com:dracula/vim.git,master
