@@ -21,8 +21,8 @@ let maplocalleader=","
 "--------------------------------------------------------------------------------
 
 " Don't use Ex mode, use Q for quitting when saved
-nmap Q :q<CR>
-nmap <Leader>Q :bw<CR>
+nmap Q <Cmd>q<CR>
+nmap <Leader>Q <Cmd>bwipeout<CR>
 
 " Navigate between windows easier
 map <C-J> <C-W>j
@@ -31,11 +31,11 @@ map <C-K> <C-W>k
 " Navigate between tabs
 map <C-H> gT
 map <C-L> gt
-map <silent> g<C-H> :tabmove -1<CR>
-map <silent> g<C-L> :tabmove +1<CR>
+map g<C-H> <Cmd>tabmove -1<CR>
+map g<C-L> <Cmd>tabmove +1<CR>
 
 " Toggle line wrapping
-nmap <silent> <C-W><C-W> :setlocal invwrap<CR>
+nmap <C-W><C-W> <Cmd>setlocal invwrap<CR>
 
 " Select some text and search with it
 vmap // y/\V<C-R>"<CR>
@@ -71,8 +71,8 @@ nmap <F1> <Nop>
 nmap <D-F1> <Nop>
 
 " Save the file easier
-nmap <silent> <Leader>w :w<CR>
-nmap <silent> <Leader>W :wa<CR>
+nmap <Leader>w <Cmd>w<CR>
+nmap <Leader>W <Cmd>wa<CR>
 
 " Magic voodoo that changes %% into the path of the current file in cmd mode
 cnoremap %% <C-R>=expand('%:h').'/'<CR>
@@ -84,26 +84,26 @@ nmap <Leader><Leader> <C-^>
 nnoremap g/ /\v
 
 " Open tag in new tab
-nnoremap <Leader>] :tab stjump <C-R><C-W><CR>
+nnoremap <silent> <Leader>] :tab stjump <C-R><C-W><CR>
 " Open tag in preview
-nnoremap <Leader>[ :ptjump <C-R><C-W><CR>
+nnoremap <silent> <Leader>[ :ptjump <C-R><C-W><CR>
 
 " Toggle fold
 nnoremap z<Space> zA
 
 " Toggle winheight
-nnoremap <silent> <C-W><Space> :let &winheight=( &winheight == 999 ? 1 : 999)<CR><C-W>=
+nnoremap <C-W><Space> <Cmd>let &winheight=( &winheight == 999 ? 1 : 999)<CR><C-W>=
 
 nnoremap * /\C\<<C-R>=expand('<cword>')<CR>\><CR>
 nnoremap # ?\C\<<C-R>=expand('<cword>')<CR>\><CR>
 
-nnoremap gf :e <cfile><CR>
-nnoremap ^wgf :tabe <cfile><CR>
+nnoremap gf <Cmd>e <cfile><CR>
+nnoremap ^wgf <Cmd>tabe <cfile><CR>
 
 nnoremap <Leader><Space> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 
-nmap <Leader>ve :edit ~/.config/nvim/init.vim<CR>
-nmap <Leader>vr :source ~/.config/nvim/init.vim<CR>
+nmap <Leader>ve <Cmd>edit ~/.config/nvim/init.vim<CR>
+nmap <Leader>vr <Cmd>source ~/.config/nvim/init.vim<CR>
 
 " Reselect visual selection after indenting
 vnoremap < <gv
