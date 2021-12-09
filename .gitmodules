@@ -1,3 +1,0 @@
-[submodule "deps/fzy-lua-native"]
-	path = deps/fzy-lua-native
-	url = https://github.com/romgrk/fzy-lua-native
