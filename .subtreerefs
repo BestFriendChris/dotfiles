@@ -1,2 +1,3 @@
 dotbot,.dotbot,https://github.com/anishathalye/dotbot,master
 vim/dracula,nvim/pack/external/opt/dracula,git@github.com:dracula/vim.git,master
+vim/unimpaired,nvim/pack/external/opt/vim-unimpaired,https://github.com/tpope/vim-unimpaired.git,master
