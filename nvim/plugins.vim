@@ -1,8 +1,5 @@
-source ~/.config/nvim/plugins/dracula.vim
-augroup ColorSchemeSelect
-  autocmd!
-  autocmd User PackagesLoaded ++nested
-    \ colorscheme dracula
-augroup end
+call bfc#plugins#load('dracula')
+call bfc#plugins#colorscheme('dracula')
 
+call bfc#plugins#load('vim-unimpaired')
 
