@@ -103,6 +103,12 @@ function _add {
     _pr_error "Must provide branch/hash"; _pr_usage; exit 1
   fi
 
+  if [[ $(git status --ignored --short | wc -l) -gt 0 ]]; then
+    _pr_header "Stashing ignored changes"
+    git stash push --all
+    stashed=1
+  fi
+
   _pr_header "Adding subtree $subtree_name"
   _add_subtree "$subtree_path" "$clone_url" "$branch"
 
@@ -117,6 +123,71 @@ function _add {
 
   _pr_header "Commiting merge"
   git commit -m "Adding subtree '$subtree_path' from $clone_url ($branch)"
+
+  if [[ stashed -eq 1 ]]; then
+    _pr_header "Restoring ignored changes"
+    git stash pop
+  fi
+}
+
+function _update {
+  subtree_name=$1
+  branch=$2
+
+  if [[ -z "$subtree_name" ]]; then
+    _pr_error "Must provide subtree name"; _pr_usage; exit 1
+  else
+    if known_subtree_line=$(grep "^$subtree_name," $SUBTREE_FILE) ; then
+    else
+      _pr_error "Unknown subtree named '$subtree_name'"
+      _list
+      exit 1
+    fi
+  fi
+
+  echo "$known_subtree_line" \
+  | IFS=, read subtree_name subtree_path clone_url known_branch
+
+  if [[ -z "$branch" ]]; then
+    branch="$known_branch"
+  fi
+
+  if [[ $(git status --ignored --short | wc -l) -gt 0 ]]; then
+    _pr_header "Stashing ignored changes"
+    git stash push --all
+    stashed=1
+  fi
+
+  _pr_header "Adding subtree $subtree_name"
+  _add_subtree "$subtree_path" "$clone_url" "$branch"
+
+  _pr_header "updating subtree file"
+  if [[ "$(uname)" = Darwin ]]; then
+    sed -i '' -e "/^$subtree_name,/s/,[^,]*$/,$branch/" $SUBTREE_FILE
+  else
+    sed -i -e "/^$subtree_name,/s/,[^,]*$/,$branch/" $SUBTREE_FILE
+  fi
+
+  git add $SUBTREE_FILE
+
+  _pr_header "Commiting merge"
+  git commit -m "Updating subtree '$subtree_path' from $clone_url ($branch)"
+
+  if [[ stashed -eq 1 ]]; then
+    _pr_header "Restoring ignored changes"
+    git stash pop
+  fi
+}
+
+function _edit {
+  if [[ -z "$EDITOR" ]]; then
+    EDITOR=vim
+  fi
+
+  $EDITOR $SUBTREE_FILE
+
+  _pr_header "Subtree file updated."
+  _list "-v"
 }
 
 function _add_subtree {
@@ -169,55 +240,6 @@ git-subtree-branch: $branch
     git rm -q -r "$subtree_path"
   fi
   git read-tree --prefix="$subtree_path" -u $squashed_hash
-}
-
-function _update {
-  subtree_name=$1
-  branch=$2
-
-  if [[ -z "$subtree_name" ]]; then
-    _pr_error "Must provide subtree name"; _pr_usage; exit 1
-  else
-    if known_subtree_line=$(grep "^$subtree_name," $SUBTREE_FILE) ; then
-    else
-      _pr_error "Unknown subtree named '$subtree_name'"
-      _list
-      exit 1
-    fi
-  fi
-
-  echo "$known_subtree_line" \
-  | IFS=, read subtree_name subtree_path clone_url known_branch
-
-  if [[ -z "$branch" ]]; then
-    branch="$known_branch"
-  fi
-
-  _pr_header "Adding subtree $subtree_name"
-  _add_subtree "$subtree_path" "$clone_url" "$branch"
-
-  _pr_header "updating subtree file"
-  if [[ "$(uname)" = Darwin ]]; then
-    sed -i '' -e "/^$subtree_name,/s/,[^,]*$/,$branch/" $SUBTREE_FILE
-  else
-    sed -i -e "/^$subtree_name,/s/,[^,]*$/,$branch/" $SUBTREE_FILE
-  fi
-
-  git add $SUBTREE_FILE
-
-  _pr_header "Commiting merge"
-  git commit -m "Updating subtree '$subtree_path' from $clone_url ($branch)"
-}
-
-function _edit {
-  if [[ -z "$EDITOR" ]]; then
-    EDITOR=vim
-  fi
-
-  $EDITOR $SUBTREE_FILE
-
-  _pr_header "Subtree file updated."
-  _list "-v"
 }
 
 _main $@

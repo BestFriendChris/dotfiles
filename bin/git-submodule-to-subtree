@@ -24,6 +24,12 @@ function _main {
 }
 
 function _add_submodules {
+  if [[ $(git status --ignored --short | wc -l) -gt 0 ]]; then
+    _pr_header "Stashing ignored changes"
+    git stash push --all
+    stashed=1
+  fi
+
   cat "$CWD/.gitmodules" \
   | sed -e '/\[submodule "/s/\./_/g' \
   | git config -f - -l \
@@ -100,6 +106,11 @@ git-subtree-repo: $submodule_url
     _pr_header "Commiting merge"
     git commit -m "Merge submodule '$submodule_path' to subtree"
   done
+
+  if [[ stashed -eq 1 ]]; then
+    _pr_header "Restoring ignored changes"
+    git stash pop
+  fi
 }
 
 _main
