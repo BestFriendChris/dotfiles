@@ -138,6 +138,8 @@ autocmd BufReadPost *
 
 source ~/.config/nvim/plugins.vim
 
+command! BfcPostInstall call bfc#install#run()
+
 "--------------------------------------------------------------------------------
 " FINISH
 "--------------------------------------------------------------------------------
