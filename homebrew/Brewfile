@@ -1,4 +1,5 @@
 brew "bat"
+brew "fd"
 brew "git-branchless"
 brew "gron"
 brew "neovim"
