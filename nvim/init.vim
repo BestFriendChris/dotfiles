@@ -13,6 +13,7 @@ set number
 set relativenumber
 set visualbell
 set wildmode=list:longest
+set foldlevelstart=999
 
 let maplocalleader=","
 
@@ -138,8 +139,6 @@ autocmd BufReadPost *
 
 source ~/.config/nvim/plugins.vim
 
-command! BfcPostInstall call bfc#install#run()
-
 "--------------------------------------------------------------------------------
 " FINISH
 "--------------------------------------------------------------------------------
@@ -148,3 +147,5 @@ filetype plugin indent on
 syntax on
 
 doautocmd User PackagesLoaded
+
+command! BfcPostInstall call bfc#install#run()
