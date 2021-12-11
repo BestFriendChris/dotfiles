@@ -24,4 +24,4 @@ nnoremap <C-Q><C-P> <Cmd>FloatermPrev<CR>
 " Show directory at current file
 nnoremap - <Cmd>FloatermNew nnn<CR>
 " Show directory at project root
-nnoremap <Leader>f <Cmd>execute "FloatermNew nnn ".getcwd()<CR>
+nnoremap <Leader>- <Cmd>execute "FloatermNew nnn ".getcwd()<CR>

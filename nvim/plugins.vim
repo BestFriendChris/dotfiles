@@ -2,6 +2,8 @@ call bfc#plugins#load('dracula')
 call bfc#plugins#colorscheme('dracula')
 
 call bfc#plugins#load('nvim-treesitter')
+call bfc#plugins#load('plenary')
+call bfc#plugins#load('telescope')
 call bfc#plugins#load('vim-commentary')
 call bfc#plugins#load('vim-context-commentstring')
 call bfc#plugins#load('vim-eunuch')
