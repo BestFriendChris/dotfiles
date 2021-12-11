@@ -1,4 +1,5 @@
 brew "asdf"
+brew "coreutils"
 brew "bat"
 brew "fd"
 brew "git-branchless"
