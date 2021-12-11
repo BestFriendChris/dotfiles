@@ -8,6 +8,7 @@
       path: kitty/*
       glob: true
     ~/.config/nvim: nvim
+    ~/.config/lazygit/config.yml: lazygit/config.yml
 
 - brewfile:
     file: homebrew/Brewfile

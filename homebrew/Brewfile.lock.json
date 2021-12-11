@@ -337,6 +337,10 @@
             }
           }
         }
+      },
+      "jesseduffield/lazygit/lazygit": {
+        "version": "0.31.4",
+        "bottle": false
       }
     },
     "cask": {
@@ -346,6 +350,11 @@
           "full_name": "kitty"
         }
       }
+    },
+    "tap": {
+      "jesseduffield/lazygit": {
+        "revision": "4e3e224fd69e5f0ef0cab7dc690f1eb8bd6ed80c"
+      }
     }
   },
   "system": {
@@ -353,7 +362,7 @@
       "monterey": {
         "HOMEBREW_VERSION": "3.3.7",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "feb691037889866798a13cd6ef9a440294d050f1",
+        "Homebrew/homebrew-core": "28d9b3ffc23ed22ecb8ca70f120932166f4b5a60",
         "CLT": "13.1.0.0.1.1633545042",
         "Xcode": "13.1",
         "macOS": "12.0.1"
