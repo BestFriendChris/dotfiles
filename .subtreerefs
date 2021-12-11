@@ -9,6 +9,7 @@ vim/nvim-neoclip,nvim/pack/external/opt/nvim-neoclip,https://github.com/AckslD/n
 vim/nvim-treesitter,nvim/pack/external/opt/nvim-treesitter,https://github.com/nvim-treesitter/nvim-treesitter.git,master
 vim/obsession,nvim/pack/external/opt/vim-obsession,https://github.com/tpope/vim-obsession.git,master
 vim/plenary,nvim/pack/external/opt/plenary,https://github.com/nvim-lua/plenary.nvim.git,master
+vim/quick-scope,nvim/pack/external/opt/quick-scope,https://github.com/unblevable/quick-scope.git,master
 vim/repeat,nvim/pack/external/opt/vim-repeat,https://github.com/tpope/vim-repeat.git,master
 vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vim-scriptease.git,master
 vim/speeddating,nvim/pack/external/opt/vim-speeddating,https://github.com/tpope/vim-speeddating.git,master
