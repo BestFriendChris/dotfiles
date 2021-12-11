@@ -88,4 +88,4 @@ EOF
 
 endfunction
 
-call bfc#plugins#on_load('TreeSitterSetup', funcref('<SID>TreeSitterSetup'))
+call bfc#plugins#on_load(funcref('<SID>TreeSitterSetup'))

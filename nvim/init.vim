@@ -139,6 +139,8 @@ autocmd BufReadPost *
 
 source ~/.config/nvim/plugins.vim
 
+command! BfcPostInstall call bfc#install#run()
+
 "--------------------------------------------------------------------------------
 " FINISH
 "--------------------------------------------------------------------------------
@@ -146,6 +148,4 @@ source ~/.config/nvim/plugins.vim
 filetype plugin indent on
 syntax on
 
-doautocmd User PackagesLoaded
-
-command! BfcPostInstall call bfc#install#run()
+call bfc#plugins#packages_loaded()
