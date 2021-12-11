@@ -15,6 +15,7 @@ vim/quick-scope,nvim/pack/external/opt/quick-scope,https://github.com/unblevable
 vim/repeat,nvim/pack/external/opt/vim-repeat,https://github.com/tpope/vim-repeat.git,master
 vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vim-scriptease.git,master
 vim/speeddating,nvim/pack/external/opt/vim-speeddating,https://github.com/tpope/vim-speeddating.git,master
+vim/splitjoin,nvim/pack/external/opt/splitjoin,https://github.com/AndrewRadev/splitjoin.vim.git,main
 vim/surround,nvim/pack/external/opt/vim-surround,https://github.com/tpope/vim-surround.git,master
 vim/telescope,nvim/pack/external/opt/telescope,https://github.com/nvim-telescope/telescope.nvim.git,master
 vim/telescope-fzy-native,nvim/pack/external/opt/telescope-fzy-native,https://github.com/nvim-telescope/telescope-fzy-native.nvim.git,master
