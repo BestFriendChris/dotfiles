@@ -1,0 +1,36 @@
+function source-if-exists () {
+  FNAME=$1
+  if [[ -n "$FNAME" && -r "$FNAME" ]]; then
+    [[ -n "$ZSH_LOAD_VERBOSE" ]] && \
+      echo "Loading $FNAME"
+    source $FNAME
+  fi
+}
+
+function source-it () {
+  FNAME=$1
+  EXTN=$2
+
+  if [[ -n "$(echo $ZDOTDIR/$FNAME$EXTN(N.) $ZDOTDIR/bundle/*/$FNAME$EXTN(N.) $ZDOTDIR/site-local/$FNAME$EXTN(N.))" ]]; then
+    echo "$(ls -- $ZDOTDIR/$FNAME$EXTN(N.) $ZDOTDIR/bundle/*/$FNAME$EXTN(N.) $ZDOTDIR/site-local/$FNAME$EXTN(N.))" | while read bundle; do
+      source-if-exists $bundle
+    done
+  fi
+}
+
+function source-all () {
+  source-it $1 '.before'
+  source-it $1
+  source-it $1 '.after'
+}
+
+function has_command () {
+  COMMAND_NAME=$1
+  if (( $+commands[$COMMAND_NAME] )); then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# vim:ft=zsh

@@ -1,0 +1,22 @@
+# General Options
+setopt extended_glob
+setopt interactive_comments
+setopt pushd_ignore_dups
+setopt numeric_glob_sort
+setopt no_list_beep
+setopt transient_rprompt
+setopt noclobber
+
+# History Options
+setopt hist_allow_clobber
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_no_store
+setopt inc_append_history
+setopt share_history
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=$ZDOTDIR/.history
+
+# vim:ft=zsh

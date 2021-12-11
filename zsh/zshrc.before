@@ -1,0 +1,5 @@
+# Special Functions - Allow multiple hooks
+typeset -ag chpwd_functions
+typeset -ag periodic_functions
+typeset -ag precmd_functions
+typeset -ag preexec_functions

@@ -1,0 +1,3 @@
+if has_command gron; then
+  alias norg="gron --ungron"
+fi

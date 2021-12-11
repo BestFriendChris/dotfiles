@@ -1,0 +1,10 @@
+CWD=$0:A:h
+
+fpath+=( \
+  $CWD/functions \
+  $CWD/completions \
+)
+
+export ZNAMEDIR_FILE=$CWD/.znamedirs
+
+autoload $CWD/functions/[^_]*(:t)

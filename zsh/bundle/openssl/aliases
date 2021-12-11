@@ -1,0 +1,19 @@
+if has_command openssl; then
+  cert_info() {
+    local servername
+    if [[ -z "$1" ]]; then
+      echo "Usage: $0 SERVER_NAME" >&2
+      return 1
+    fi
+    servername=$1
+    echo \
+      | openssl s_client \
+                -showcerts \
+                -servername ${servername} \
+                -connect ${servername}:443 \
+                2>/dev/null \
+      | openssl x509 -inform pem -noout -text
+  }
+fi
+
+# vim:ft=zsh

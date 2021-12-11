@@ -1,0 +1,43 @@
+if has_command fasd; then
+  eval "$(fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+
+  # Rebinding these as `cdr` and `cdri`
+  unalias z zz 2>/dev/null
+
+  alias cdr='fasd_cd -d'
+
+  if has_command fzf; then
+    unalias s sd sf 2>/dev/null
+    s() {
+      fasd -Rl $* | fzf -e -1 -0 --no-sort +m
+    }
+
+    sd() {
+      fasd -Rld $* | fzf -e -1 -0 --no-sort +m
+    }
+
+    sf() {
+      fasd -Rlf $* | fzf -e -1 -0 --no-sort +m
+    }
+
+    # cd recent
+    cdri() {
+      local dir
+      dir="$(fasd -Rdl $* | fzf -e -1 -0 --no-sort +m)" && cd "${dir}"
+    }
+
+    # cd recent local
+    cdrli() {
+      local dir
+      dir="$(fasd -Rdl $* | grep "^$PWD/" | sed "s,^$PWD/,./," | fzf -e -1 -0 --no-sort +m)" && cd "${dir}"
+    }
+  else
+    alias cdri='fasd_cd -d -i'
+  fi
+
+  alias v='f -e vim'
+
+  if has_command mvim; then
+    alias vv='f -e mvim'
+  fi
+fi

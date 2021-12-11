@@ -1,0 +1,41 @@
+alias ls="ls -FG"
+alias la="ls -a"
+alias ll="ls -lh"
+alias lla="ll -a"
+
+alias rfrm="rm -rf"
+
+if has_command tree; then
+  alias treep="tree -Fn"
+  alias tree="tree -FC"
+fi
+
+if has_command df; then
+  alias df="df -h"
+fi
+if has_command du; then
+  alias du="du -sh"
+  function dus { du $* | sort -n }
+fi
+
+alias dirs='dirs -v'
+
+alias g="grep --color"
+alias p="ps aux| grep -v grep |g "
+
+if has_command rsync; then
+  alias rsync="rsync -ahOP --exclude=.DS_Store"
+  alias dry-rsync="rsync --dry-run"
+fi
+
+# Git stuff
+if has_command git; then
+  alias cdg='cd "$(git root)"'
+fi
+
+# Tmux stuff
+if has_command tmux; then
+  function tmuxo { tmux new -A -s $1 }
+fi
+
+# vim:ft=zsh

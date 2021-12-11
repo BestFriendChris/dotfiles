@@ -1,0 +1,4 @@
+if has_command deno || test -d $HOME/.deno/bin; then
+  test -d $HOME/.deno || mkdir $HOME/.deno
+  export PATH="$PATH:$HOME/.deno/bin"
+fi

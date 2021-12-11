@@ -1,0 +1,6 @@
+if has_command jq; then
+  alias jqc="jq -C"
+  alias jfmt="jq -C '.' | less -R"
+fi
+
+# vim:ft=zsh

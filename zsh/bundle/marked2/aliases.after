@@ -1,0 +1,11 @@
+if [[ -r "/Applications/Marked 2.app" ]]; then
+  function marked() {
+    if [[ -n "$1" ]]; then
+      open -a "Marked 2" $1
+    else
+      open -a "Marked 2"
+    fi
+  }
+fi
+
+# vim:ft=zsh

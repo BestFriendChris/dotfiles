@@ -1,0 +1,93 @@
+if has_command fzf; then
+
+  # fuzzyfind homebrew packages
+  if has_command brew; then
+    # Install (one or multiple) selected application(s)
+    # using "brew search" as source input
+    # mnemonic [B]rew [I]nstall [P]lugin
+    brew-ip() {
+      local inst=$(brew search | fzf -m --preview 'brew info {} | head -n 4')
+
+      if [[ $inst ]]; then
+        for prog in $(echo $inst);
+        do; brew install $prog; done;
+      fi
+    }
+
+    # Update (one or multiple) selected application(s)
+    # mnemonic [B]rew [U]pdate [P]lugin
+    brew-up() {
+      local upd=$(brew leaves | fzf -m)
+
+      if [[ $upd ]]; then
+        for prog in $(echo $upd);
+        do; brew upgrade $prog; done;
+      fi
+    }
+  fi
+
+  # fuzzyfind recent vim files
+  _fzf_viminfo() {
+    grep '^>' ~/.viminfo | cut -c3- |
+      while read line; do
+        [ -f "${line/\~/$HOME}" ] && echo "${line/\~/$HOME}"
+      done | fzf -m -q "$*" -1 --print0
+  }
+
+  vr() {
+    _fzf_viminfo $* | xargs -0 -t -o vim -p
+  }
+
+  vrl() {
+    vr $PWD $*
+  }
+
+  if has_command mvim; then
+    mvr() {
+      _fzf_viminfo $* | xargs -0 -t mvim -p
+    }
+
+    mvrl() {
+      mvr $PWD $*
+    }
+  fi
+
+  if has_command tmux; then
+    tm() {
+      local change session mysession
+      [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+      mysession=$(tmux list-panes -a -F '#{pane_tty} #{session_name}' | grep "$(tty)" | awk '{print $2}')
+      session=$(tmux list-sessions -F "#{session_name}" | grep -v "^$mysession$" | fzf -q "$1" -0) \
+        && tmux $change -t "$session" \
+        && return
+      if [ $1 ]; then
+        tmux new -d -s "$1" && tmux $change -t "$1"
+      else
+        return $?
+      fi
+    }
+    tmux bind-key s run "tmux split-window -l 12 'zsh -ci tm'" 2>/dev/null
+
+    tmpane() {
+      local panes current_window current_pane target target_window target_pane
+      panes=$(tmux list-panes -s -F '#I:#P - #W ◊$ #{pane_current_command}' | column -ts ◊)
+      current_pane=$(tmux display-message -p '#I:#P')
+      current_window=$(tmux display-message -p '#I')
+
+      target=$(echo "$panes" | grep -v "$current_pane" | fzf -q "$*" +m -0 -1 --reverse) || return
+
+      target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
+      target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+
+      if [[ $current_window -eq $target_window ]]; then
+        tmux select-pane -t ${target_window}.${target_pane}
+      else
+        tmux select-pane -t ${target_window}.${target_pane} &&
+          tmux select-window -t $target_window
+      fi
+    }
+    tmux bind-key p run "tmux split-window -l 12 'zsh -ci tmpane'" 2>/dev/null
+  fi
+fi
+
+# vim:ft=zsh
