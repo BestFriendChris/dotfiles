@@ -9,6 +9,7 @@
       glob: true
     ~/.config/lazygit/config.yml: lazygit/config.yml
     ~/.config/nvim: nvim
+    ~/.zshenv: zsh/HOME_zshenv
 
 - brewfile:
     file: homebrew/Brewfile

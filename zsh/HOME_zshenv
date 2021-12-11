@@ -2,9 +2,7 @@ if [ -x /usr/libexec/path_helper ]; then
   eval `/usr/libexec/path_helper -s`
 fi
 
-# Link this file in your $HOME dir
-#   $ ln -s ~/.installed/chris-config-zsh/HOME_zshenv ~/.zshenv
-ZDOTDIR="$(echo ~/.zshenv(:A:h))"
+export ZDOTDIR="$(echo ~/.zshenv(:A:h))"
 
 source $ZDOTDIR/.zshenv
 
