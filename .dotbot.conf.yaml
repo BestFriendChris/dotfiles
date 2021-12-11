@@ -14,3 +14,6 @@
     file: homebrew/Brewfile
     stdout: true
     stderr: true
+
+- shell:
+    - ["nvim --headless +BfcPostInstall +qall", "Installing and Updating vim plugins"]
