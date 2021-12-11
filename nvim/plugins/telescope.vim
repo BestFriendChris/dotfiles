@@ -1,5 +1,6 @@
 packadd! telescope
 packadd! telescope-fzy-native
+packadd! nvim-neoclip
 
 function! s:TelescopeSetup() abort
 lua <<EOF
@@ -33,7 +34,10 @@ lua <<EOF
       },
     },
   }
+  require'neoclip'.setup()
+
   require'telescope'.load_extension 'fzy_native'
+  require'telescope'.load_extension 'neoclip'
 EOF
 endfunction
 
@@ -44,3 +48,6 @@ nnoremap <Leader>fg <Cmd>Telescope live_grep<cr>
 nnoremap <Leader>fG <Cmd>Telescope grep_string<cr>
 nnoremap <Leader>fb <Cmd>Telescope buffers<cr>
 nnoremap <Leader>fh <Cmd>Telescope help_tags<cr>
+
+nnoremap <Leader>fp <Cmd>Telescope neoclip<cr>
+nnoremap <Leader>fP <Cmd>Telescope neoclip star<cr>
