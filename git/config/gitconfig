@@ -1,0 +1,51 @@
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  cod = checkout --detach
+  di = diff --ignore-space-change
+  dc = diff --ignore-space-change --cached
+  aa = add --all
+
+  cl = clean -id
+  purge = clean -f
+  rollback = reset --soft HEAD^
+  root = !pwd
+
+  l = "!. ~/.config/git/githelpers.zsh && pretty_git_log"
+  la = !git lg --all
+  lg = !git l --graph
+  lgs = !git lg --stat
+  ls = !git l --stat
+
+  # Head commit
+  h = !git l -1
+  hp = !git log -1 -p
+  hs = !git h --stat
+
+  # Recent commits
+  r = !git lg -15
+  ra = !git r --all
+  rs = !git r --stat
+
+  aip = add -ip
+  unstage = restore --staged
+
+[color]
+  ui=true
+[push]
+  default = tracking
+[core]
+  editor = /opt/homebrew/bin/vim
+  excludesfile = /Users/cturner/.gitignore_global
+[merge]
+  defaultToUpstream = true
+[init]
+  defaultBranch = main
+[mailmap]
+  file = ~/.config/git/mailmap.local
+[include]
+  path = ~/.config/git/gitconfig.local
+
+# vim:ft=gitconfig

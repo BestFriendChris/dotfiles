@@ -1,14 +1,21 @@
+- clean:
+    ~/:
+    ~/.config:
+      recursive: true
+
 - defaults:
     link:
       create: true
       relink: true
 
 - link:
+    ~/.config/git: git/config
     ~/.config/kitty/:
       path: kitty/*
       glob: true
     ~/.config/lazygit/config.yml: lazygit/config.yml
     ~/.config/nvim: nvim
+    ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
 
 - brewfile:
