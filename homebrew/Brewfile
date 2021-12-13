@@ -16,5 +16,6 @@ brew "jesseduffield/lazygit/lazygit"
 
 # Cask formulas
 cask "kitty"
+cask "vimr"
 
 # vim:ft=ruby

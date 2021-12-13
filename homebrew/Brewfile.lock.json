@@ -446,6 +446,12 @@
         "options": {
           "full_name": "kitty"
         }
+      },
+      "vimr": {
+        "version": "0.35.0-20211105.213803",
+        "options": {
+          "full_name": "vimr"
+        }
       }
     },
     "tap": {
@@ -459,7 +465,7 @@
       "monterey": {
         "HOMEBREW_VERSION": "3.3.7",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "116de2f83958d4a40fcf03817004646c062306ce",
+        "Homebrew/homebrew-core": "099747a08de34de2d4af70d0682b9ed8716e84e9",
         "CLT": "13.1.0.0.1.1633545042",
         "Xcode": "13.1",
         "macOS": "12.0.1"
