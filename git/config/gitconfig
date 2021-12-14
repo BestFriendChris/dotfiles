@@ -39,6 +39,8 @@
   rebasemain = !git fetch && git rebase origin/main
   resetdate = commit --amend --date=now --no-edit --no-verify
 
+  authors= !git log --pretty=format:'%aN <%ae>' | sort -u | uniq
+
 [color]
   ui=true
 [push]
