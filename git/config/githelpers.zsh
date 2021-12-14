@@ -58,7 +58,7 @@ function pretty_git_log {
      # Remove git-branchless refs
     gsed -E \
         -e 's_(, )?refs/branchless/[a-f0-9]*( ,)?__g' \
-        -e 's/\(\)//' |
+        -e 's/ \(\)//' |
     # Replace (2 years, 3 months ago) with (2y)
     gsed -E \
       -e 's/(^[^<]*) ago\)/\1)/' \
