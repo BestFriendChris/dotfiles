@@ -1,0 +1,6 @@
+if has_command lazygit; then
+  alias lazygit="CONFIG_DIR=~/.config/lazygit lazygit"
+  alias lg="CONFIG_DIR=~/.config/lazygit lazygit"
+fi
+
+# vim:ft=zsh
