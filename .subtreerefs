@@ -5,6 +5,7 @@ vim/commentary,nvim/pack/external/opt/vim-commentary,https://github.com/tpope/vi
 vim/context-commentstring,nvim/pack/external/opt/vim-context-commentstring,https://github.com/suy/vim-context-commentstring.git,master
 vim/dracula,nvim/pack/external/opt/dracula,git@github.com:dracula/vim.git,master
 vim/eunuch,nvim/pack/external/opt/vim-eunuch,https://github.com/tpope/vim-eunuch.git,master
+vim/highlighter,nvim/pack/external/opt/vim-highlighter,https://github.com/azabiong/vim-highlighter.git,main
 vim/lightspeed,nvim/pack/external/opt/lightspeed,https://github.com/ggandor/lightspeed.nvim.git,main
 vim/lion,nvim/pack/external/opt/vim-lion,https://github.com/tommcdo/vim-lion.git,master
 vim/nvim-neoclip,nvim/pack/external/opt/nvim-neoclip,https://github.com/AckslD/nvim-neoclip.lua.git,main
