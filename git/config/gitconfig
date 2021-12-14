@@ -31,6 +31,13 @@
 
   aip = add -ip
   unstage = restore --staged
+  sw = switch
+
+  stashbr = "!git stash push -u -m \"from $(git branch --show-current)\""
+  pushup = "!git push --set-upstream origin \"$(git branch --show-current)\""
+  rebasedev = !git fetch && git rebase origin/development
+  rebasemain = !git fetch && git rebase origin/main
+  resetdate = commit --amend --date=now --no-edit --no-verify
 
 [color]
   ui=true
@@ -43,6 +50,8 @@
   defaultToUpstream = true
 [init]
   defaultBranch = main
+[pull]
+  ff = only
 [mailmap]
   file = ~/.config/git/mailmap.local
 [include]
