@@ -46,7 +46,7 @@
 [push]
   default = tracking
 [core]
-  editor = /opt/homebrew/bin/vim
+  editor = /opt/homebrew/bin/nvim
   excludesfile = /Users/cturner/.gitignore_global
 [merge]
   defaultToUpstream = true
