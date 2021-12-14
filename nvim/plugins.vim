@@ -25,3 +25,7 @@ call bfc#plugins#load('vim-speeddating')
 call bfc#plugins#load('vim-surround')
 call bfc#plugins#load('vim-unimpaired')
 
+function! s:Helptags() abort
+  helptags ALL
+endfunction
+call bfc#install#register("Helptags", funcref('<SID>Helptags'))
