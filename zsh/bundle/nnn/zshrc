@@ -1,0 +1,9 @@
+if has_command nnn; then
+  if [[ -x ~/.config/nnn/plugins/nuke ]]; then
+    export NNN_OPENER=~/.config/nnn/plugins/nuke
+  fi
+
+  alias nnn="nnn -c"
+fi
+
+# vim:ft=zsh

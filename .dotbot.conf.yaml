@@ -14,6 +14,7 @@
       path: kitty/*
       glob: true
     ~/.config/lazygit/config.yml: lazygit/config.yml
+    ~/.config/nnn/plugins/nuke: nnn/plugins/nuke
     ~/.config/nvim: nvim
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
