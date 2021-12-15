@@ -25,3 +25,5 @@ nnoremap <C-Q><C-P> <Cmd>FloatermPrev<CR>
 nnoremap - <Cmd>FloatermNew nnn<CR>
 " Show directory at project root
 nnoremap <Leader>- <Cmd>execute "FloatermNew nnn ".getcwd()<CR>
+
+nnoremap <C-Q>g <Cmd>FloatermNew lazygit --use-config-dir ~/.config/lazygit<CR>
