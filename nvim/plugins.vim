@@ -6,6 +6,7 @@ call bfc#plugins#colorscheme('dracula')
 
 call bfc#plugins#load('plenary')
 call bfc#plugins#load('lightspeed')
+call bfc#plugins#load('nvim-lspconfig')
 call bfc#plugins#load('quick-scope')
 call bfc#plugins#load('splitjoin')
 call bfc#plugins#load('telescope')
