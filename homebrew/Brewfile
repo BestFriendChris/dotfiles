@@ -11,6 +11,7 @@ brew "neovim"
 brew "nnn"
 brew "ripgrep"
 brew "w3m"
+brew "wget"
 brew "zsh"
 
 # Tapped formulas
