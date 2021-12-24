@@ -1,0 +1,185 @@
+format = """
+[╭─](bold yellow)\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$nix_shell\
+$fill\
+$time
+[╰](bold yellow)\
+$status\
+$sudo\
+$character"""
+
+add_newline = false
+
+[character]
+success_symbol = "[─](bold yellow)[⦿](bold green)"
+error_symbol = "[─](bold yellow)[⦿](bold red)"
+vicmd_symbol = "[─](bold yellow)[](bold green)"
+
+[directory]
+format = "[┨](bold yellow)[$read_only]($read_only_style)[$path]($style)[┠─](bold yellow)"
+read_only = " "
+truncate_to_repo = true
+truncation_symbol = "…/"
+fish_style_pwd_dir_length = 1
+
+[fill]
+symbol = "─"
+style = "yellow"
+
+[hostname]
+format = "[$hostname](dimmed cyan):"
+
+[status]
+disabled = false
+format = '[\($status\)]($style)'
+pipestatus = true
+pipestatus_format = "$pipestatus"
+pipestatus_separator = "|"
+
+[time]
+disabled = false
+format = '[┨](bold yellow)[$time]($style)'
+time_format = "%l:%M%P"
+use_12hr = true
+
+[username]
+format = "[$user@]($style)"
+style_user = "dimmed cyan"
+
+[aws]
+symbol = "  "
+
+[conda]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version \(OTP $otp_version\))]($style)[┠](bold yellow)'
+
+[elm]
+symbol = " "
+
+[erlang]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[git_branch]
+symbol = " "
+format = '[┨](bold yellow)[$symbol$branch]($style)[┠](bold yellow)'
+only_attached = true
+
+[git_commit]
+format = '[┨](bold yellow)[ $hash$tag]($style)[┠](bold yellow)'
+
+[git_status]
+format = '[[┨](bold yellow)$ahead_behind[┠](bold yellow)]($style)'
+
+[golang]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[lua]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[memory_usage]
+symbol = " "
+format = '[┨](bold yellow)$symbol[$ram( | $swap)]($style)[┠](bold yellow)'
+
+[nim]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[nix_shell]
+symbol = " "
+format = '[┨](bold yellow)[$symbol$state( \($name\))]($style)[┠](bold yellow)'
+
+[nodejs]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[ocaml]
+format = '[┨](bold yellow)[$symbol($version)(\($switch_indicator$switch_name\))]($style)[┠](bold yellow)'
+
+[openstack]
+format = '[┨](bold yellow)[$symbol$cloud(\($project\))]($style)[┠](bold yellow)'
+
+[package]
+disabled = true
+symbol = " "
+format = '[┨](bold yellow)[$symbol$version]($style)[┠](bold yellow)'
+
+[perl]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[php]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[pulumi]
+format = '[┨](bold yellow)[$symbol$stack]($style)[┠](bold yellow)'
+
+[purescript]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[python]
+symbol = " "
+format = '[┨](bold yellow)[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)[┠](bold yellow)'
+
+[red]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[ruby]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[rust]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[scala]
+symbol = " "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[shlvl]
+symbol = " "
+
+[sudo]
+disabled = true
+symbol = " "
+style = "bold red"
+format = '[┨](bold yellow)[$symbol]($style)[┠](bold yellow)'
+
+[swift]
+symbol = "ﯣ "
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[terraform]
+format = '[┨](bold yellow)[$symbol$workspace]($style)[┠](bold yellow)'
+
+[vagrant]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[vlang]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+
+[zig]
+format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
+

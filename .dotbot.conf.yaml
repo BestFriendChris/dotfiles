@@ -16,6 +16,7 @@
     ~/.config/lazygit/config.yml: lazygit/config.yml
     ~/.config/nnn/plugins/nuke: nnn/plugins/nuke
     ~/.config/nvim: nvim
+    ~/.config/starship.toml: starship/starship.toml
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
 

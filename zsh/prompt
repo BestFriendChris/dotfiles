@@ -1,68 +1,70 @@
-setopt prompt_subst
+eval "$(starship init zsh)"
 
-# define colors
-autoload colors zsh/terminfo
-if [[ "$terminfo[colors]" -ge 8 ]]; then
-    colors
-fi
-for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-    eval PR_$color='%{$fg_no_bold[${(L)color}]%}'
-    eval PR_BOLD_$color='%{$fg_bold[${(L)color}]%}'
-    eval PR_BG_$color='%{$bg_no_bold[${(L)color}]%}'
-    eval PR_BG_BOLD_$color='%{$bg_bold[${(L)color}]%}'
-done
-PR_NO_COLOUR="%{$terminfo[sgr0]%}"
+# setopt prompt_subst
 
-RPROMPT=
-function __prompt_update_from_keymap {
-  case $1 in
-    vicmd)
-      RPROMPT='$PR_BG_RED${PR_YELLOW}VI-CMD MODE$PR_NO_COLOUR'
-      ;;
-    *)
-      RPROMPT=
-      ;;
-  esac
-}
+# # define colors
+# autoload colors zsh/terminfo
+# if [[ "$terminfo[colors]" -ge 8 ]]; then
+#     colors
+# fi
+# for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
+#     eval PR_$color='%{$fg_no_bold[${(L)color}]%}'
+#     eval PR_BOLD_$color='%{$fg_bold[${(L)color}]%}'
+#     eval PR_BG_$color='%{$bg_no_bold[${(L)color}]%}'
+#     eval PR_BG_BOLD_$color='%{$bg_bold[${(L)color}]%}'
+# done
+# PR_NO_COLOUR="%{$terminfo[sgr0]%}"
 
-# define the prompt
-PROMPT='\
-$PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
-%(?..$PR_BOLD_RED(%?%))$PR_CYAN%(!.◊.»)$PR_NO_COLOUR '
-ORIGINAL_PROMPT=$PROMPT
+# RPROMPT=
+# function __prompt_update_from_keymap {
+#   case $1 in
+#     vicmd)
+#       RPROMPT='$PR_BG_RED${PR_YELLOW}VI-CMD MODE$PR_NO_COLOUR'
+#       ;;
+#     *)
+#       RPROMPT=
+#       ;;
+#   esac
+# }
 
-PS2='$PR_GREEN%_$PR_CYAN›$PR_NO_COLOUR '
+# # define the prompt
+# PROMPT='\
+# $PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
+# %(?..$PR_BOLD_RED(%?%))$PR_CYAN%(!.◊.»)$PR_NO_COLOUR '
+# ORIGINAL_PROMPT=$PROMPT
 
-function __prompt_show_terraform_env {
-  if [ -r .terraform/environment ]; then
-    TF_ENV="$(cat .terraform/environment)"
-    if [[ 'prod' = "$TF_ENV" ]]; then
-      echo -n "${PR_RED}"
-    else
-      echo -n "${PR_YELLOW}"
-    fi
-    echo -n "[${TF_ENV}]"
-  fi
-}
+# PS2='$PR_GREEN%_$PR_CYAN›$PR_NO_COLOUR '
 
-function __prompt_enable_terraform {
-  PROMPT='\
-$PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
-%(?..$PR_BOLD_RED(%?%))$(__prompt_show_terraform_env)$PR_CYAN%(!.◊.»)$PR_NO_COLOUR '
-}
+# function __prompt_show_terraform_env {
+#   if [ -r .terraform/environment ]; then
+#     TF_ENV="$(cat .terraform/environment)"
+#     if [[ 'prod' = "$TF_ENV" ]]; then
+#       echo -n "${PR_RED}"
+#     else
+#       echo -n "${PR_YELLOW}"
+#     fi
+#     echo -n "[${TF_ENV}]"
+#   fi
+# }
 
-function __prompt_reset {
-  PROMPT=$ORIGINAL_PROMPT
-}
+# function __prompt_enable_terraform {
+#   PROMPT='\
+# $PR_CYAN%(!.%S%n%s.%n)@%m$PR_GREEN:$PR_BOLD_YELLOW%~
+# %(?..$PR_BOLD_RED(%?%))$(__prompt_show_terraform_env)$PR_CYAN%(!.◊.»)$PR_NO_COLOUR '
+# }
 
-# keymap reset
-function _precmd_prompt_update { __prompt_update_from_keymap main }
-precmd_functions+=_precmd_prompt_update
+# function __prompt_reset {
+#   PROMPT=$ORIGINAL_PROMPT
+# }
 
-function zle-keymap-select {
-  __prompt_update_from_keymap $KEYMAP
-  zle reset-prompt
-}
-zle -N zle-keymap-select
+# # keymap reset
+# function _precmd_prompt_update { __prompt_update_from_keymap main }
+# precmd_functions+=_precmd_prompt_update
 
-# vim:ft=zsh
+# function zle-keymap-select {
+#   __prompt_update_from_keymap $KEYMAP
+#   zle reset-prompt
+# }
+# zle -N zle-keymap-select
+
+# # vim:ft=zsh
