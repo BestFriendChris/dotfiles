@@ -17,6 +17,9 @@ brew "zsh"
 tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"
 
+tap "remotemobprogramming/brew"
+brew "remotemobprogramming/brew/mob"
+
 # Cask formulas
 cask "kitty"
 cask "vimr"
