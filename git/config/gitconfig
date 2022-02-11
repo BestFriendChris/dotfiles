@@ -18,6 +18,7 @@
   lg = !git l --graph
   lgs = !git lg --stat
   ls = !git l --stat
+  lp = !git log -p
 
   # Head commit
   h = !git l -1
@@ -25,9 +26,10 @@
   hs = !git h --stat
 
   # Recent commits
-  r = !git lg -15
+  r = !git l -15
   ra = !git r --all
   rs = !git r --stat
+  rp = !git log -15 -p
 
   aip = add -ip
   unstage = restore --staged
@@ -35,6 +37,7 @@
 
   stashbr = "!git stash push -u -m \"from $(git branch --show-current)\""
   pushup = "!git push --set-upstream origin \"$(git branch --show-current)\""
+  pushf = push --force-with-lease
   rebasedev = !git fetch && git rebase origin/development
   rebasemain = !git fetch && git rebase origin/main
   resetdate = commit --amend --date=now --no-edit --no-verify

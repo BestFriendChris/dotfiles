@@ -52,7 +52,7 @@ function pretty_git_log {
   git log \
     --date=short \
     --color \
-    --pretty=tformat:"$HASH $RELATIVE_TIME $AUTHOR$REFS $SUBJECT" \
+    --pretty=tformat:"$HASH $RELATIVE_TIME $AUTHOR $SUBJECT $REFS" \
     $* |
     expand -t 1 |
      # Remove git-branchless refs
