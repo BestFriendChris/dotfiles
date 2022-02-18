@@ -61,5 +61,8 @@
   file = ~/.config/git/mailmap.local
 [include]
   path = ~/.config/git/gitconfig.local
+[fetch]
+  prune = true
+  pruneTags = true
 
 # vim:ft=gitconfig
