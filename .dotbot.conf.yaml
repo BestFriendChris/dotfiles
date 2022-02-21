@@ -35,6 +35,12 @@
       versions:
         - 24.1.2
 
+    - plugin: haskell
+      global: 8.10.7
+      versions:
+        - 9.2.1
+        - 8.10.7
+
     - plugin: nodejs
       global: 16.4.2
       versions:
