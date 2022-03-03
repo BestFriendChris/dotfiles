@@ -112,8 +112,8 @@ vnoremap > >gv
 
 " Maintain the cursor position when yanking a visual selection
 " http://ddrscott.github.io/blog/2016/yank-without-jank/
-vnoremap y myy`y
-vnoremap Y myY`y
+vnoremap <expr> y "my\"" . v:register . "y`y"
+vnoremap <expr> Y "my\"" . v:register . "Y`y"
 
 " Paste replace visual selection without copying it
 vnoremap <Leader>p "_dP
