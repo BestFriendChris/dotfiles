@@ -25,3 +25,4 @@ vim/telescope-fzy-native,nvim/pack/external/opt/telescope-fzy-native,https://git
 vim/unimpaired,nvim/pack/external/opt/vim-unimpaired,https://github.com/tpope/vim-unimpaired.git,master
 vim/vim-exchange,nvim/pack/external/opt/vim-exchange,https://github.com/tommcdo/vim-exchange.git,master
 vim/vim-floaterm,nvim/pack/external/opt/vim-floaterm,https://github.com/voldikss/vim-floaterm.git,master
+vim/vim-textobj-user,nvim/pack/external/opt/vim-textobj-user,https://github.com/kana/vim-textobj-user.git,master
