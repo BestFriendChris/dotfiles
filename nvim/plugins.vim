@@ -23,6 +23,7 @@ call bfc#plugins#load('vim-repeat')
 call bfc#plugins#load('vim-scriptease')
 call bfc#plugins#load('vim-speeddating')
 call bfc#plugins#load('vim-surround')
+call bfc#plugins#load('vim-textobj-user')
 call bfc#plugins#load('vim-unimpaired')
 
 function! s:Helptags() abort
