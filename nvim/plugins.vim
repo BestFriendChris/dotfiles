@@ -25,6 +25,7 @@ call bfc#plugins#load('vim-speeddating')
 call bfc#plugins#load('vim-surround')
 call bfc#plugins#load('vim-textobj-user')
 call bfc#plugins#load('vim-unimpaired')
+call bfc#plugins#load('vim-wheel')
 
 function! s:Helptags() abort
   helptags ALL
