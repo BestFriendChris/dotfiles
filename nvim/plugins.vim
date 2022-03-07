@@ -29,6 +29,8 @@ call bfc#plugins#load('vim-textobj-user')
 call bfc#plugins#load('vim-unimpaired')
 call bfc#plugins#load('vim-wheel')
 
+call bfc#plugins#load('bfc-bubble-pipe')
+
 function! s:Helptags() abort
   helptags ALL
 endfunction
