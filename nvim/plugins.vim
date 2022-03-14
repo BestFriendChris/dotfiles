@@ -5,6 +5,8 @@ call bfc#plugins#colorscheme('dracula')
 " call bfc#plugins#load('nvim-treesitter')
 
 call bfc#plugins#load('plenary')
+
+call bfc#plugins#load('firenvim')
 call bfc#plugins#load('lightspeed')
 call bfc#plugins#load('quick-scope')
 call bfc#plugins#load('splitjoin')
