@@ -28,6 +28,7 @@ call bfc#plugins#load('vim-surround')
 call bfc#plugins#load('vim-textobj-user')
 call bfc#plugins#load('vim-unimpaired')
 call bfc#plugins#load('vim-wheel')
+call bfc#plugins#load('zig.vim')
 
 function! s:Helptags() abort
   helptags ALL
