@@ -38,4 +38,8 @@ if has_command tmux; then
   function tmuxo { tmux new -A -s $1 }
 fi
 
+function mkd {
+  test ! -z "$1" && mkdir -p "$1" && cd "$1"
+}
+
 # vim:ft=zsh
