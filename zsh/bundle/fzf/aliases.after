@@ -2,18 +2,6 @@ if has_command fzf; then
 
   # fuzzyfind homebrew packages
   if has_command brew; then
-    # Install (one or multiple) selected application(s)
-    # using "brew search" as source input
-    # mnemonic [B]rew [I]nstall [P]lugin
-    brew-ip() {
-      local inst=$(brew search | fzf -m --preview 'brew info {} | head -n 4')
-
-      if [[ $inst ]]; then
-        for prog in $(echo $inst);
-        do; brew install $prog; done;
-      fi
-    }
-
     # Update (one or multiple) selected application(s)
     # mnemonic [B]rew [U]pdate [P]lugin
     brew-up() {
@@ -49,6 +37,16 @@ if has_command fzf; then
 
     mvrl() {
       mvr $PWD $*
+    }
+  fi
+
+  if has_command vimr; then
+    gvr() {
+      _fzf_viminfo $* | xargs -0 -t vimr --nvim -p
+    }
+
+    gvrl() {
+      gvr $PWD $*
     }
   fi
 

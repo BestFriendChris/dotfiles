@@ -1,0 +1,14 @@
+local brew_dir
+if [[ -d "/opt/homebrew" ]]; then
+  brew_dir="/opt/homebrew"
+else
+  brew_dir="/usr/local"
+fi
+
+local pg_dir
+pg_dir="$brew_dir/opt/postgresql@15"
+if [[ -d "$pg_dir" ]]; then
+  if [[ ! "$PATH" == *$pg_dir/bin* ]]; then
+    export PATH="$pg_dir/bin:$PATH"
+  fi
+fi

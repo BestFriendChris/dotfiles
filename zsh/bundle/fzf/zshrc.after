@@ -1,17 +1,23 @@
 if has_command fzf; then
+  local brew_dir
+  if [[ -d "/opt/homebrew" ]]; then
+    brew_dir="/opt/homebrew"
+  else
+    brew_dir="/usr/local"
+  fi
   # Setup fzf
   # ---------
-  if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-    export PATH="$PATH:/usr/local/opt/fzf/bin"
+  if [[ ! "$PATH" == *$brew_dir/opt/fzf/bin* ]]; then
+    export PATH="$PATH:$brew_dir/opt/fzf/bin"
   fi
 
   # Auto-completion
   # ---------------
-  [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+  [[ $- == *i* ]] && source "$brew_dir/opt/fzf/shell/completion.zsh" 2> /dev/null
 
   # Key bindings
   # ------------
-  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+  source "$brew_dir/opt/fzf/shell/key-bindings.zsh"
 
   source "$ZDOTDIR/bundle/fzf/zsh-interactive-cd.plugin.zsh"
 fi
