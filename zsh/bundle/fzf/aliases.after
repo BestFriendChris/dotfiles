@@ -90,7 +90,7 @@ if has_command fzf; then
   if has_command fd; then
     cdfd() {
       local d
-      d=$(fd --type directory "$*" | fzf)
+      d=$(fd --type directory | fzf --query="$*")
       if [[ -n "$d" ]]; then
         cd "$d"
       fi
@@ -98,7 +98,7 @@ if has_command fzf; then
 
     pushfd() {
       local d
-      d=$(fd --type directory "$*" | fzf)
+      d=$(fd --type directory | fzf --query="$*")
       if [[ -n "$d" ]]; then
         pushd "$d"
       fi
