@@ -41,6 +41,8 @@
   rebasedev = !git fetch && git rebase origin/development
   rebasemain = !git fetch && git rebase origin/main
   resetdate = commit --amend --date=now --no-edit --no-verify
+  delete-branch-remote = "!git branch --format='%(refname:short)' | fzf --query="$1" | xargs git push origin --delete"
+  delete-branch = "!git branch --format='%(refname:short)' | fzf --query="$1" | xargs git branch --delete"
 
   authors= !git log --pretty=format:'%aN <%ae>' | sort -u | uniq
 
