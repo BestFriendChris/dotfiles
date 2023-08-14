@@ -86,6 +86,24 @@ if has_command fzf; then
     }
     tmux bind-key p run "tmux split-window -l 12 'zsh -ci tmpane'" 2>/dev/null
   fi
+
+  if has_command fd; then
+    cdfd() {
+      local d
+      d=$(fd --type directory "$*" | fzf)
+      if [[ -n "$d" ]]; then
+        cd "$d"
+      fi
+    }
+
+    pushfd() {
+      local d
+      d=$(fd --type directory "$*" | fzf)
+      if [[ -n "$d" ]]; then
+        pushd "$d"
+      fi
+    }
+  fi
 fi
 
 # vim:ft=zsh
