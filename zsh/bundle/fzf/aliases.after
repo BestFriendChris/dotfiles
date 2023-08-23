@@ -103,6 +103,22 @@ if has_command fzf; then
         pushd "$d"
       fi
     }
+
+    cdgfd() {
+      local d
+      d=$(fd --type directory . $(git root) | fzf --query="$*")
+      if [[ -n "$d" ]]; then
+        cd "$d"
+      fi
+    }
+
+    pushgfd() {
+      local d
+      d=$(fd --type directory . $(git root) | fzf --query="$*")
+      if [[ -n "$d" ]]; then
+        pushd "$d"
+      fi
+    }
   fi
 fi
 
