@@ -19,6 +19,7 @@
     ~/.config/starship.toml: starship/starship.toml
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
+    ~/.vscodevimrc: vscode/HOME_vscodevimrc
 
 - brewfile:
     file: homebrew/Brewfile

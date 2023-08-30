@@ -1,0 +1,55 @@
+" Navigate between windows easier
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+
+" Navigate between tabs
+map <C-H> gT
+map <C-L> gt
+
+" Select some text and search with it
+vmap // y/\V<C-R>"<CR>
+vmap ?? y?\V<C-R>"<CR>
+
+" Wrapped line movement
+map <Up> gk
+map <Down> gj
+
+" Execute macro in the 'q' register
+map <C-Q> @q
+
+" More useful mappings to find the latest { or }
+nmap [[ [{
+nmap ]] ]}
+
+" j/k
+inoremap jk <ESC>
+cnoremap jk <C-c>
+
+" Break undo sequence on newline or C-U line clearing
+inoremap <CR> <C-G>u<CR>
+inoremap <C-U> <C-G>u<C-U>
+
+" Shift-Return will break undo and open the line above
+inoremap <S-CR> <C-G>u<ESC>O
+
+" hate-hate-hate using K to open a man page
+nmap K <Nop>
+
+" Stop accidently hitting <F1>
+nmap <F1> <Nop>
+nmap <D-F1> <Nop>
+
+" Swap buffers
+nmap <Leader><Leader> <C-^>
+
+" Toggle fold
+nnoremap z<Space> zA
+
+" Reselect visual selection after indenting
+vnoremap < <gv
+vnoremap > >gv
+
+
+" Paste replace visual selection without copying it
+vnoremap <Leader>p "_dP
+
