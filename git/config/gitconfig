@@ -57,6 +57,9 @@
   excludesfile = ~/.config/git/gitignore_global
 [merge]
   defaultToUpstream = true
+  autoStash = true
+[rebase]
+  autoStash = true
 [init]
   defaultBranch = main
 [pull]
