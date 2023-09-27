@@ -19,7 +19,7 @@
   lgs = !git lg --stat
   ls = !git l --stat
   lp = !git log -p
-  sin = "!git fetch && git l $(git rev-parse --abbrev-ref HEAD)..origin/$(git rev-parse --abbrev-ref HEAD)"
+  sin = "!git fetch --quiet && git l $(git rev-parse --abbrev-ref HEAD)..origin/$(git rev-parse --abbrev-ref HEAD)"
 
   # Head commit
   h = !git l -1
