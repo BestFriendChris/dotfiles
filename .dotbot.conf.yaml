@@ -28,31 +28,19 @@
 
 - asdf:
     - plugin: elixir
-      global: 1.13.0-otp-24
+      global: 1.14.4-otp-25
       versions:
-        - 1.13.0-otp-24
+        - 1.14.4-otp-25
 
     - plugin: erlang
-      global: 24.1.2
+      global: 25.3.2
       versions:
-        - 24.1.2
-
-    - plugin: haskell
-      global: 8.10.7
-      versions:
-        - 9.2.1
-        - 8.10.7
+        - 25.3.2
 
     - plugin: nodejs
-      global: 16.4.2
+      global: 19.8.1
       versions:
-        - 16.4.2
-        - 14.17.0
-
-    - plugin: ruby
-      global: 2.7.3
-      versions:
-        - 2.7.3
+        - 19.8.1
 
 - shell:
     - ["nvim --headless +BfcPostInstall +qall", "Installing and Updating vim plugins"]
