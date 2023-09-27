@@ -20,6 +20,10 @@ if has_command fasd; then
       fasd -Rlf $* | fzf -e -1 -0 --no-sort +m
     }
 
+    alias f="fasd -fl"
+    alias d="fasd -dl"
+    alias a="fasd -al"
+
     # cd recent
     cdri() {
       local dir
@@ -35,9 +39,13 @@ if has_command fasd; then
     alias cdri='fasd_cd -d -i'
   fi
 
-  alias v='f -e vim'
+  alias v='fasd -f -e vim'
 
   if has_command mvim; then
-    alias vv='f -e mvim'
+    alias vv='fasd -f -e mvim'
+  elif has_command vimr; then
+    vv() {
+      fasd -fl $* | xargs vimr --nvim
+    }
   fi
 fi
