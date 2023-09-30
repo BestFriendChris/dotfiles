@@ -19,11 +19,13 @@
   lgs = !git lg --stat
   ls = !git l --stat
   lp = !git log -p
+  lpw = !git log -p -w
   sin = "!git fetch --quiet && git l $(git rev-parse --abbrev-ref HEAD)..origin/$(git rev-parse --abbrev-ref HEAD)"
 
   # Head commit
   h = !git l -1
   hp = !git log -1 -p
+  hpw = !git log -1 -p -w
   hs = !git h --stat
 
   # Recent commits
@@ -31,6 +33,7 @@
   ra = !git r --all
   rs = !git r --stat
   rp = !git log -15 -p
+  rpw = !git log -15 -p -w
 
   aip = add -ip
   unstage = restore --staged
