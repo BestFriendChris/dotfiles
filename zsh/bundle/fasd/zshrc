@@ -39,7 +39,11 @@ if has_command fasd; then
     alias cdri='fasd_cd -d -i'
   fi
 
-  alias v='fasd -f -e vim'
+  if has_command nvim; then
+    alias v='fasd -f -e nvim'
+  else
+    alias v='fasd -f -e vim'
+  fi
 
   if has_command mvim; then
     alias vv='fasd -f -e mvim'
