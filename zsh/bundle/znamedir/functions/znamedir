@@ -20,7 +20,7 @@ function _namedir_list {
 
     local -H name_grep_pattern
     [[ -n $1 ]] && name_grep_pattern="^$1" || name_grep_pattern='.*'
-    cat $ZNAMEDIR_FILE | grep $name_grep_pattern | sed "s/^/    /"
+    cat $ZNAMEDIR_FILE | grep $name_grep_pattern | sed 's/"//g' | column -s = -t | sed "s/^/    /"
   else
     echo "No current namedir bindings"
   fi
