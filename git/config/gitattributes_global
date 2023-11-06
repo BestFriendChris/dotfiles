@@ -1,0 +1,4 @@
+*.rb diff=ruby
+*.ex diff=elixir
+*.exs diff=elixir
+
