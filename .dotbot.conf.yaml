@@ -27,21 +27,5 @@
     stdout: true
     stderr: true
 
-- asdf:
-    - plugin: elixir
-      global: 1.14.4-otp-25
-      versions:
-        - 1.14.4-otp-25
-
-    - plugin: erlang
-      global: 25.3.2
-      versions:
-        - 25.3.2
-
-    - plugin: nodejs
-      global: 19.8.1
-      versions:
-        - 19.8.1
-
 - shell:
     - ["nvim --headless +BfcPostInstall +qall", "Installing and Updating vim plugins"]
