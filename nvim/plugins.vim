@@ -1,8 +1,7 @@
 call bfc#plugins#load('dracula')
 call bfc#plugins#colorscheme('dracula')
 
-" Disabling treesitter due to ftdetect bug
-" call bfc#plugins#load('nvim-treesitter')
+call bfc#plugins#load('nvim-treesitter')
 
 call bfc#plugins#load('plenary')
 
