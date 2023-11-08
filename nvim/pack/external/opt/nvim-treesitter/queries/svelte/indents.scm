@@ -3,7 +3,9 @@
   (if_statement)
   (each_statement)
   (await_statement)
-] @indent
+  (script_element)
+  (style_element)
+] @indent.begin
 
 [
   (end_tag)
@@ -13,6 +15,6 @@
   (await_end_expr)
   ">"
   "/>"
-] @branch
+] @indent.branch
 
-(comment) @ignore
+(comment) @indent.ignore

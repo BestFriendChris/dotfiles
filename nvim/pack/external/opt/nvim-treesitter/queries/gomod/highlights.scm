@@ -9,7 +9,8 @@
 
 "=>" @operator
 
-(comment) @comment
+(comment) @comment @spell
+(module_path) @text.uri
 
 [
 (version)

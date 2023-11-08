@@ -19,17 +19,14 @@
   "%"
 ] @punctuation.special
 
-; Parser Errors
-(ERROR) @error
-
 ; Identifiers
 (identifier) @variable
 
 ; Unused Identifiers
-((identifier) @comment (#match? @comment "^_"))
+((identifier) @comment (#lua-match? @comment "^_"))
 
 ; Comments
-(comment) @comment
+(comment) @comment @spell
 
 ; Strings
 (string) @string
@@ -46,7 +43,7 @@
 ] @symbol
 
 ; Interpolation
-(interpolation "#{" @string.escape "}" @string.escape)
+(interpolation ["#{" "}"] @string.special)
 
 ; Escape sequences
 (escape_sequence) @string.escape
@@ -84,13 +81,13 @@
 (stab_clause operator: _ @operator)
 
 ; Local Function Calls
-(call target: (identifier) @function)
+(call target: (identifier) @function.call)
 
 ; Remote Function Calls
 (call target: (dot left: [
   (atom) @type
   (_)
-] right: (identifier) @function) (arguments))
+] right: (identifier) @function.call) (arguments))
 
 ; Definition Function Calls
 (call target: ((identifier) @keyword.function (#any-of? @keyword.function
@@ -109,9 +106,11 @@
   "defp"
   "defprotocol"
   "defstruct"
-)) (arguments [
-  (identifier) @function
-  (binary_operator left: (identifier) @function operator: "when")])?)
+  ))
+  (arguments [
+    (call (identifier) @function)
+    (identifier) @function
+    (binary_operator left: (call target: (identifier) @function) operator: "when")])?)
 
 ; Kernel Keywords & Special Forms
 (call target: ((identifier) @keyword (#any-of? @keyword
@@ -180,7 +179,7 @@
       ] operator: "/" right: (integer) @operator)
   ])
 
-; Sigils
+; Non-String Sigils
 (sigil
   "~" @string.special
   ((sigil_name) @string.special) @_sigil_name
@@ -189,6 +188,7 @@
   ((sigil_modifiers) @string.special)?
   (#not-any-of? @_sigil_name "s" "S"))
 
+; String Sigils
 (sigil
   "~" @string
   ((sigil_name) @string) @_sigil_name
@@ -203,15 +203,22 @@
   operator: "@"
   operand: [
     (identifier)
-    (call target: (identifier) @constant)]) @constant
+    (call target: (identifier))
+  ] @constant) @constant
 
 ; Documentation
 (unary_operator
   operator: "@"
   operand: (call
-    target: ((identifier) @_identifier (#any-of? @_identifier "moduledoc" "typedoc" "shortdoc" "doc")) @comment
+    target: ((identifier) @_identifier (#any-of? @_identifier "moduledoc" "typedoc" "shortdoc" "doc")) @comment.documentation
     (arguments [
       (string)
       (boolean)
       (charlist)
-    ] @comment))) @comment
+      (sigil
+        "~" @comment.documentation
+        ((sigil_name) @comment.documentation)
+        quoted_start: _ @comment.documentation
+        (quoted_content) @comment.documentation
+        quoted_end: _ @comment.documentation)
+    ] @comment.documentation))) @comment.documentation

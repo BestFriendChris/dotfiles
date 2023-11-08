@@ -23,6 +23,14 @@ propertyPath = ${property.path}
 //               ^variable
 //                        ^variable
 
+thisorProps = ${this.path}
+//              ^variable.builtin
+//                   ^variable
+
+thisorProps = ${props.path}
+//              ^variable.builtin
+//                    ^variable
+
 array = ${[]}
 //        ^punctuation.bracket
 
@@ -68,7 +76,7 @@ logic = ${!foo && !(bar || baz) and not 'string'}
 //                              ^operator
 
 ternary = ${ check ? true : false}
-//                 ^punctuation.delimiter
-//                        ^punctuation.delimiter
+//                 ^@conditional.ternary
+//                        ^@conditional.ternary
 
 

@@ -1,22 +1,6 @@
 ; highlights.scm
 
-(call function: (identifier) @function)
-(call arguments:
- (arguments
-  name: (identifier) @parameter ))
-
-(lambda_function "\\" @operator)
-
-(namespace_get function: (identifier) @method)
-(namespace_get_internal function: (identifier) @method)
-
-(namespace_get namespace: (identifier) @namespace
- "::" @operator)
-(namespace_get_internal namespace: (identifier) @namespace
- ":::" @operator)
-
 ; Literals
-
 (integer) @number
 
 (float) @float
@@ -24,12 +8,33 @@
 (complex) @number
 
 (string) @string
+(string (escape_sequence) @string.escape)
 
-(comment) @comment
+(comment) @comment @spell
+
+((program . (comment) @preproc)
+  (#lua-match? @preproc "^#!/"))
+
+(identifier) @variable
+
+((dollar (identifier) @variable.builtin)
+ (#eq? @variable.builtin "self"))
+
+((dollar _ (identifier) @field))
+
+; Parameters
 
 (formal_parameters (identifier) @parameter)
 
-(identifier) @variable
+(formal_parameters
+ (default_parameter name: (identifier) @parameter))
+
+(default_argument name: (identifier) @parameter)
+
+; Namespace
+
+(namespace_get namespace: (identifier) @namespace)
+(namespace_get_internal namespace: (identifier) @namespace)
 
 ; Operators
 [
@@ -44,6 +49,7 @@
   "+"
   "!"
   "~"
+  "?"
 ] @operator)
 
 (binary operator: [
@@ -64,10 +70,14 @@
   "&"
   ":"
   "~"
-  "|>"
 ] @operator)
 
-(special) @operator
+[
+  "|>"
+  (special)
+] @operator
+
+(lambda_function "\\" @operator)
 
 [
  "("
@@ -78,35 +88,36 @@
  "}"
 ] @punctuation.bracket
 
-(dollar "$" @operator)
+(dollar _ "$" @operator)
 
 (subset2
   "[[" @punctuation.bracket
   "]]" @punctuation.bracket)
 
 [
- "in"
  (dots)
  (break)
  (next)
- (inf)
 ] @keyword
 
 [
   (nan)
   (na)
   (null)
-] @type.builtin
+  (inf)
+] @constant.builtin
 
 [
   "if"
   "else"
+  "switch"
 ] @conditional
 
 [
   "while"
   "repeat"
   "for"
+  "in"
 ] @repeat
 
 [
@@ -116,5 +127,15 @@
 
 "function" @keyword.function
 
-; Error
-(ERROR) @error
+; Functions/Methods
+
+(call function: (identifier) @function.call)
+
+(call
+  (namespace_get function: (identifier) @function.call))
+
+(call
+  (namespace_get_internal function: (identifier) @function.call))
+
+(call
+  function: ((dollar _ (identifier) @method.call)))

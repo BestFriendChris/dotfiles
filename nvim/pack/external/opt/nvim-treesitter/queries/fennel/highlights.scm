@@ -1,4 +1,4 @@
-(comment) @comment
+(comment) @comment @spell
 
 [
   "("
@@ -34,13 +34,13 @@
 
 (multi_symbol_method
    ":" @punctuation.delimiter
-   (symbol) @method .)
+   (symbol) @method.call .)
 
-(list . (symbol) @function)
-(list . (multi_symbol (symbol) @function .))
+(list . (symbol) @function.call)
+(list . (multi_symbol (symbol) @function.call .))
 
 ((symbol) @variable.builtin
- (#match? @variable.builtin "^[$]"))
+ (#lua-match? @variable.builtin "^[$]"))
 
 (binding) @symbol
 
@@ -93,10 +93,16 @@
  (#any-of? @include
   "require" "require-macros" "import-macros" "include"))
 
+[
+  "collect"
+  "icollect"
+  "accumulate"
+] @function.macro
+
 ((symbol) @function.macro
  (#any-of? @function.macro
-  "->" "->>" "-?>" "-?>>" "?." "accumulate" "collect" "doto" "icollect"
-  "macro" "macrodebug" "partial" "pick-args" "pick-values" "with-open"))
+  "->" "->>" "-?>" "-?>>" "?." "doto" "macro" "macrodebug" "partial" "pick-args"
+  "pick-values" "with-open"))
 
 ; Lua builtins
 ((symbol) @constant.builtin

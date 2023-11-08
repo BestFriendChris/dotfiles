@@ -1,8 +1,10 @@
-require "nvim-treesitter.highlight" -- yes, this is necessary to set the hlmap
 local highlighter = require "vim.treesitter.highlighter"
-local utils = require "nvim-treesitter.utils"
-local ts_utils = require "nvim-treesitter.ts_utils"
 local parsers = require "nvim-treesitter.parsers"
+local ts = vim.treesitter
+
+local COMMENT_NODES = {
+  markdown = "html_block",
+}
 
 local function check_assertions(file)
   local buf = vim.fn.bufadd(file)
@@ -14,15 +16,22 @@ local function check_assertions(file)
     '"highlight-assertions" not executable!'
       .. ' Get it via "cargo install --git https://github.com/theHamsta/highlight-assertions"'
   )
+  local comment_node = COMMENT_NODES[lang] or "comment"
   local assertions = vim.fn.json_decode(
     vim.fn.system(
-      "highlight-assertions -p '" .. utils.get_parser_install_dir() .. "/" .. lang .. ".so'" .. " -s '" .. file .. "'"
+      "highlight-assertions -p '"
+        .. vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false)[1]
+        .. "' -s '"
+        .. file
+        .. "' -c "
+        .. comment_node
     )
   )
   local parser = parsers.get_parser(buf, lang)
 
   local self = highlighter.new(parser, {})
 
+  assert.True(#assertions > 0, "No assertions detected!")
   for _, assertion in ipairs(assertions) do
     local row = assertion.position.row
     local col = assertion.position.column
@@ -58,31 +67,48 @@ local function check_assertions(file)
         assert.Truthy(node)
         assert.is.number(row)
         assert.is.number(col)
-        if hl and ts_utils.is_in_node_range(node, row, col) then
+        if hl and ts.is_in_node_range(node, row, col) then
           local c = query._query.captures[capture] -- name of the capture in the query
-          if c ~= nil then
+          if c ~= nil and c ~= "spell" and c ~= "conceal" then
             captures[c] = true
-            local general_hl = query:_get_hl_from_capture(capture)
-            highlights[general_hl] = true
+            highlights[c] = true
           end
         end
       end
     end, true)
-    assert.True(
-      captures[assertion.expected_capture_name] or highlights[assertion.expected_capture_name],
-      "Error in at "
-        .. file
-        .. ":"
-        .. (row + 1)
-        .. ":"
-        .. (col + 1)
-        .. ': expected "'
-        .. assertion.expected_capture_name
-        .. '", captures: '
-        .. vim.inspect(vim.tbl_keys(captures))
-        .. '", highlights: '
-        .. vim.inspect(vim.tbl_keys(highlights))
-    )
+    if assertion.expected_capture_name:match "^!" then
+      assert.Falsy(
+        captures[assertion.expected_capture_name:sub(2)] or highlights[assertion.expected_capture_name:sub(2)],
+        "Error in at "
+          .. file
+          .. ":"
+          .. (row + 1)
+          .. ":"
+          .. (col + 1)
+          .. ': expected "'
+          .. assertion.expected_capture_name
+          .. '", captures: '
+          .. vim.inspect(vim.tbl_keys(captures))
+          .. '", highlights: '
+          .. vim.inspect(vim.tbl_keys(highlights))
+      )
+    else
+      assert.True(
+        captures[assertion.expected_capture_name] or highlights[assertion.expected_capture_name],
+        "Error in at "
+          .. file
+          .. ":"
+          .. (row + 1)
+          .. ":"
+          .. (col + 1)
+          .. ': expected "'
+          .. assertion.expected_capture_name
+          .. '", captures: '
+          .. vim.inspect(vim.tbl_keys(captures))
+          .. '", highlights: '
+          .. vim.inspect(vim.tbl_keys(highlights))
+      )
+    end
   end
 end
 

@@ -1,19 +1,56 @@
-; inherits: json
+; Keywords
 
-; Display errors
-(ERROR) @error
+(scheme) @keyword
+
+; Methods
+
+(method) @method
+
+; Constants
+
+(const_spec) @constant
+
+; Variables
+
+(identifier) @variable
+
+; Fields
+
+(pair name: (identifier) @field)
+
+; Parameters
+
+(query_param (key) @parameter)
+
+; Operators
+
+[
+  "="
+  "?"
+  "&"
+  "@"
+] @operator
+
+; Literals
+
+(string) @string
+
+(target_url) @string @text.uri
+
+(number) @number
+
+; (boolean) @boolean
+
+(null) @constant.builtin
+
+; Punctuation
+
+[ "{{" "}}" ] @punctuation.bracket
+
+[
+  ":"
+] @punctuation.delimiter
 
 ; Comments
-(comment) @comment
 
-(request
-  method: (method) @keyword
-  url: (url) @text.uri)
-
-(header
-  name: (name) @constant
-  value: (value))
-
-; rest.nvim Neovim plugin specific features
-(external_body
-  json_file: (json_file) @text.uri) @keyword
+(comment) @comment @spell

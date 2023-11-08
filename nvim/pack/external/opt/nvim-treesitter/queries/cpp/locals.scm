@@ -22,6 +22,9 @@
 (class_specifier
   name: (type_identifier) @definition.type)
 
+(concept_definition
+  name: (identifier) @definition.type)
+
 (class_specifier
   name: (qualified_identifier
           name: (type_identifier) @definition.type))
@@ -36,11 +39,15 @@
 
 ;; Namespaces
 (namespace_definition
-  name: (identifier) @definition.namespace
+  name: (namespace_identifier) @definition.namespace
+  body: (_) @scope)
+
+(namespace_definition
+  name: (nested_namespace_specifier) @definition.namespace
   body: (_) @scope)
 
 ((namespace_identifier) @reference
-                        (set! reference.kind "namespace"))
+                        (#set! reference.kind "namespace"))
 
 ;; Function definitions
 (template_function
@@ -54,8 +61,8 @@
                 name: (identifier) @definition.function)) @scope
 
 (field_declaration
-        declarator: (function_declarator
-                       (field_identifier) @definition.method))
+  declarator: (function_declarator
+                (field_identifier) @definition.method))
 
 (lambda_expression) @scope
 
@@ -64,3 +71,5 @@
   body: (_) @scope)
 
 (catch_clause) @scope
+
+(requires_expression) @scope

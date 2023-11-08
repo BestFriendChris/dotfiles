@@ -7,14 +7,21 @@
  "||"
  "|"
  "&"
- "="
- "!="
  ".."
  "!"
  (direction)
  (stream_redirect)
- (test_option)
 ] @operator
+
+;; match operators of test command
+(command
+  name: (word) @function.builtin (#eq? @function.builtin "test")
+  argument: (word) @operator (#match? @operator "^(!?\\=|-[a-zA-Z]+)$"))
+
+;; match operators of [ command
+(command
+  name: (word) @punctuation.bracket (#eq? @punctuation.bracket "[")
+  argument: (word) @operator (#match? @operator "^(!?\\=|-[a-zA-Z]+)$"))
 
 [
  "not"
@@ -99,12 +106,14 @@
 
 (command
   argument: [
-             (word) @parameter (#match? @parameter "^-")
+             (word) @parameter (#lua-match? @parameter "^[-]")
             ]
 )
 
-; non-bultin command names
-(command name: (word) @function)
+(command_substitution "$" @punctuation.bracket)
+
+; non-builtin command names
+(command name: (word) @function.call)
 
 ; derived from builtin -n (fish 3.2.2)
 (command
@@ -113,8 +122,6 @@
         (#any-of? @function.builtin "." ":" "_" "alias" "argparse" "bg" "bind" "block" "breakpoint" "builtin" "cd" "command" "commandline" "complete" "contains" "count" "disown" "echo" "emit" "eval" "exec" "exit" "fg" "functions" "history" "isatty" "jobs" "math" "printf" "pwd" "random" "read" "realpath" "set" "set_color" "source" "status" "string" "test" "time" "type" "ulimit" "wait")
         ]
 )
-
-(test_command "test" @function.builtin)
 
 ;; Functions
 
@@ -130,7 +137,7 @@
   option: [
           (word)
           (concatenation (word))
-          ] @parameter (#match? @parameter "^-")
+          ] @parameter (#lua-match? @parameter "^[-]")
 )
 
 ;; Strings
@@ -147,12 +154,10 @@
 
 [(integer) (float)] @number
 (comment) @comment
-(test_option) @string
+(comment) @spell
 
 ((word) @boolean
 (#any-of? @boolean "true" "false"))
 
-;; Error
-
-(ERROR) @error
-
+((program . (comment) @preproc)
+  (#lua-match? @preproc "^#!/"))

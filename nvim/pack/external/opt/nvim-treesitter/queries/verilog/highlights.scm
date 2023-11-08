@@ -1,32 +1,55 @@
 ; Keywords
 
 [
-  "module"
+  ; block delimiters
+  (module_keyword)
   "endmodule"
-  "endfunction"
-  "task"
-  "endtask"
-  "parameter"
-  "localparam"
-  "assign"
-  "typedef"
+  "program"
+  "endprogram"
   "class"
   "endclass"
-  "default"
-  "break"
   "interface"
   "endinterface"
-  "modport"
   "package"
   "endpackage"
+  "checker"
+  "endchecker"
+  "config"
+  "endconfig"
+
+  "pure"
+  "virtual"
+  "extends"
+  "implements"
+  "super"
+  (class_item_qualifier)
+
+  "parameter"
+  "localparam"
+  "defparam"
+  "assign"
+  "typedef"
+  "modport"
   "fork"
   "join"
   "join_none"
   "join_any"
+  "default"
+  "break"
   "assert"
+  "tagged"
+  "extern"
+  (unique_priority)
 ] @keyword
 
-"function" @keyword.function
+[
+  "function"
+  "endfunction"
+
+  "task"
+  "endtask"
+] @keyword.function
+
 "return" @keyword.return
 
 [
@@ -48,11 +71,11 @@
 [
   "if"
   "else"
-  "case"
+  (case_keyword)
   "endcase"
 ] @conditional
 
-(comment) @comment
+(comment) @comment @spell
 
 (include_compiler_directive) @constant.macro
 (package_import_declaration
@@ -89,14 +112,11 @@
   "&&"
   "||"
   ":"
-  (unary_operator)
   "{"
   "}"
   "'{"
   "<="
   "@"
-  "or"
-  "and"
   "=="
   "!="
   "==="
@@ -109,8 +129,14 @@
   ">>"
   "<<"
   "|="
+  (unary_operator)
   (inc_or_dec_operator)
 ] @operator
+
+[
+  "or"
+  "and"
+] @keyword.operator
 
 (cast
  ["'" "(" ")"] @operator)
@@ -130,7 +156,7 @@
 [
   "signed"
   "unsigned"
-] @label
+] @type.qualifier
 
 (data_type
  (simple_identifier) @type)
@@ -154,10 +180,11 @@
 ] @string
 
 [
-  (include_compiler_directive)
   (default_nettype_compiler_directive)
   (timescale_compiler_directive)
-] @constant.macro
+] @preproc
+
+(include_compiler_directive) @include
 
 ; begin/end label
 (seq_block
@@ -180,6 +207,9 @@
 (module_declaration
  (module_header
   (simple_identifier) @constructor))
+
+(class_constructor_declaration
+ "new" @constructor)
 
 (parameter_identifier
  (simple_identifier) @parameter)
@@ -236,7 +266,7 @@
   ;(parameter_identifier) @field))
 
 (type_declaration
-  (data_type ["packed"] @label))
+  (data_type ["packed"] @type.qualifier))
 
 (struct_union) @type
 
@@ -281,5 +311,3 @@
   "("
   ")"
 ] @punctuation.bracket
-
-(ERROR) @error
