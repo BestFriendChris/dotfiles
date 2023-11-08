@@ -1,6 +1,7 @@
 brew "asdf"
 brew "coreutils"
 brew "bat"
+brew "broot"
 brew "fd"
 brew "git-branchless"
 brew "glow"
