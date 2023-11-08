@@ -1,0 +1,77 @@
+name: Tests
+
+on: [push, pull_request]
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit_tests:
+    name: unit tests
+    runs-on: ${{ matrix.os }}
+
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true)
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-20.04
+            url: https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
+            manager: sudo apt-get
+            packages: -y fd-find esl-erlang elixir
+          - os: ubuntu-20.04
+            url: https://github.com/neovim/neovim/releases/download/v0.9.2/nvim-linux64.tar.gz
+            manager: sudo apt-get
+            packages: -y fd-find esl-erlang elixir
+          - os: ubuntu-20.04
+            url: https://github.com/neovim/neovim/releases/download/v0.8.3/nvim-linux64.tar.gz
+            manager: sudo apt-get
+            packages: -y fd-find esl-erlang elixir
+          - os: macos-12
+            url: https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
+            manager: brew
+            packages: fd elixir
+          - os: macos-12
+            url: https://github.com/neovim/neovim/releases/download/v0.9.2/nvim-macos.tar.gz
+            manager: brew
+            packages: fd elixir
+          - os: macos-12
+            url: https://github.com/neovim/neovim/releases/download/v0.8.3/nvim-macos.tar.gz
+            manager: brew
+            packages: fd elixir
+    steps:
+      - uses: actions/checkout@v3
+      - uses: JohnnyMorganz/stylua-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
+
+      - run: date +%F > todays-date
+      - name: Restore from todays cache
+        uses: actions/cache@v2
+        with:
+          path: _neovim
+          key: ${{ runner.os }}-${{ matrix.url }}-${{ hashFiles('todays-date') }}
+
+      - name: Add Repositoy
+        if: matrix.os == 'ubuntu-20.04'
+        run: wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
+
+      - name: Prepare
+        run: |
+          ${{ matrix.manager }} update
+          ${{ matrix.manager }} install ${{ matrix.packages }}
+          test -d _neovim || {
+            mkdir -p _neovim
+            curl -sL ${{ matrix.url }} | tar xzf - --strip-components=1 -C "${PWD}/_neovim"
+          }
+
+      - name: Run tests
+        env:
+          BUSTED_TIMEOUT: 600000
+        run: |
+          export PATH="${PWD}/_neovim/bin:${PATH}"
+          export VIM="${PWD}/_neovim/share/nvim/runtime"
+          nvim --version
+          bin/test
