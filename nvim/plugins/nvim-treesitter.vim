@@ -2,12 +2,20 @@ packadd! nvim-treesitter
 
 function! s:EnsureTreeSitter() abort
   let expected = [
+        \  "awk",
         \  "bash",
         \  "comment",
         \  "css",
+        \  "diff",
         \  "dockerfile",
+        \  "eex",
         \  "elixir",
         \  "erlang",
+        \  "git_config",
+        \  "git_rebase",
+        \  "gitattributes",
+        \  "gitcommit",
+        \  "gitignore",
         \  "go",
         \  "heex",
         \  "html",
@@ -15,16 +23,25 @@ function! s:EnsureTreeSitter() abort
         \  "javascript",
         \  "json",
         \  "json5",
+        \  "lua",
+        \  "luadoc",
+        \  "make",
+        \  "nix",
         \  "python",
         \  "regex",
         \  "ruby",
         \  "rust",
         \  "scss",
+        \  "sql",
         \  "svelte",
+        \  "terraform",
         \  "toml",
         \  "typescript",
         \  "vim",
+        \  "vimdoc",
         \  "yaml",
+        \  "zig",
+        \  "query",
         \ ]
 
   let installed = map(
@@ -40,8 +57,6 @@ function! s:EnsureTreeSitter() abort
   for already in installed
     if has_key(to_install, already)
       unlet to_install[already]
-    else
-      let to_uninstall[already] = v:true
     endif
   endfor
 
@@ -50,10 +65,6 @@ function! s:EnsureTreeSitter() abort
     execute "TSInstallSync " . i
   endfor
 
-  for i in keys(to_uninstall)
-    echom "Uninstalling ".i
-    execute "TSUninstall " . i
-  endfor
   echom "Calling TSUpdate"
   TSUpdate
   echom "Done"
@@ -65,6 +76,7 @@ command! BfcEnsureTreeSitter call s:EnsureTreeSitter()
 function! s:TreeSitterSetup() abort
   lua <<EOF
   require'nvim-treesitter.configs'.setup {
+    auto_install = true,
     highlight = {
       enable = true
     },
