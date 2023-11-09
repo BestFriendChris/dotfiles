@@ -244,8 +244,8 @@ function popup.create(what, vim_options)
   if vim_options.moved then
     if vim_options.moved == "any" then
       vim.lsp.util.close_preview_autocmd({ "CursorMoved", "CursorMovedI" }, win_id)
-    elseif vim_options.moved == "word" then
-      -- TODO: Handle word, WORD, expr, and the range functions... which seem hard?
+      -- elseif vim_options.moved == "word" then
+      --   TODO: Handle word, WORD, expr, and the range functions... which seem hard?
     end
   else
     local silent = false
@@ -386,7 +386,11 @@ function popup.create(what, vim_options)
   end
 
   if vim_options.highlight then
-    vim.api.nvim_win_set_option(win_id, "winhl", string.format("Normal:%s", vim_options.highlight))
+    vim.api.nvim_win_set_option(
+      win_id,
+      "winhl",
+      string.format("Normal:%s,EndOfBuffer:%s", vim_options.highlight, vim_options.highlight)
+    )
   end
 
   -- enter
@@ -418,9 +422,13 @@ function popup.create(what, vim_options)
       bufnr,
       "n",
       "<CR>",
-      '<cmd>lua require"popup".execute_callback(' .. bufnr .. ")<CR>",
+      '<cmd>lua require"plenary.popup".execute_callback(' .. bufnr .. ")<CR>",
       { noremap = true }
     )
+  end
+
+  if vim_options.finalize_callback then
+    vim_options.finalize_callback(win_id, bufnr)
   end
 
   -- TODO: Perhaps there's a way to return an object that looks like a window id,

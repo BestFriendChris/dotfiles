@@ -119,30 +119,37 @@ filetype.detect_from_extension = function(filepath)
 end
 
 filetype.detect_from_name = function(filepath)
-  filepath = filepath:lower()
-  local split_path = vim.split(filepath, os_sep, true)
-  local fname = split_path[#split_path]
-  local match = filetype_table.file_name[fname]
-  if match then
-    return match
+  if filepath then
+    filepath = filepath:lower()
+    local split_path = vim.split(filepath, os_sep, true)
+    local fname = split_path[#split_path]
+    local match = filetype_table.file_name[fname]
+    if match then
+      return match
+    end
   end
   return ""
 end
 
 filetype.detect_from_modeline = function(filepath)
-  local tail = Path:new(filepath):tail(1)
+  local tail = Path:new(filepath):readbyterange(-256, 256)
   if not tail then
     return ""
   end
-  return filetype._parse_modeline(tail)
+  local lines = vim.split(tail, "\n")
+  local idx = lines[#lines] ~= "" and #lines or #lines - 1
+  if idx >= 1 then
+    return filetype._parse_modeline(lines[idx])
+  end
 end
 
 filetype.detect_from_shebang = function(filepath)
-  local head = Path:new(filepath):head(1)
+  local head = Path:new(filepath):readbyterange(0, 256)
   if not head then
     return ""
   end
-  return filetype._parse_shebang(head)
+  local lines = vim.split(head, "\n")
+  return filetype._parse_shebang(lines[1])
 end
 
 --- Detect a filetype from a path.
@@ -152,6 +159,10 @@ end
 filetype.detect = function(filepath, opts)
   opts = opts or {}
   opts.fs_access = opts.fs_access or true
+
+  if type(filepath) ~= string then
+    filepath = tostring(filepath)
+  end
 
   local match = filetype.detect_from_name(filepath)
   if match ~= "" then

@@ -12,21 +12,31 @@ At the moment, it is very much in pre-alpha :smile: Expect changes to the way so
 
 ## Installation
 
+[![LuaRocks](https://img.shields.io/luarocks/v/Conni2461/plenary.nvim?logo=lua&color=purple)](https://luarocks.org/modules/Conni2461/plenary.nvim)
+
+Using [plug](https://github.com/junegunn/vim-plug):
+
 ```vim
 Plug 'nvim-lua/plenary.nvim'
 ```
 
+Using [packer](https://github.com/wbthomason/packer.nvim):
+
+```
+use "nvim-lua/plenary.nvim"
+```
+
 ## Modules
 
-- `plenary.async`
-- `plenary.async_lib`
-- `plenary.job`
-- `plenary.path`
-- `plenary.scandir`
-- `plenary.context_manager`
-- `plenary.test_harness`
-- `plenary.filetype`
-- `plenary.strings`
+- [plenary.async](#plenaryasync)
+- [plenary.async_lib](#plenaryasync_lib)
+- [plenary.job](#plenaryjob)
+- [plenary.path](#plenarypath)
+- [plenary.scandir](#plenaryscandir)
+- [plenary.context_manager](#plenarycontext_manager)
+- [plenary.test_harness](#plenarytest_harness)
+- [plenary.filetype](#plenaryfiletype)
+- [plenary.strings](#plenarystrings)
 
 ### plenary.async
 
@@ -89,13 +99,59 @@ end
 #### Plugins using this
 
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
 - [vgit.nvim](https://github.com/tanvirtin/vgit.nvim)
 - [neogit](https://github.com/TimUntersberger/neogit)
+- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
 
 ### plenary.async_lib
 
 Please use `plenary.async` instead. This was version 1 and is just here for compatibility reasons.
+
+### plenary.async.control.channel.oneshot
+
+Creates a oneshot channel. It can only send data one time.
+
+The sender is not async while the receiver is.
+
+Example:
+
+```lua
+local a = require'plenary.async'
+local tx, rx = a.control.channel.oneshot()
+
+a.run(function()
+    local ret = long_running_fn()
+    tx(ret)
+end)
+
+local ret = rx()
+```
+
+### plenary.async.control.channel.mpsc
+
+Creates a multiple producer single consumer channel.
+
+Example:
+
+```lua
+local a = require'plenary.async'
+local sender, receiver = a.control.channel.mpsc()
+
+a.run(function()
+  sender.send(10)
+  sender.send(20)
+end)
+
+a.run(function()
+  sender.send(30)
+  sender.send(40)
+end)
+
+for _ = 1, 4 do
+  local value = receiver.recv()
+  print('received:', value)
+end
+```
 
 ### plenary.job
 
@@ -130,7 +186,7 @@ A Lua module that implements a bunch of the things from `pathlib` from Python, s
 It offers a wide range of opts for limiting the depth, show hidden and more. `plenary.scan_dir` can be ran synchronously and asynchronously and offers `on_insert(file, typ)` and `on_exit(files)` callbacks. `on_insert(file, typ)` is available for both while `on_exit(files)` is only available for async.
 
 ```lua
-local scan = require'plenary.scandir`
+local scan = require'plenary.scandir'
 scan.scan_dir('.', { hidden = true, depth = 2 })
 ```
 
@@ -155,6 +211,8 @@ assert(result == "# plenary.nvim")
 
 ### plenary.test_harness
 
+`:help plenary-test`
+
 Supports (simple) busted-style testing. It implements a mock-ed busted interface, that will allow you to run simple
 busted style tests in separate neovim instances.
 
@@ -163,19 +221,23 @@ To run the current spec file in a floating window, you can use the keymap `<Plug
 ```
 nmap <leader>t <Plug>PlenaryTestFile
 ```
+In this case, the test is run with a minimal configuration, that includes in
+its runtimepath only plenary.nvim and the current working directory.
 
 To run a whole directory from the command line, you could do something like:
 
 ```
-nvim --headless -c "PlenaryBustedDirectory tests/plenary/ {minimal_init = 'tests/minimal_init.vim'}"
+nvim --headless -c "PlenaryBustedDirectory tests/plenary/ {options}"
 ```
 
 Where the first argument is the directory you'd like to test. It will search for files with
 the pattern `*_spec.lua` and execute them in separate neovim instances.
 
-The second argument is a Lua option table with the following fields:
-- `minimal_init`: specify an init.vim to use for this instance, uses `--noplugin`
-- `minimal`: uses `--noplugin` without an init script (overrides `minimal_init`)
+Without second argument, `PlenaryBustedDirectory` is also run with a minimal
+configuration. Otherwise it is a Lua option table with the following fields:
+- `nvim_cmd`: specify the command to launch this neovim instance (defaults to `vim.v.progpath`)
+- `init`: specify an init.vim to use for this instance
+- `minimal_init`: as for `init`, but also run the neovim instance with `--noplugin`
 - `sequential`: whether to run tests sequentially (default is to run in parallel)
 - `keep_going`: if `sequential`, whether to continue on test failure (default true)
 - `timeout`: controls the maximum time allotted to each job in parallel or
@@ -324,3 +386,13 @@ This will enable debuggin for the plugin.
 ### plenary.neorocks
 
 DELETED: Please use packer.nvim or other lua-rocks wrapper instead. This no longer exists.
+
+### FAQ
+
+1. Error: Too many open files
+
+- \*nix systems have a setting to configure the maximum amount of open file
+  handles. It can occur that the default value is pretty low and that you end up
+  getting this error after opening a couple of files. On Linux you can see the
+  current limit with `ulimit -n` and set it with `ulimit -n 4096`. If you're on
+  macOS the command is `sudo launchctl limit maxfiles 4096 4096`.

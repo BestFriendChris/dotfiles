@@ -32,6 +32,25 @@ end)
 
 The test **some test** checks that a functions output is as expected based on the input. The second test **some other test** checks that the variable **bounter** is reset for each test (as defined in the before_each block).
 
+# Running tests
+
+Run the test using `:PlenaryBustedFile <file>`. 
+
+```vimscript
+" Run the test in the current buffer
+:PlenaryBustedFile %
+" Run all tests in the directory "tests/plenary/"
+:PlenaryBustedDirectory tests/plenary/
+```
+
+Or you can run tests in headless mode to see output in terminal:
+
+```bash
+# run all tests in terminal
+cd plenary.nvim
+nvim --headless -c 'PlenaryBustedDirectory tests'
+```
+
 # mocking with luassert
 
 Plenary.nvim comes bundled with [luassert](https://github.com/Olivine-Labs/luassert) a library that's built to extend the built-int assertions... but it also comes with stubs, mocks and spies!
@@ -65,7 +84,7 @@ describe("example", function()
   -- mocked instance of api to interact with
 
   describe("realistic_func", function()
-    it("Should make explected calls to api, fully mocked", function()
+    it("Should make expected calls to api, fully mocked", function()
       -- mock the vim.api
       local api = mock(vim.api, true)
 
@@ -115,4 +134,20 @@ To test this in your `~/.config/nvim` configuration, try the suggested file stru
 ```
 lua/example/module.lua
 lua/spec/example/module_spec.lua
+```
+
+# Asynchronous testing
+
+Tests run in a coroutine, which can be yielded and resumed. This can be used to
+test code that uses asynchronous Neovim functionalities. For example, this can
+be done inside a test:
+
+```lua
+local co = coroutine.running()
+vim.defer_fn(function()
+  coroutine.resume(co)
+end, 1000)
+--The test will reach here immediately.
+coroutine.yield()
+--The test will only reach here after one second, when the deferred function runs.
 ```

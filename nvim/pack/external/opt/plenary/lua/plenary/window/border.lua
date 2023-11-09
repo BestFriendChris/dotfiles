@@ -173,17 +173,21 @@ local set_title_highlights = function(bufnr, ranges, hl)
   end
 end
 
-function Border:change_title(new_title)
+function Border:change_title(new_title, pos)
   if self._border_win_options.title == new_title then
     return
   end
 
-  self._border_win_options.title = new_title
-  self.contents, self.title_ranges = Border._create_lines(
-    self.content_win_id,
-    self.content_win_options,
-    self._border_win_options
-  )
+  pos = pos
+    or (self._border_win_options.title and self._border_win_options.title[1] and self._border_win_options.title[1].pos)
+  if pos == nil then
+    self._border_win_options.title = new_title
+  else
+    self._border_win_options.title = { { text = new_title, pos = pos } }
+  end
+
+  self.contents, self.title_ranges =
+    Border._create_lines(self.content_win_id, self.content_win_options, self._border_win_options)
   vim.api.nvim_buf_set_lines(self.bufnr, 0, -1, false, self.contents)
 
   set_title_highlights(self.bufnr, self.title_ranges, self._border_win_options.titlehighlight)

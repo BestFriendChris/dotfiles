@@ -11,6 +11,7 @@ all curl methods accepts
   raw     = "any additonal curl args, it must be an array/list." (array)
   dry_run = "whether to return the args to be ran through curl." (boolean)
   output  = "where to download something." (filepath)
+  timeout = "request timeout in mseconds" (number)
 
 and returns table:
 
@@ -25,7 +26,7 @@ author = github.com/tami5
 ]]
 --
 
-local util, parse, request = {}, {}, nil
+local util, parse = {}, {}
 
 -- Helpers --------------------------------------------------
 -------------------------------------------------------------
@@ -73,7 +74,8 @@ util.gen_dump_path = function()
   if P.path.sep == "\\" then
     path = string.format("%s\\AppData\\Local\\Temp\\plenary_curl_%s.headers", os.getenv "USERPROFILE", id)
   else
-    path = "/tmp/plenary_curl_" .. id .. ".headers"
+    local temp_dir = os.getenv "XDG_RUNTIME_DIR" or "/tmp"
+    path = temp_dir .. "/plenary_curl_" .. id .. ".headers"
   end
   return { "-D", path }
 end
@@ -182,32 +184,43 @@ end
 parse.request = function(opts)
   if opts.body then
     local b = opts.body
+    local silent_is_file = function()
+      local status, result = pcall(P.is_file, P.new(b))
+      return status and result
+    end
     opts.body = nil
     if type(b) == "table" then
       opts.data = b
-    elseif P.is_file(P.new(b)) then
+    elseif silent_is_file() then
       opts.in_file = b
     elseif type(b) == "string" then
       opts.raw_body = b
     end
   end
-  return vim.tbl_flatten {
-    "-sSL",
-    opts.dump,
-    opts.compressed and "--compressed" or nil,
-    parse.method(opts.method),
-    parse.headers(opts.headers),
-    parse.accept_header(opts.accept),
-    parse.raw_body(opts.raw_body),
-    parse.data_body(opts.data),
-    parse.form(opts.form),
-    parse.file(opts.in_file),
-    parse.auth(opts.auth),
-    opts.raw,
-    opts.output and { "-o", opts.output } or nil,
-    parse.url(opts.url, opts.query),
-  },
-    opts
+  local result = { "-sSL", opts.dump }
+  local append = function(v)
+    if v then
+      table.insert(result, v)
+    end
+  end
+
+  if opts.compressed then
+    table.insert(result, "--compressed")
+  end
+  append(parse.method(opts.method))
+  append(parse.headers(opts.headers))
+  append(parse.accept_header(opts.accept))
+  append(parse.raw_body(opts.raw_body))
+  append(parse.data_body(opts.data))
+  append(parse.form(opts.form))
+  append(parse.file(opts.in_file))
+  append(parse.auth(opts.auth))
+  append(opts.raw)
+  if opts.output then
+    table.insert(result, { "-o", opts.output })
+  end
+  table.insert(result, parse.url(opts.url, opts.query))
+  return vim.tbl_flatten(result), opts
 end
 
 -- Parse response ------------------------------------------
@@ -228,7 +241,7 @@ parse.response = function(lines, dump_path, code)
   }
 end
 
-request = function(specs)
+local request = function(specs)
   local response = {}
   local args, opts = parse.request(vim.tbl_extend("force", {
     compressed = true,
@@ -240,20 +253,26 @@ request = function(specs)
     return args
   end
 
-  local job = J:new {
+  local job_opts = {
     command = "curl",
     args = args,
-    on_exit = function(j, code)
+  }
+  if opts.stream then
+    job_opts.on_stdout = opts.stream
+  else
+    job_opts.on_exit = function(j, code)
       if code ~= 0 then
-        error(
-          string.format(
-            "%s %s - curl error exit_code=%s stderr=%s",
-            opts.method,
-            opts.url,
-            code,
-            vim.inspect(j:stderr_result())
-          )
-        )
+        local stderr = vim.inspect(j:stderr_result())
+        local message = string.format("%s %s - curl error exit_code=%s stderr=%s", opts.method, opts.url, code, stderr)
+        if opts.on_error then
+          return opts.on_error {
+            message = message,
+            stderr = stderr,
+            exit = code,
+          }
+        else
+          error(message)
+        end
       end
       local output = parse.response(j:result(), opts.dump[2], code)
       if opts.callback then
@@ -261,13 +280,16 @@ request = function(specs)
       else
         response = output
       end
-    end,
-  }
+    end
+  end
+  local job = J:new(job_opts)
 
-  if opts.callback then
-    return job:start()
+  if opts.callback or opts.stream then
+    job:start()
+    return job
   else
-    job:sync(10000)
+    local timeout = opts.timeout or 10000
+    job:sync(timeout)
     return response
   end
 end
