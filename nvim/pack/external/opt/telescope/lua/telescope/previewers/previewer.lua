@@ -1,3 +1,5 @@
+local utils = require "telescope.utils"
+
 local Previewer = {}
 Previewer.__index = Previewer
 
@@ -24,12 +26,21 @@ function Previewer:new(opts)
     _teardown_func = opts.teardown,
     _send_input = opts.send_input,
     _scroll_fn = opts.scroll_fn,
+    _scroll_horizontal_fn = opts.scroll_horizontal_fn,
     preview_fn = opts.preview_fn,
+    _empty_bufnr = nil,
   }, Previewer)
 end
 
 function Previewer:preview(entry, status)
   if not entry then
+    if not self._empty_bufnr then
+      self._empty_bufnr = vim.api.nvim_create_buf(false, true)
+    end
+
+    if vim.api.nvim_buf_is_valid(self._empty_bufnr) then
+      vim.api.nvim_win_set_buf(status.layout.preview.winid, self._empty_bufnr)
+    end
     return
   end
 
@@ -47,7 +58,11 @@ end
 function Previewer:title(entry, dynamic)
   if dynamic == true and self._dyn_title_fn ~= nil then
     if entry == nil then
-      return nil
+      if self._title_fn ~= nil then
+        return self:_title_fn()
+      else
+        return ""
+      end
     end
     return self:_dyn_title_fn(entry)
   end
@@ -57,6 +72,9 @@ function Previewer:title(entry, dynamic)
 end
 
 function Previewer:teardown()
+  if self._empty_bufnr then
+    utils.buf_delete(self._empty_bufnr)
+  end
   if self._teardown_func then
     self:_teardown_func()
   end
@@ -75,6 +93,14 @@ function Previewer:scroll_fn(direction)
     self:_scroll_fn(direction)
   else
     vim.api.nvim_err_writeln "scroll_fn is not defined for this previewer"
+  end
+end
+
+function Previewer:scroll_horizontal_fn(direction)
+  if self._scroll_horizontal_fn then
+    self:_scroll_horizontal_fn(direction)
+  else
+    vim.api.nvim_err_writeln "scroll_horizontal_fn is not defined for this previewer"
   end
 end
 

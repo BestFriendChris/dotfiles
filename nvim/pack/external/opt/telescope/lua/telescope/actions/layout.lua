@@ -1,4 +1,5 @@
 ---@tag telescope.actions.layout
+---@config { ["module"] = "telescope.actions.layout", ["name"] = "ACTIONS_LAYOUT" }
 
 ---@brief [[
 --- The layout actions are actions to be used to change the layout of a picker.
@@ -25,10 +26,11 @@ action_layout.toggle_preview = function(prompt_bufnr)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local status = state.get_status(picker.prompt_bufnr)
 
-  if picker.previewer and status.preview_win then
+  local preview_winid = status.layout.preview and status.layout.preview.winid
+  if picker.previewer and preview_winid then
     picker.hidden_previewer = picker.previewer
     picker.previewer = nil
-  elseif picker.hidden_previewer and not status.preview_win then
+  elseif picker.hidden_previewer and not preview_winid then
     picker.previewer = picker.hidden_previewer
     picker.hidden_previewer = nil
   else
@@ -116,11 +118,11 @@ local get_cycle_layout = function(dir)
     local new_layout = picker.__cycle_layout_list[picker.__layout_index]
     if type(new_layout) == "string" then
       picker.layout_strategy = new_layout
-      picker.layout_config = nil
+      picker.layout_config = {}
       picker.previewer = picker.all_previewers and picker.all_previewers[1] or nil
     elseif type(new_layout) == "table" then
       picker.layout_strategy = new_layout.layout_strategy
-      picker.layout_config = new_layout.layout_config
+      picker.layout_config = new_layout.layout_config or {}
       picker.previewer = (new_layout.previewer == nil and picker.all_previewers[picker.current_previewer_index])
         or new_layout.previewer
     else

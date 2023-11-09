@@ -1,9 +1,10 @@
 ---@tag telescope.previewers
+---@config { ["module"] = "telescope.previewers" }
 
 ---@brief [[
 --- Provides a Previewer table that has to be implemented by each previewer.
 --- To achieve this, this module also provides two wrappers that abstract most
---- of the work and make it really easy create new previewers.
+--- of the work and make it really easy to create new previewers.
 ---   - `previewers.new_termopen_previewer`
 ---   - `previewers.new_buffer_previewer`
 ---
@@ -39,18 +40,19 @@ local previewers = {}
 ---
 --- What `:new` expects is listed below
 ---
---- The interface provides following set of functions. All of them, besides
+--- The interface provides the following set of functions. All of them, besides
 --- `new`, will be handled by telescope pickers.
 --- - `:new(opts)`
 --- - `:preview(entry, status)`
 --- - `:teardown()`
 --- - `:send_input(input)`
 --- - `:scroll_fn(direction)`
+--- - `:scroll_horizontal_fn(direction)`
 ---
 --- `Previewer:new()` expects a table as input with following keys:
 ---   - `setup` function(self): Will be called the first time preview will be
 ---                           called.
----   - `teardown` function(self): Will be called on cleanup.
+---   - `teardown` function(self): Will be called on clean up.
 ---   - `preview_fn` function(self, entry, status): Will be called each time
 ---                                                 a new entry was selected.
 ---   - `title` function(self): Will return the static title of the previewer.
@@ -63,6 +65,8 @@ local previewers = {}
 ---                                         used to send input to the terminal
 ---                                         application, like less.
 ---   - `scroll_fn` function(self, direction): Used to make scrolling work.
+---   - `scroll_horizontal_fn` function(self, direction): Used to make
+---                                                       horizontal scrolling work.
 previewers.Previewer = Previewer
 
 --- A shorthand for creating a new Previewer.
@@ -94,9 +98,6 @@ end
 ---
 --- Furthermore, it will forward all `config.set_env` environment variables to
 --- that terminal process.
----
---- While this interface is a good start, it was replaced with the way more
---- flexible `buffer_previewer` and is now deprecated.
 previewers.new_termopen_previewer = term_previewer.new_termopen_previewer
 
 --- Provides a `termopen_previewer` which has the ability to display files.
@@ -158,8 +159,8 @@ previewers.qflist = term_previewer.qflist
 ---     available in `self.state` in each `define_preview` call.
 ---   - `teardown = function(self)` (optional)
 ---     Will be called at the end, when the picker is being closed and is
----     meant to cleanup everything that was allocated by the previewer.
----     The `buffer_previewer` will automatically cleanup all created buffers.
+---     meant to clean up everything that was allocated by the previewer.
+---     The `buffer_previewer` will automatically clean up all created buffers.
 ---     So you only need to handle things that were introduced by you.
 ---   - `keep_last_buf = true` (optional)
 ---     Will not delete the last selected buffer. This would allow you to
@@ -169,7 +170,7 @@ previewers.qflist = term_previewer.qflist
 ---     `require('telescope.state').get_global_key("last_preview_bufnr")`
 ---   - `get_buffer_by_name = function(self, entry)`
 ---     Allows you to set a unique name for each buffer. This is used for
----     caching purpose. `self.state.bufname` will be nil if the entry was
+---     caching purposes. `self.state.bufname` will be nil if the entry was
 ---     never loaded or the unique name when it was loaded once. For example,
 ---     useful if you have one file but multiple entries. This happens for grep
 ---     and lsp builtins. So to make the cache work only load content if
@@ -223,8 +224,8 @@ previewers.qflist = term_previewer.qflist
 ---       vim.api.nvim_buf_call(bufnr, function()
 ---         -- for example `search` and `matchadd`
 ---       end)
----     to achieve that.
 --- </code>
+---     to achieve that.
 ---   - If you want to read a file into the buffer it's best to use
 ---     `buffer_previewer_maker`. But access this function with
 ---     `require('telescope.config').values.buffer_previewer_maker`
@@ -253,14 +254,15 @@ previewers.vim_buffer_cat = buffer_previewer.cat
 --- It uses the `buffer_previewer` interface. To integrate this one into your
 --- own picker make sure that the field `path` or `filename` and `lnum` is set
 --- in each entry. If the latter is not present, it will default to the first
---- line.
+--- line. Additionally, `lnend`, `col` and `colend` can be set to highlight a
+--- text range instead of a single line. All line/column values are 1-indexed.
 --- The preferred way of using this previewer is like this
 --- `require('telescope.config').values.grep_previewer`
 --- This will respect user configuration and will use `termopen_previewer` in
 --- case it's configured that way.
 previewers.vim_buffer_vimgrep = buffer_previewer.vimgrep
 
---- Is the same as `vim_buffer_vimgrep` and only exist for consistency with
+--- Is the same as `vim_buffer_vimgrep` and only exists for consistency with
 --- `term_previewers`.
 ---
 --- The preferred way of using this previewer is like this

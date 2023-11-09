@@ -1,4 +1,5 @@
 ---@tag telescope.command
+---@config { ["module"] = "telescope.command" }
 
 ---@brief [[
 ---
@@ -45,6 +46,7 @@ local themes = require "telescope.themes"
 local builtin = require "telescope.builtin"
 local extensions = require("telescope._extensions").manager
 local config = require "telescope.config"
+local utils = require "telescope.utils"
 local command = {}
 
 local arg_value = {
@@ -64,6 +66,7 @@ local split_keywords = {
   ["sections"] = true,
   ["search_dirs"] = true,
   ["symbols"] = true,
+  ["ignore_symbols"] = true,
 }
 
 -- convert command line string arguments to
@@ -118,7 +121,10 @@ command.convert_user_opts = function(user_opts)
 
   local _switch_metatable = {
     __index = function(_, k)
-      print(string.format("Type of %s does not match", k))
+      utils.notify("command", {
+        msg = string.format("Type of '%s' does not match", k),
+        level = "WARN",
+      })
     end,
   }
 
@@ -152,7 +158,10 @@ end
 local function run_command(args)
   local user_opts = args or {}
   if next(user_opts) == nil and not user_opts.cmd then
-    print "[Telescope] your command miss args"
+    utils.notify("command", {
+      msg = "Command missing arguments",
+      level = "ERROR",
+    })
     return
   end
 
@@ -182,7 +191,19 @@ local function run_command(args)
 
   if rawget(extensions, cmd) then
     extensions[cmd][cmd](opts)
+    return
   end
+
+  local ok = pcall(require("telescope").load_extension, cmd)
+  if ok then
+    extensions[cmd][cmd](opts)
+    return
+  end
+
+  utils.notify("run_command", {
+    msg = "Unknown command",
+    level = "ERROR",
+  })
 end
 
 -- @Summary get extensions sub command
@@ -208,19 +229,16 @@ function command.register_keyword(keyword)
   split_keywords[keyword] = true
 end
 
-function command.load_command(start_line, end_line, count, cmd, ...)
+function command.load_command(cmd, ...)
   local args = { ... }
   if cmd == nil then
     run_command { cmd = "builtin" }
     return
   end
 
-  local user_opts = {}
-  user_opts["cmd"] = cmd
-  user_opts.opts = {
-    start_line = start_line,
-    end_line = end_line,
-    count = count,
+  local user_opts = {
+    cmd = cmd,
+    opts = {},
   }
 
   for _, arg in ipairs(args) do

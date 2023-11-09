@@ -9,8 +9,9 @@ local await_count = 1000
 return function(opts)
   opts = opts or {}
 
-  local entry_maker = opts.entry_maker or make_entry.gen_from_string
+  local entry_maker = opts.entry_maker or make_entry.gen_from_string(opts)
   local cwd = opts.cwd
+  local env = opts.env
   local fn_command = assert(opts.fn_command, "Must pass `fn_command`")
 
   local results = vim.F.if_nil(opts.results, {})
@@ -29,6 +30,7 @@ return function(opts)
       end
     end,
     results = results,
+    entry_maker = entry_maker,
   }, {
     __call = function(_, prompt, process_result, process_complete)
       if not job_started then
@@ -47,6 +49,7 @@ return function(opts)
           command = job_opts.command,
           args = job_opts.args,
           cwd = cwd,
+          env = env,
 
           stdout = stdout,
         }
@@ -55,6 +58,11 @@ return function(opts)
       end
 
       if not job_completed then
+        if not vim.tbl_isempty(results) then
+          for _, v in ipairs(results) do
+            process_result(v)
+          end
+        end
         for line in stdout:iter(false) do
           num_results = num_results + 1
 
@@ -62,9 +70,12 @@ return function(opts)
             async.util.scheduler()
           end
 
-          local v = entry_maker(line)
-          results[num_results] = v
-          process_result(v)
+          local entry = entry_maker(line)
+          if entry then
+            entry.index = num_results
+          end
+          results[num_results] = entry
+          process_result(entry)
         end
 
         process_complete()

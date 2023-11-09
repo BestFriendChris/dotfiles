@@ -44,7 +44,7 @@ function JobFinder:new(opts)
   assert(not opts.static, "`static` should be used with finder.new_oneshot_job")
 
   local obj = setmetatable({
-    entry_maker = opts.entry_maker or make_entry.gen_from_string,
+    entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
     fn_command = opts.fn_command,
     cwd = opts.cwd,
     writer = opts.writer,
@@ -65,20 +65,29 @@ function JobFinder:_find(prompt, process_result, process_complete)
     self.job:shutdown()
   end
 
+  local line_num = 0
   local on_output = function(_, line, _)
+    line_num = line_num + 1
     if not line or line == "" then
       return
     end
 
+    local entry
     if self.entry_maker then
-      line = self.entry_maker(line)
+      entry = self.entry_maker(line)
+      if entry then
+        entry.index = line_num
+      end
+    else
+      entry = line
     end
 
-    process_result(line)
+    process_result(entry)
   end
 
   local opts = self:fn_command(prompt)
   if not opts then
+    process_complete()
     return
   end
 
@@ -122,7 +131,7 @@ function DynamicFinder:new(opts)
   local obj = setmetatable({
     curr_buf = opts.curr_buf,
     fn = opts.fn,
-    entry_maker = opts.entry_maker or make_entry.gen_from_string,
+    entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
   }, self)
 
   return obj
@@ -131,8 +140,14 @@ end
 function DynamicFinder:_find(prompt, process_result, process_complete)
   local results = self.fn(prompt)
 
+  local result_num = 0
   for _, result in ipairs(results) do
-    if process_result(self.entry_maker(result)) then
+    result_num = result_num + 1
+    local entry = self.entry_maker(result)
+    if entry then
+      entry.index = result_num
+    end
+    if process_result(entry) then
       return
     end
   end
@@ -180,7 +195,7 @@ finders.new_oneshot_job = function(command_list, opts)
   local command = table.remove(command_list, 1)
 
   return async_oneshot_finder {
-    entry_maker = opts.entry_maker or make_entry.gen_from_string(),
+    entry_maker = opts.entry_maker or make_entry.gen_from_string(opts),
 
     cwd = opts.cwd,
     maximum_results = opts.maximum_results,
@@ -204,8 +219,13 @@ finders.new_table = function(t)
   return async_static_finder(t)
 end
 
-finders.new_dynamic = function(t)
-  return DynamicFinder:new(t)
+--- Used to create a finder from a function.
+--
+---@param opts table: stuff
+--         @key fn function() => list[string]
+--         @key entry_maker function Optional: function(line: string) => table
+finders.new_dynamic = function(opts)
+  return DynamicFinder:new(opts)
 end
 
 return finders

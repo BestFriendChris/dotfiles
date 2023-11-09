@@ -138,14 +138,14 @@ function Sorter:score(prompt, entry, cb_add, cb_filter)
     if self.tags then
       self.tags:insert(entry)
     end
-    filter_score, prompt = self:filter_function(prompt, entry)
+    filter_score, prompt = self:filter_function(prompt, entry, cb_add, cb_filter)
   end
 
   if filter_score == FILTERED then
     return cb_filter(entry)
   end
 
-  local score = self:scoring_function(prompt or "", ordinal, entry)
+  local score = self:scoring_function(prompt or "", ordinal, entry, cb_add, cb_filter)
   if score == FILTERED then
     self:_mark_discarded(prompt, ordinal)
     return cb_filter(entry)
@@ -291,17 +291,17 @@ sorters.get_fuzzy_file = function(opts)
       end
 
       local denominator = (
-          (10 * match_count / #prompt_lower_ngrams)
-          -- biases for shorter strings
-          + 3 * match_count * ngram_len / #line
-          + consecutive_matches
-          + N / (contains_string or (2 * #line))
-          -- + 30/(c1 or 2*N)
-          -- TODO: It might be possible that this too strongly correlates,
-          --          but it's unlikely for people to type capital letters without actually
-          --          wanting to do something with a capital letter in it.
-          + uppers_matching
-        ) * tail_modifier
+        (10 * match_count / #prompt_lower_ngrams)
+        -- biases for shorter strings
+        + 3 * match_count * ngram_len / #line
+        + consecutive_matches
+        + N / (contains_string or (2 * #line))
+        -- + 30/(c1 or 2*N)
+        -- TODO: It might be possible that this too strongly correlates,
+        --          but it's unlikely for people to type capital letters without actually
+        --          wanting to do something with a capital letter in it.
+        + uppers_matching
+      ) * tail_modifier
 
       if denominator == 0 or denominator ~= denominator then
         return -1
@@ -382,15 +382,15 @@ sorters.get_generic_fuzzy_sorter = function(opts)
 
       -- TODO: Copied from ashkan.
       local denominator = (
-          (10 * match_count / #prompt_ngrams)
-          -- biases for shorter strings
-          -- TODO(ashkan): this can bias towards repeated finds of the same
-          -- subpattern with overlapping_ngrams
-          + 3 * match_count * ngram_len / #line
-          + consecutive_matches
-          + N / (contains_string or (2 * #line)) -- + 30/(c1 or 2*N)
+        (10 * match_count / #prompt_ngrams)
+        -- biases for shorter strings
+        -- TODO(ashkan): this can bias towards repeated finds of the same
+        -- subpattern with overlapping_ngrams
+        + 3 * match_count * ngram_len / #line
+        + consecutive_matches
+        + N / (contains_string or (2 * #line)) -- + 30/(c1 or 2*N)
 
-        )
+      )
 
       if denominator == 0 or denominator ~= denominator then
         return -1
@@ -417,19 +417,20 @@ sorters.fuzzy_with_index_bias = function(opts)
   local fuzzy_sorter = sorters.get_generic_fuzzy_sorter(opts)
 
   return Sorter:new {
-    scoring_function = function(_, prompt, _, entry)
-      local base_score = fuzzy_sorter:score(prompt, entry)
+    scoring_function = function(_, prompt, line, entry, cb_add, cb_filter)
+      local base_score = fuzzy_sorter:scoring_function(prompt, line, cb_add, cb_filter)
 
-      if base_score == -1 then
-        return -1
+      if base_score == FILTERED then
+        return FILTERED
       end
 
-      if base_score == 0 then
+      if not base_score or base_score == 0 then
         return entry.index
       else
         return math.min(math.pow(entry.index, 0.25), 2) * base_score
       end
     end,
+    highlighter = fuzzy_sorter.highlighter,
   }
 end
 
@@ -602,7 +603,7 @@ end
 
 sorters.prefilter = function(opts)
   local sorter = opts.sorter
-  opts.delimiter = util.get_default(opts.delimiter, ":")
+  opts.delimiter = vim.F.if_nil(opts.delimiter, ":")
   sorter._delimiter = opts.delimiter
   sorter.tags = create_tag_set(opts.tag)
   sorter.filter_function = filter_function(opts)

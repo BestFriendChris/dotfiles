@@ -1,3 +1,10 @@
+---@tag telescope.utils
+---@config { ["module"] = "telescope.utils" }
+
+---@brief [[
+--- Utilities for writing telescope pickers
+---@brief ]]
+
 local Path = require "plenary.path"
 local Job = require "plenary.job"
 
@@ -12,18 +19,6 @@ utils.get_separator = function()
   return Path.path.sep
 end
 
-utils.if_nil = function(x, was_nil, was_not_nil)
-  if x == nil then
-    return was_nil
-  else
-    return was_not_nil
-  end
-end
-
-utils.get_default = function(x, default)
-  return utils.if_nil(x, default, x)
-end
-
 utils.cycle = function(i, n)
   return i % n == 0 and n or i % n
 end
@@ -36,25 +31,6 @@ utils.get_lazy_default = function(x, defaulter, ...)
   end
 end
 
-local function reversedipairsiter(t, i)
-  i = i - 1
-  if i ~= 0 then
-    return i, t[i]
-  end
-end
-
-utils.reversed_ipairs = function(t)
-  return reversedipairsiter, t, #t + 1
-end
-
-utils.default_table_mt = {
-  __index = function(t, k)
-    local obj = {}
-    rawset(t, k, obj)
-    return obj
-  end,
-}
-
 utils.repeated_table = function(n, val)
   local empty_lines = {}
   for _ = 1, n do
@@ -63,200 +39,75 @@ utils.repeated_table = function(n, val)
   return empty_lines
 end
 
-utils.quickfix_items_to_entries = function(locations)
-  local results = {}
+utils.filter_symbols = function(results, opts, post_filter)
+  local has_ignore = opts.ignore_symbols ~= nil
+  local has_symbols = opts.symbols ~= nil
+  local filtered_symbols
 
-  for _, entry in ipairs(locations) do
-    local vimgrep_str = entry.vimgrep_str
-      or string.format(
-        "%s:%s:%s: %s",
-        vim.fn.fnamemodify(entry.display_filename or entry.filename, ":."),
-        entry.lnum,
-        entry.col,
-        entry.text
-      )
-
-    table.insert(results, {
-      valid = true,
-      value = entry,
-      ordinal = vimgrep_str,
-      display = vimgrep_str,
-
-      start = entry.start,
-      finish = entry.finish,
+  if has_symbols and has_ignore then
+    utils.notify("filter_symbols", {
+      msg = "Either opts.symbols or opts.ignore_symbols, can't process opposing options at the same time!",
+      level = "ERROR",
     })
-  end
-
-  return results
-end
-
-utils.filter_symbols = function(results, opts)
-  if opts.symbols == nil then
-    return results
-  end
-  local valid_symbols = vim.tbl_map(string.lower, vim.lsp.protocol.SymbolKind)
-
-  local filtered_symbols = {}
-  if type(opts.symbols) == "string" then
-    opts.symbols = string.lower(opts.symbols)
-    if vim.tbl_contains(valid_symbols, opts.symbols) then
-      for _, result in ipairs(results) do
-        if string.lower(result.kind) == opts.symbols then
-          table.insert(filtered_symbols, result)
-        end
-      end
-    else
-      print(string.format("%s is not a valid symbol per `vim.lsp.protocol.SymbolKind`", opts.symbols))
-    end
-  elseif type(opts.symbols) == "table" then
-    opts.symbols = vim.tbl_map(string.lower, opts.symbols)
-    local mismatched_symbols = {}
-    for _, symbol in ipairs(opts.symbols) do
-      if vim.tbl_contains(valid_symbols, symbol) then
-        for _, result in ipairs(results) do
-          if string.lower(result.kind) == symbol then
-            table.insert(filtered_symbols, result)
-          end
-        end
-      else
-        table.insert(mismatched_symbols, symbol)
-        mismatched_symbols = table.concat(mismatched_symbols, ", ")
-        print(string.format("%s are not valid symbols per `vim.lsp.protocol.SymbolKind`", mismatched_symbols))
-      end
-    end
-  else
-    print "Please pass filtering symbols as either a string or a list of strings"
     return
+  elseif not (has_ignore or has_symbols) then
+    return results
+  elseif has_ignore then
+    if type(opts.ignore_symbols) == "string" then
+      opts.ignore_symbols = { opts.ignore_symbols }
+    end
+    if type(opts.ignore_symbols) ~= "table" then
+      utils.notify("filter_symbols", {
+        msg = "Please pass ignore_symbols as either a string or a list of strings",
+        level = "ERROR",
+      })
+      return
+    end
+
+    opts.ignore_symbols = vim.tbl_map(string.lower, opts.ignore_symbols)
+    filtered_symbols = vim.tbl_filter(function(item)
+      return not vim.tbl_contains(opts.ignore_symbols, string.lower(item.kind))
+    end, results)
+  elseif has_symbols then
+    if type(opts.symbols) == "string" then
+      opts.symbols = { opts.symbols }
+    end
+    if type(opts.symbols) ~= "table" then
+      utils.notify("filter_symbols", {
+        msg = "Please pass filtering symbols as either a string or a list of strings",
+        level = "ERROR",
+      })
+      return
+    end
+
+    opts.symbols = vim.tbl_map(string.lower, opts.symbols)
+    filtered_symbols = vim.tbl_filter(function(item)
+      return vim.tbl_contains(opts.symbols, string.lower(item.kind))
+    end, results)
   end
 
-  local current_buf = vim.api.nvim_get_current_buf()
+  if type(post_filter) == "function" then
+    filtered_symbols = post_filter(filtered_symbols)
+  end
+
   if not vim.tbl_isempty(filtered_symbols) then
-    -- filter adequately for workspace symbols
-    local filename_to_bufnr = {}
-    for _, symbol in ipairs(filtered_symbols) do
-      if filename_to_bufnr[symbol.filename] == nil then
-        filename_to_bufnr[symbol.filename] = vim.uri_to_bufnr(vim.uri_from_fname(symbol.filename))
-      end
-      symbol["bufnr"] = filename_to_bufnr[symbol.filename]
-    end
-    table.sort(filtered_symbols, function(a, b)
-      if a.bufnr == b.bufnr then
-        return a.lnum < b.lnum
-      end
-      if a.bufnr == current_buf then
-        return true
-      end
-      if b.bufnr == current_buf then
-        return false
-      end
-      return a.bufnr < b.bufnr
-    end)
     return filtered_symbols
   end
-  -- only account for string|table as function otherwise already printed message and returned nil
-  local symbols = type(opts.symbols) == "string" and opts.symbols or table.concat(opts.symbols, ", ")
-  print(string.format("%s symbol(s) were not part of the query results", symbols))
-  return
-end
 
-local convert_diagnostic_type = function(severity)
-  -- convert from string to int
-  if type(severity) == "string" then
-    -- make sure that e.g. error is uppercased to Error
-    return vim.lsp.protocol.DiagnosticSeverity[severity:gsub("^%l", string.upper)]
+  -- print message that filtered_symbols is now empty
+  if has_symbols then
+    local symbols = table.concat(opts.symbols, ", ")
+    utils.notify("filter_symbols", {
+      msg = string.format("%s symbol(s) were not part of the query results", symbols),
+      level = "WARN",
+    })
+  elseif has_ignore then
+    local symbols = table.concat(opts.ignore_symbols, ", ")
+    utils.notify("filter_symbols", {
+      msg = string.format("%s ignore_symbol(s) have removed everything from the query result", symbols),
+      level = "WARN",
+    })
   end
-  -- otherwise keep original value, incl. nil
-  return severity
-end
-
-local filter_diag_severity = function(opts, severity)
-  if opts.severity ~= nil then
-    return opts.severity == severity
-  elseif opts.severity_limit ~= nil then
-    return severity <= opts.severity_limit
-  elseif opts.severity_bound ~= nil then
-    return severity >= opts.severity_bound
-  else
-    return true
-  end
-end
-
-utils.diagnostics_to_tbl = function(opts)
-  opts = opts or {}
-  local items = {}
-  local lsp_type_diagnostic = vim.lsp.protocol.DiagnosticSeverity
-  local current_buf = vim.api.nvim_get_current_buf()
-
-  opts.severity = convert_diagnostic_type(opts.severity)
-  opts.severity_limit = convert_diagnostic_type(opts.severity_limit)
-  opts.severity_bound = convert_diagnostic_type(opts.severity_bound)
-
-  local validate_severity = 0
-  for _, v in ipairs { opts.severity, opts.severity_limit, opts.severity_bound } do
-    if v ~= nil then
-      validate_severity = validate_severity + 1
-    end
-    if validate_severity > 1 then
-      print "Please pass valid severity parameters"
-      return {}
-    end
-  end
-
-  local preprocess_diag = function(diag, bufnr)
-    local filename = vim.api.nvim_buf_get_name(bufnr)
-    local start = diag.range["start"]
-    local finish = diag.range["end"]
-    local row = start.line
-    local col = start.character
-
-    local buffer_diag = {
-      bufnr = bufnr,
-      filename = filename,
-      lnum = row + 1,
-      col = col + 1,
-      start = start,
-      finish = finish,
-      -- remove line break to avoid display issues
-      text = vim.trim(diag.message:gsub("[\n]", "")),
-      type = lsp_type_diagnostic[diag.severity] or lsp_type_diagnostic[1],
-    }
-    return buffer_diag
-  end
-
-  local buffer_diags = opts.get_all and vim.lsp.diagnostic.get_all()
-    or { [current_buf] = vim.lsp.diagnostic.get(current_buf, opts.client_id) }
-  for bufnr, diags in pairs(buffer_diags) do
-    for _, diag in ipairs(diags) do
-      -- workspace diagnostics may include empty tables for unused bufnr
-      if not vim.tbl_isempty(diag) then
-        if filter_diag_severity(opts, diag.severity) then
-          table.insert(items, preprocess_diag(diag, bufnr))
-        end
-      end
-    end
-  end
-
-  -- sort results by bufnr (prioritize cur buf), severity, lnum
-  table.sort(items, function(a, b)
-    if a.bufnr == b.bufnr then
-      if a.type == b.type then
-        return a.lnum < b.lnum
-      else
-        return a.type < b.type
-      end
-    else
-      -- prioritize for current bufnr
-      if a.bufnr == current_buf then
-        return true
-      end
-      if b.bufnr == current_buf then
-        return false
-      end
-      return a.bufnr < b.bufnr
-    end
-  end)
-
-  return items
 end
 
 utils.path_smart = (function()
@@ -303,39 +154,78 @@ end)()
 
 utils.path_tail = (function()
   local os_sep = utils.get_separator()
-  local match_string = "[^" .. os_sep .. "]*$"
 
   return function(path)
-    return string.match(path, match_string)
+    for i = #path, 1, -1 do
+      if path:sub(i, i) == os_sep then
+        return path:sub(i + 1, -1)
+      end
+    end
+    return path
   end
 end)()
 
 utils.is_path_hidden = function(opts, path_display)
-  path_display = path_display or utils.get_default(opts.path_display, require("telescope.config").values.path_display)
+  path_display = path_display or vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   return path_display == nil
     or path_display == "hidden"
-    or type(path_display) ~= "table"
-    or vim.tbl_contains(path_display, "hidden")
-    or path_display.hidden
+    or type(path_display) == "table" and (vim.tbl_contains(path_display, "hidden") or path_display.hidden)
 end
 
-local is_uri = function(filename)
-  return string.match(filename, "^%w+://") ~= nil
+utils.is_uri = function(filename)
+  local char = string.byte(filename, 1) or 0
+
+  -- is alpha?
+  if char < 65 or (char > 90 and char < 97) or char > 122 then
+    return false
+  end
+
+  for i = 2, #filename do
+    char = string.byte(filename, i)
+    if char == 58 then -- `:`
+      return i < #filename and string.byte(filename, i + 1) ~= 92 -- `\`
+    elseif
+      not (
+        (char >= 48 and char <= 57) -- 0-9
+        or (char >= 65 and char <= 90) -- A-Z
+        or (char >= 97 and char <= 122) -- a-z
+        or char == 43 -- `+`
+        or char == 46 -- `.`
+        or char == 45 -- `-`
+      )
+    then
+      return false
+    end
+  end
+  return false
 end
 
 local calc_result_length = function(truncate_len)
   local status = get_status(vim.api.nvim_get_current_buf())
-  local len = vim.api.nvim_win_get_width(status.results_win) - status.picker.selection_caret:len() - 2
+  local len = vim.api.nvim_win_get_width(status.layout.results.winid) - status.picker.selection_caret:len() - 2
   return type(truncate_len) == "number" and len - truncate_len or len
 end
 
+--- Transform path is a util function that formats a path based on path_display
+--- found in `opts` or the default value from config.
+--- It is meant to be used in make_entry to have a uniform interface for
+--- builtins as well as extensions utilizing the same user configuration
+--- Note: It is only supported inside `make_entry`/`make_display` the use of
+--- this function outside of telescope might yield to undefined behavior and will
+--- not be addressed by us
+---@param opts table: The opts the users passed into the picker. Might contains a path_display key
+---@param path string: The path that should be formatted
+---@return string: The transformed path ready to be displayed
 utils.transform_path = function(opts, path)
-  if is_uri(path) then
+  if path == nil then
+    return
+  end
+  if utils.is_uri(path) then
     return path
   end
 
-  local path_display = utils.get_default(opts.path_display, require("telescope.config").values.path_display)
+  local path_display = vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   local transformed_path = path
 
@@ -374,7 +264,10 @@ utils.transform_path = function(opts, path)
         if opts.__length == nil then
           opts.__length = calc_result_length(path_display.truncate)
         end
-        transformed_path = truncate(transformed_path, opts.__length, nil, -1)
+        if opts.__prefix == nil then
+          opts.__prefix = 0
+        end
+        transformed_path = truncate(transformed_path, opts.__length - opts.__prefix, nil, -1)
       end
     end
 
@@ -506,22 +399,30 @@ end
 
 function utils.get_os_command_output(cmd, cwd)
   if type(cmd) ~= "table" then
-    print "Telescope: [get_os_command_output]: cmd has to be a table"
+    utils.notify("get_os_command_output", {
+      msg = "cmd has to be a table",
+      level = "ERROR",
+    })
     return {}
   end
   local command = table.remove(cmd, 1)
   local stderr = {}
-  local stdout, ret = Job
-    :new({
-      command = command,
-      args = cmd,
-      cwd = cwd,
-      on_stderr = function(_, data)
-        table.insert(stderr, data)
-      end,
-    })
-    :sync()
+  local stdout, ret = Job:new({
+    command = command,
+    args = cmd,
+    cwd = cwd,
+    on_stderr = function(_, data)
+      table.insert(stderr, data)
+    end,
+  }):sync()
   return stdout, ret, stderr
+end
+
+function utils.win_set_buf_noautocmd(win, buf)
+  local save_ei = vim.o.eventignore
+  vim.o.eventignore = "all"
+  vim.api.nvim_win_set_buf(win, buf)
+  vim.o.eventignore = save_ei
 end
 
 local load_once = function(f)
@@ -532,6 +433,16 @@ local load_once = function(f)
     end
 
     return resolved(...)
+  end
+end
+
+utils.file_extension = function(filename)
+  local parts = vim.split(filename, "%.")
+  -- this check enables us to get multi-part extensions, like *.test.js for example
+  if #parts > 2 then
+    return table.concat(vim.list_slice(parts, #parts - 1), ".")
+  else
+    return table.concat(vim.list_slice(parts, #parts), ".")
   end
 end
 
@@ -549,13 +460,18 @@ utils.transform_devicons = load_once(function()
         return display
       end
 
-      local icon, icon_highlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
-      local icon_display = (icon or " ") .. " " .. (display or "")
+      local basename = utils.path_tail(filename)
+      local icon, icon_highlight = devicons.get_icon(basename, utils.file_extension(basename), { default = false })
+      if not icon then
+        icon, icon_highlight = devicons.get_icon(basename, nil, { default = true })
+        icon = icon or " "
+      end
+      local icon_display = icon .. " " .. (display or "")
 
       if conf.color_devicons then
-        return icon_display, icon_highlight
+        return icon_display, icon_highlight, icon
       else
-        return icon_display
+        return icon_display, nil, icon
       end
     end
   else
@@ -579,11 +495,15 @@ utils.get_devicons = load_once(function()
         return ""
       end
 
-      local icon, icon_highlight = devicons.get_icon(filename, string.match(filename, "%a+$"), { default = true })
+      local basename = utils.path_tail(filename)
+      local icon, icon_highlight = devicons.get_icon(basename, utils.file_extension(basename), { default = false })
+      if not icon then
+        icon, icon_highlight = devicons.get_icon(basename, nil, { default = true })
+      end
       if conf.color_devicons then
         return icon, icon_highlight
       else
-        return icon
+        return icon, nil
       end
     end
   else
@@ -592,5 +512,59 @@ utils.get_devicons = load_once(function()
     end
   end
 end)
+
+--- Checks if treesitter parser for language is installed
+---@param lang string
+utils.has_ts_parser = function(lang)
+  return pcall(vim.treesitter.language.add, lang)
+end
+
+--- Telescope Wrapper around vim.notify
+---@param funname string: name of the function that will be
+---@param opts table: opts.level string, opts.msg string, opts.once bool
+utils.notify = function(funname, opts)
+  opts.once = vim.F.if_nil(opts.once, false)
+  local level = vim.log.levels[opts.level]
+  if not level then
+    error("Invalid error level", 2)
+  end
+  local notify_fn = opts.once and vim.notify_once or vim.notify
+  notify_fn(string.format("[telescope.%s]: %s", funname, opts.msg), level, {
+    title = "telescope.nvim",
+  })
+end
+
+utils.__warn_no_selection = function(name)
+  utils.notify(name, {
+    msg = "Nothing currently selected",
+    level = "WARN",
+  })
+end
+
+--- Generate git command optionally with git env variables
+---@param args string[]
+---@param opts? table
+---@return string[]
+utils.__git_command = function(args, opts)
+  opts = opts or {}
+
+  local _args = { "git" }
+  if opts.gitdir then
+    vim.list_extend(_args, { "--git-dir", opts.gitdir })
+  end
+  if opts.toplevel then
+    vim.list_extend(_args, { "--work-tree", opts.toplevel })
+  end
+
+  return vim.list_extend(_args, args)
+end
+
+utils.list_find = function(func, list)
+  for i, v in ipairs(list) do
+    if func(v, i, list) then
+      return i, v
+    end
+  end
+end
 
 return utils
