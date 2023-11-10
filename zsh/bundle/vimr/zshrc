@@ -1,3 +1,0 @@
-if has_command vimr; then
-  alias gvim='vimr --nvim'
-fi

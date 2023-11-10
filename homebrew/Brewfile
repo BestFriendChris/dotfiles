@@ -27,6 +27,6 @@ brew "remotemobprogramming/brew/mob"
 
 # Cask formulas
 cask "kitty"
-cask "vimr"
+cask "neovide"
 
 # vim:ft=ruby
