@@ -1,5 +1,6 @@
 packadd! telescope
 packadd! telescope-fzy-native
+packadd! telescope-file-browser
 packadd! nvim-neoclip
 
 function! s:TelescopeSetup() abort
@@ -33,13 +34,20 @@ lua <<EOF
       find_files = {
         find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix' }
       },
+    },
+  }
+  require("telescope").setup {
+    extensions = {
       file_browser = {
-        theme = 'ivy'
-      }
+        theme = "ivy",
+        -- disables netrw and use telescope-file-browser in its place
+        hijack_netrw = true,
+      },
     },
   }
   require'neoclip'.setup()
 
+  require'telescope'.load_extension 'file_browser'
   require'telescope'.load_extension 'fzy_native'
   require'telescope'.load_extension 'neoclip'
 EOF
