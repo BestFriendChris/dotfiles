@@ -10,6 +10,7 @@ vim/firenvim,nvim/pack/external/opt/firenvim,https://github.com/glacambre/firenv
 vim/highlighter,nvim/pack/external/opt/vim-highlighter,https://github.com/azabiong/vim-highlighter.git,main
 vim/lightspeed,nvim/pack/external/opt/lightspeed,https://github.com/ggandor/lightspeed.nvim.git,main
 vim/lion,nvim/pack/external/opt/vim-lion,https://github.com/tommcdo/vim-lion.git,master
+vim/neotest,nvim/pack/external/opt/neotest,https://github.com/nvim-neotest/neotest.git,master
 vim/nvim-lspconfig,nvim/pack/external/opt/nvim-lspconfig,https://github.com/neovim/nvim-lspconfig.git,master
 vim/nvim-neoclip,nvim/pack/external/opt/nvim-neoclip,https://github.com/AckslD/nvim-neoclip.lua.git,main
 vim/nvim-treesitter,nvim/pack/external/opt/nvim-treesitter,https://github.com/nvim-treesitter/nvim-treesitter.git,master
