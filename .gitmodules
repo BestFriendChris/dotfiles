@@ -1,3 +1,0 @@
-[submodule "neotest_elixir/iex-unit"]
-	path = neotest_elixir/iex-unit
-	url = https://github.com/scottming/iex-unit
