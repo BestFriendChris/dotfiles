@@ -34,7 +34,12 @@ function! s:ElixirNeotestMappings() abort
   nnoremap <buffer> <silent> <LocalLeader>rn <Cmd>lua require("neotest").jump.next({ status = "failed" })<CR>
 endfunction
 
+function! s:ElixirNeotestSummary() abort
+  nnoremap <buffer> <silent> <LocalLeader>r<Space> <Cmd>lua require("neotest").summary.close()<CR>
+endfunction
+
 augroup bfcElixirNeotest
   autocmd!
   autocmd BufNewFile,BufReadPost *_test.exs call s:ElixirNeotestMappings()
+  autocmd FileType neotest-summary call s:ElixirNeotestSummary()
 augroup end
