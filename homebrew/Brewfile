@@ -22,8 +22,7 @@ brew "zsh"
 tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"
 
-tap "remotemobprogramming/brew"
-brew "remotemobprogramming/brew/mob"
+brew "hashicorp/tap/terraform-ls"
 
 # Cask formulas
 cask "kitty"

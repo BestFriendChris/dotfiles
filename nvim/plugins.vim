@@ -36,6 +36,7 @@ call bfc#plugins#load('neotest')
 call bfc#plugins#load('nvim-lspconfig')
 call bfc#plugins#load('zig.vim')
 call bfc#plugins#load('elixir-tools')
+call bfc#plugins#load('bfc-terraform')
 
 function! s:Helptags() abort
   helptags ALL
