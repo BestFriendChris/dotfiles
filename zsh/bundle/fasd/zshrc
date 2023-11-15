@@ -40,13 +40,19 @@ if has_command fasd; then
   fi
 
   if has_command nvim; then
-    alias v='fasd -f -e nvim'
+    v() {
+      fasd -fl $* | xargs nvim -p
+    }
   else
-    alias v='fasd -f -e vim'
+    v() {
+      fasd -fl $* | xargs vim -p
+    }
   fi
 
   if has_command mvim; then
-    alias vv='fasd -f -e mvim'
+    vv() {
+      fasd -fl $* | xargs mvim -p
+    }
   elif has_command vimr; then
     vv() {
       fasd -fl $* | xargs vimr --nvim
