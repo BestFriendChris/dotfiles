@@ -22,14 +22,26 @@ endfunction
 
 call bfc#plugins#on_load(funcref('<SID>ElixirToolsSetup'))
 
-function! s:ElixirNeotestMappings() abort
-  nnoremap <buffer> <silent> <LocalLeader>rf <Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>
-  nnoremap <buffer> <silent> <LocalLeader>r. <Cmd>lua require("neotest").run.run()<CR>
+function! s:CommonMappings() abort
+  nnoremap <buffer> <silent> \\ <Cmd>:A<CR>
+  nnoremap <buffer> <silent> <LocalLeader>r<Space> <Cmd>lua require("neotest").summary.toggle()<CR>
+
   nnoremap <buffer> <silent> <LocalLeader>rr <Cmd>lua require("neotest").run.run_last()<CR>
   nnoremap <buffer> <silent> <LocalLeader>ra <Cmd>lua require("neotest").run.run("test")<CR>
-  nnoremap <buffer> <silent> <LocalLeader>rK <Cmd>lua require("neotest").output.open({ enter = true})<CR>
+  " not yet working
+  "nnoremap <buffer> <silent> <LocalLeader>rf <Cmd>lua require("neotest").run.run({extra_args = {"--failed"}})<CR>
+endfunction
 
-  nnoremap <buffer> <silent> <LocalLeader>r<Space> <Cmd>lua require("neotest").summary.toggle()<CR>
+function! s:ElixirMappings() abort
+  call s:CommonMappings()
+endfunction
+
+function! s:ElixirNeotestMappings() abort
+  call s:CommonMappings()
+
+  nnoremap <buffer> <silent> <LocalLeader>rt <Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>
+  nnoremap <buffer> <silent> <LocalLeader>r. <Cmd>lua require("neotest").run.run()<CR>
+  nnoremap <buffer> <silent> <LocalLeader>rK <Cmd>lua require("neotest").output.open({ enter = true})<CR>
 
   nnoremap <buffer> <silent> <LocalLeader>rp <Cmd>lua require("neotest").jump.prev({ status = "failed" })<CR>
   nnoremap <buffer> <silent> <LocalLeader>rn <Cmd>lua require("neotest").jump.next({ status = "failed" })<CR>
@@ -41,6 +53,7 @@ endfunction
 
 augroup bfcElixirNeotest
   autocmd!
+  autocmd BufNewFile,BufReadPost *.ex call s:ElixirMappings()
   autocmd BufNewFile,BufReadPost *_test.exs call s:ElixirNeotestMappings()
   autocmd FileType neotest-summary call s:ElixirNeotestSummary()
 augroup end
