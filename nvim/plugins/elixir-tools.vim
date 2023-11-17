@@ -27,6 +27,7 @@ function! s:ElixirNeotestMappings() abort
   nnoremap <buffer> <silent> <LocalLeader>r. <Cmd>lua require("neotest").run.run()<CR>
   nnoremap <buffer> <silent> <LocalLeader>rr <Cmd>lua require("neotest").run.run_last()<CR>
   nnoremap <buffer> <silent> <LocalLeader>ra <Cmd>lua require("neotest").run.run("test")<CR>
+  nnoremap <buffer> <silent> <LocalLeader>rK <Cmd>lua require("neotest").output.open({ enter = true})<CR>
 
   nnoremap <buffer> <silent> <LocalLeader>r<Space> <Cmd>lua require("neotest").summary.toggle()<CR>
 

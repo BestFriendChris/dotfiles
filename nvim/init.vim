@@ -26,8 +26,8 @@ nmap Q <Cmd>q<CR>
 nmap <Leader>Q <Cmd>bwipeout<CR>
 
 " Navigate between windows easier
-map <C-J> <C-W>j
-map <C-K> <C-W>k
+map <C-J> <C-W>w
+map <C-K> <C-W>W
 
 " Navigate between tabs
 map <C-H> gT
