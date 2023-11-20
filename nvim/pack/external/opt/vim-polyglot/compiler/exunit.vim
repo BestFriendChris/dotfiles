@@ -17,7 +17,6 @@ CompilerSet makeprg=mix\ test
 CompilerSet errorformat=
   \%E\ \ %n)\ %m,
   \%+G\ \ \ \ \ **\ %m,
-  \%+G\ \ \ \ \ stacktrace:,
   \%C\ \ \ \ \ %f:%l,
   \%+G\ \ \ \ \ \ \ (%\\w%\\+)\ %f:%l:\ %m,
   \%+G\ \ \ \ \ \ \ %f:%l:\ %.%#,
