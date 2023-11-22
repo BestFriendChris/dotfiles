@@ -41,6 +41,9 @@ call bfc#plugins#load('zig.vim')
 call bfc#plugins#load('elixir-tools')
 call bfc#plugins#load('bfc-terraform')
 
+call bfc#plugins#load('cfilter')
+call bfc#plugins#load('grep')
+
 function! s:Helptags() abort
   helptags ALL
 endfunction
