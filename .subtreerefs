@@ -20,6 +20,7 @@ vim/obsession,nvim/pack/external/opt/vim-obsession,https://github.com/tpope/vim-
 vim/peekaboo,nvim/pack/external/opt/vim-peekaboo,https://github.com/junegunn/vim-peekaboo.git,master
 vim/plenary,nvim/pack/external/opt/plenary,https://github.com/nvim-lua/plenary.nvim.git,master
 vim/polyglot,nvim/pack/external/opt/vim-polyglot,https://github.com/sheerun/vim-polyglot.git,master
+vim/pqf,nvim/pack/external/opt/pqf,https://github.com/yorickpeterse/nvim-pqf.git,main
 vim/quick-scope,nvim/pack/external/opt/quick-scope,https://github.com/unblevable/quick-scope.git,master
 vim/repeat,nvim/pack/external/opt/vim-repeat,https://github.com/tpope/vim-repeat.git,master
 vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vim-scriptease.git,master
