@@ -5,8 +5,10 @@ call bfc#plugins#load('nvim-treesitter')
 
 call bfc#plugins#load('plenary')
 
+call bfc#plugins#load('bqf')
 call bfc#plugins#load('copilot')
 call bfc#plugins#load('firenvim')
+call bfc#plugins#load('fzf')
 call bfc#plugins#load('lightspeed')
 call bfc#plugins#load('pqf')
 call bfc#plugins#load('quick-scope')
