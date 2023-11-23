@@ -37,6 +37,7 @@ vim/vim-dispatch,nvim/pack/external/opt/vim-dispatch,https://github.com/tpope/vi
 vim/vim-exchange,nvim/pack/external/opt/vim-exchange,https://github.com/tommcdo/vim-exchange.git,master
 vim/vim-floaterm,nvim/pack/external/opt/vim-floaterm,https://github.com/voldikss/vim-floaterm.git,master
 vim/vim-fugitive,nvim/pack/external/opt/vim-fugitive,https://github.com/tpope/vim-fugitive.git,master
+vim/vim-grepper,nvim/pack/external/opt/vim-grepper,https://github.com/mhinz/vim-grepper.git,master
 vim/vim-projectionist,nvim/pack/external/opt/vim-projectionist,https://github.com/tpope/vim-projectionist.git,master
 vim/vim-textobj-user,nvim/pack/external/opt/vim-textobj-user,https://github.com/kana/vim-textobj-user.git,master
 vim/vim-wheel,nvim/pack/external/opt/vim-wheel,https://github.com/preservim/vim-wheel.git,master
