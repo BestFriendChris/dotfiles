@@ -5,6 +5,8 @@ call bfc#plugins#load('nvim-treesitter')
 
 call bfc#plugins#load('plenary')
 
+call bfc#plugins#load('vim-grepper')
+
 call bfc#plugins#load('bqf')
 call bfc#plugins#load('copilot')
 call bfc#plugins#load('firenvim')
