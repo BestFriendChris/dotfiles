@@ -118,6 +118,9 @@ vnoremap <expr> Y "my\"" . v:register . "Y`y"
 " Paste replace visual selection without copying it
 vnoremap <Leader>p "_dP
 
+" Clear quickfix list
+command! Cclear cexpr [] | cclose
+
 "--------------------------------------------------------------------------------
 " AUTOCMD
 "--------------------------------------------------------------------------------
