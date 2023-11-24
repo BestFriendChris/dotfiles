@@ -23,7 +23,7 @@ let maplocalleader=","
 
 " Don't use Ex mode, use Q for quitting when saved
 nmap Q <Cmd>q<CR>
-nmap <Leader>Q <Cmd>bwipeout<CR>
+nmap <Leader>Q <Cmd>bdelete<CR>
 
 " Navigate between windows easier
 map <C-J> <C-W>w
