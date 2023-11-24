@@ -11,24 +11,24 @@ function! s:ToggleWheel() abort
   endif
 
   if b:wheel_enabled
-    nmap <silent> j <Plug>(WheelDown)
-    vmap <silent> j <Plug>(WheelDown)
-    nmap <silent> k <Plug>(WheelUp)
-    vmap <silent> k <Plug>(WheelUp)
-    nmap <silent> h <Plug>(WheelLeft)
-    vmap <silent> h <Plug>(WheelLeft)
-    nmap <silent> l <Plug>(WheelRight)
-    vmap <silent> l <Plug>(WheelRight)
+    nmap <silent><buffer> j <Plug>(WheelDown)
+    vmap <silent><buffer> j <Plug>(WheelDown)
+    nmap <silent><buffer> k <Plug>(WheelUp)
+    vmap <silent><buffer> k <Plug>(WheelUp)
+    nmap <silent><buffer> h <Plug>(WheelLeft)
+    vmap <silent><buffer> h <Plug>(WheelLeft)
+    nmap <silent><buffer> l <Plug>(WheelRight)
+    vmap <silent><buffer> l <Plug>(WheelRight)
     echo "Wheel mode enabled"
   else
-    nunmap j
-    vunmap j
-    nunmap k
-    vunmap k
-    nunmap h
-    vunmap h
-    nunmap l
-    vunmap l
+    nunmap <buffer> j
+    vunmap <buffer> j
+    nunmap <buffer> k
+    vunmap <buffer> k
+    nunmap <buffer> h
+    vunmap <buffer> h
+    nunmap <buffer> l
+    vunmap <buffer> l
     echo "Wheel mode disabled"
   endif
 endfunction
