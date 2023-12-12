@@ -1,3 +1,10 @@
 if has_command neovide; then
   alias gvim='neovide --'
+
+  function gvimf() {
+    files=($(fd . ${1:-} | fzf --multi --select-1 --exit-0))
+    if [[ -n "$files" ]]; then
+      neovide -- -p $files
+    fi
+  }
 fi
