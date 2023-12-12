@@ -18,9 +18,9 @@ CompilerSet errorformat=
   \%E\ \ %n)\ %m,
   \%+G\ \ \ \ \ **\ %m,
   \%C\ \ \ \ \ %f:%l,
-  \%+G\ \ \ \ \ \ \ (%\\w%\\+)\ %f:%l:\ %m,
+  \%+G\ \ \ \ \ \ \ (%*[^)])\ %f:%l:\ %m,
   \%+G\ \ \ \ \ \ \ %f:%l:\ %.%#,
-  \**\ (%\\w%\\+)\ %f:%l:\ %m
+  \**\ (%*[^)])\ %f:%l:\ %m
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

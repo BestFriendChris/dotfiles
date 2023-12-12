@@ -26,7 +26,7 @@ function! s:CommonMappings() abort
   nnoremap <buffer> <silent> \\ <Cmd>:A<CR>
 
   compiler exunit
-  nnoremap <buffer> <silent> `f <Cmd>Focus mix test --failed<CR>:Dispatch<CR>
+  nnoremap <buffer> <silent> 'f <Cmd>Focus mix test --failed<CR>:Dispatch<CR>
 
   " Neotest
   nnoremap <buffer> <silent> <LocalLeader>r<Space> <Cmd>lua require("neotest").summary.toggle()<CR>
@@ -43,7 +43,7 @@ function! s:ElixirTestMappings() abort
 
   let b:dispatch = "mix test %"
 
-  nnoremap <buffer> <silent> <expr> `. ':Focus mix test '.join([expand("%"), line(".")], ":").'<CR>:Dispatch<CR>'
+  nnoremap <buffer> <silent> <expr> '. ':Focus mix test '.join([expand("%"), line(".")], ":").'<CR>:Dispatch<CR>'
 
   " Neotest
   nnoremap <buffer> <silent> <LocalLeader>rt <Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>
