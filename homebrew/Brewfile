@@ -20,6 +20,9 @@ brew "xh"
 brew "zsh"
 
 # Tapped formulas
+tap "owenthereal/candy"
+brew "owenthereal/candy/candy"
+
 tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"
 

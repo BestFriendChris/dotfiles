@@ -29,3 +29,5 @@
 
 - shell:
     - ["nvim --headless +BfcPostInstall +qall", "Installing and Updating vim plugins"]
+    - ["sudo candy setup", "Setting up candy"]
+    - ["brew services start candy", "Starting candy service"]
