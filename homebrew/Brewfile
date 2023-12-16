@@ -25,6 +25,9 @@ brew "jesseduffield/lazygit/lazygit"
 
 brew "hashicorp/tap/terraform-ls"
 
+tap "pkgxdev/made"
+brew "pkgxdev/made/pkgx"
+
 # Cask formulas
 cask "kitty"
 cask "neovide"
