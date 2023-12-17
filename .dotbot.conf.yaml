@@ -9,6 +9,7 @@
       relink: true
 
 - link:
+    ~/.config/atuin: atuin
     ~/.config/git: git/config
     ~/.config/kitty/:
       path: kitty/*
