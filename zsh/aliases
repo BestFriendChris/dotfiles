@@ -31,6 +31,7 @@ fi
 # Git stuff
 if has_command git; then
   alias cdg='cd "$(git root)"'
+  alias pushdg='pushd "$(git root)"'
 fi
 
 # Tmux stuff
