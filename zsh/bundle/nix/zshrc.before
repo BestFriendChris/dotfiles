@@ -1,0 +1,5 @@
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+
+    export NIX_USER_CONF_FILES="$HOME/.config/nix/nix.conf:$BFC_DOTFILES_DIR/nix/nix.conf"
+fi

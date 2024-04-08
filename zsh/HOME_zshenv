@@ -3,6 +3,7 @@ if [ -x /usr/libexec/path_helper ]; then
 fi
 
 export ZDOTDIR="$(echo ~/.zshenv(:A:h))"
+export BFC_DOTFILES_DIR="$(echo $ZDOTDIR(:A:h))"
 
 source $ZDOTDIR/.zshenv
 
