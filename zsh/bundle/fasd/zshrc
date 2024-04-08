@@ -43,23 +43,38 @@ if has_command fasd; then
     v() {
       fasd -fl $* | xargs nvim -p
     }
+    vf() {
+      fasd -fl $* | fzf --multi -1 --no-sort --tac -0 | xargs nvim -p
+    }
   else
     v() {
       fasd -fl $* | xargs vim -p
     }
+    vf() {
+      fasd -fl $* | fzf --multi -1 --no-sort --tac -0 | xargs vim -p
+    }
   fi
 
-  if has_command mvim; then
+  if has_command neovide; then
     vv() {
-      fasd -fl $* | xargs mvim -p
+      fasd -fl $* | xargs neovide -- -p
+    }
+    vvf() {
+      fasd -fl $* | fzf --multi -1 --no-sort --tac -0 | xargs neovide -- -p
     }
   elif has_command vimr; then
     vv() {
       fasd -fl $* | xargs vimr --nvim
     }
-  elif has_command neovide; then
+    vvf() {
+      fasd -fl $* | fzf --multi -1 --no-sort --tac -0 | xargs vimr --nvim
+    }
+  elif has_command mvim; then
     vv() {
-      fasd -fl $* | xargs neovide -- -p
+      fasd -fl $* | xargs mvim -p
+    }
+    vvf() {
+      fasd -fl $* | fzf --multi -1 --no-sort --tac -0 | xargs mvim -p
     }
   fi
 fi
