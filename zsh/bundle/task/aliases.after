@@ -2,10 +2,22 @@
 
 if has_command task; then
   alias t="task"
-  alias ta="task rc.context:"
-  alias tap="task rc.context: pending"
 
-  alias tw="task rc.context:work"
+  function tp {
+    echo "Task project:${_TASK_PROJECT:-}"
+    task project:${_TASK_PROJECT:-} "$@"
+  }
+
+  function tfocus {
+    local project=${1:-}
+    if [[ -z $project ]]; then
+      echo "Unfocused"
+      unset _TASK_PROJECT
+    else
+      echo "Focused on '$project'"
+      export _TASK_PROJECT="${project}"
+    fi
+  }
 fi
 
 # vim:ft=zsh
