@@ -10,6 +10,9 @@ if has_command task; then
 
   function tfocus {
     local project=${1:-}
+    if [[ -z $project ]] && has_command fzf; then
+      project="$(task _projects | fzf)"
+    fi
     if [[ -z $project ]]; then
       echo "Unfocused"
       unset _TASK_PROJECT
