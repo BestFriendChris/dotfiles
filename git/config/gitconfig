@@ -42,7 +42,10 @@
   stashbr = "!git stash push -u -m \"from $(git branch --show-current)\""
   pullr = pull --rebase
   pushup = "!git push --set-upstream origin \"$(git branch --show-current)\""
-  pushf = push --force-with-lease
+  pushf = "!case \"$(git branch --show-current)\" in \
+              main | master) echo \"Cannot force push to $(git branch --show-current)\" >&2; exit 1 ;; \
+              *) git push --force-with-lease ;; \
+            esac"
   rebasedev = !git fetch && git rebase origin/development
   rebasemain = !git fetch && git rebase origin/main
   resetdate = commit --amend --date=now --no-edit --no-verify
@@ -75,5 +78,10 @@
 [fetch]
   prune = true
   pruneTags = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 
 # vim:ft=gitconfig

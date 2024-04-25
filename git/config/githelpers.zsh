@@ -59,6 +59,11 @@ function pretty_git_log {
     gsed -E \
         -e 's_(, )?refs/branchless/[a-f0-9]*( ,)?__g' \
         -e 's/ \(\)//' |
+     # Remove tags and origin refs
+    gsed -E \
+        -e 's_tag: [^, )]*(, )?__g' \
+        -e 's_origin/[^, )]+(, )?__g' \
+        -e 's/ \(\)//' |
     # Replace (2 years, 3 months ago) with (2y)
     gsed -E \
       -e 's/(^[^<]*) ago\)/\1)/' \
@@ -87,5 +92,5 @@ function pretty_git_log {
     tr -d '\t' |
     sed -E 's/[[:space:]]*$//' |
     awk NF |
-    less -FXR --chop-long-lines
+    less -FXR --chop-long-lines -E
 }
