@@ -15,12 +15,12 @@
 # Use the command 'task show' to see all defaults and overrides
 
 # Files
-data.location=~/Dropbox/Apps/Taskwarrior
+# data.location=~/Dropbox/Apps/Taskwarrior
 
 # To use the default location of the XDG directories,
 # move this configuration file from ~/.taskrc to ~/.config/task/taskrc and uncomment below
 
-# data.location=~/.local/share/task
+data.location=~/.local/share/task
 hooks.location=~/.config/task/hooks
 
 # Color theme (uncomment one to use)
@@ -43,4 +43,15 @@ verbose=affected,blank,context,edit,header,footnote,label,new-id,project,special
 
 news.version=2.6.0
 
-report.next.filter=status:pending -WAITING limit:page -BLOCKED
+# Low priority tasks should have lower urgency than no priority ones
+urgency.uda.priority.L.coefficient=-0.5
+
+dateformat.annotation=M/D_H:N -
+weekstart=Monday
+
+report.current.columns=id,depends.indicator,wait.remaining,scheduled.countdown,due.countdown,until.countdown,description
+report.current.labels=ID,D,Wait,S,Due,Until,Description
+report.current.description=The current tasks
+report.current.filter=status:pending -WAITING
+report.current.sort=start-/,urgency-
+

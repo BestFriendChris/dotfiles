@@ -1,11 +1,16 @@
 # Aliases for Taskwarrior (https://taskwarrior.org)
 
 if has_command task; then
-  alias t="task"
+  function t {
+    [[ "${_TASK_CLEAR:-0}" = 1 ]] && clear
+    task "$@"
+  }
 
   function tp {
-    echo "Task project:${_TASK_PROJECT:-}"
-    task project:${_TASK_PROJECT:-} "$@"
+    [[ "${_TASK_CLEAR:-0}" = 1 ]] && clear
+    local project=${_TASK_PROJECT:-}
+    echo "Task project:$project"
+    task project:$project "$@"
   }
 
   function tfocus {
@@ -20,6 +25,81 @@ if has_command task; then
       echo "Focused on '$project'"
       export _TASK_PROJECT="${project}"
     fi
+  }
+
+  function tbrowse {
+    local task_id=${1:-}
+    if [[ -z $task_id ]] then
+      >&2 echo "usage: tbrowse <task_id>"
+      return 1
+    fi
+    local urls=$(task +ANNOTATED "$task_id" export | jq -r '.[]? | .annotations[]? | .description' | grep 'https\?://[^ ]\+')
+    if [[ -z $urls ]]; then
+      >&2 echo "No URLs found in task $task_id"
+      return 0
+    fi
+    echo $urls | fzf | grep -o 'https\?://[^ ]\+' | xargs open
+  }
+
+  function tpbrowse {
+    local project=${_TASK_PROJECT:-}
+    echo "Task project:$project"
+    tbrowse project:$project
+  }
+
+  function tstart {
+    local task_id=${1:-}
+    if [[ -z $task_id ]] then
+      >&2 echo "usage: tstart <task_id> <mods>"
+      return 1
+    fi
+    shift
+    t $task_id start 🏁 "$*"
+  }
+
+  function tstop {
+    local task_id=${1:-}
+    if [[ -z $task_id ]] then
+      >&2 echo "usage: tstop <task_id> <mods>"
+      return 1
+    fi
+    shift
+    t $task_id stop 🛑 "$*"
+  }
+
+  function tcur {
+    local task_id=$(task ids +ACTIVE -BLOCKED)
+    if [[ -z $task_id ]]; then
+      >&2 echo "No active task"
+      return 1
+    fi
+    t $task_id info
+  }
+
+  function tsum {
+    local all_proj_override=""
+    local proj_override=""
+    if [[ "${1:-}" = "-a" ]]; then
+      all_proj_override="rc.list.all.projects=1"
+      shift
+    fi
+    if [[ -n ${1:-} ]]; then
+      proj_override="project:$1"
+    fi
+    t $all_proj_override $proj_override summary
+  }
+
+  function tsubadd {
+    local task_id=${1:-}
+    if [[ -z $task_id ]] then
+      >&2 echo "usage: tsubadd <task_id> <mods>"
+      return 1
+    fi
+    shift
+    local parent_project=$(task $task_id _project)
+    task add project:$parent_project "$*"
+    local new_id=$(task export newest | jq -r '.[0].uuid')
+    task $task_id modify depends:$new_id
   }
 fi
 
