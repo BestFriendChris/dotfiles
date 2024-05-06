@@ -1,5 +1,5 @@
 # General Options
-setopt extended_glob
+# setopt extended_glob
 setopt interactive_comments
 setopt pushd_ignore_dups
 setopt numeric_glob_sort
