@@ -1,0 +1,86 @@
+documentation:
+        ☐ Update readme for new functions to add and remove attributes @priority(high) @v1
+	☐ Finalize updating 'Help' file @priority(low) @v1
+	☐ Add 'change notes' and 'roadmap' or 'towards the future' section in readme? @priority(low) @v1
+
+bug fixes:
+	☐ See issues with user input containing special characters for any task setting or attribute input @priority(high) @v1
+	☐ is there a way to still let a user prevent adding an attribute when inputting the value, using the <ESC> key? @priority(medium)
+	☐ Is there a way to prevent undo from jumping to the attribute you just added? @priority(low)
+	☐ Prevent modification of buffer if no sorting needs to happen (?) @priority(low)
+
+refactoring:
+	☐ You need a function that's responsible for "reading" a line. Every other function will work with this "line datastructure" that already has a state associated with it etc @priority(high) @v1
+	☐ Rename Get/RemoveAttribute since they take a line number whereas SetAttribute doesn't @priority(medium) @v1
+	☐ Any state that's required by MarkTaskAs should be passed to it (see the arguments required for executing the functions necessary for adding attributes) @priority(medium) @v1
+	☐ Change BelongsToProject to GetProject(lineNumber, direction) which returns a tuple/dictionary type object @priority(low) @v1
+	☐ Change BelongsToArchive to GetArchive(lineNumber, direction) which returns a tuple/dictionary type object @priority(low) @v1
+	☐ Would it be possible to not have this be a purely parsing based plugin, but instead have proper datastructures that get persisted to a file?? @priority(low)
+
+testing:
+	☐ Find ways to automatically do regression testing, see vader? @priority(low) @v1
+
+new features:
+	☐ Support dot command @priority(high)
+	☐ Find a way to integrate with markdown? @priority(medium) @v1
+	☐ Support commands (capitalized version of mappings), that will remove the 'worked' attribute (and others?) @priority(medium) @v1
+	☐ Generalize sorting by attribute (allow user to specify a sorting lambda) @priority(medium) @v1
+	☐ Add support for "filtering tasks" which will extract all tasks matching a filter (adding project attribute or not) and putting it in the current cursor's location (has to be under a group header or not). This could be useful to for example to get all tasks due tomorrow to the top of the file (when group header validation is disabled) @priority(medium)
+	☐ Allow user to determine whether tasks need to be associated with a group header or not @priority(medium)
+	☐ Automatically move 'started' tasks to the top of the group header @priority(low)
+	☐ Allow user to customize whether 'started' tasks should be moved to top automatically @priority(low)
+	☐ Allow users to specify whether during sorting empty lines before the first task in a header, and in between tasks need to be removed @priority(low)
+	☐ Add 'created' attribute (?) @priority(low) @v1
+	☐ Add support for absolute due attribute (user will have to enter the date himself) @priority(low)
+	☐ Add support for relative due attribute (user will have to enter the date himself), this will also always add a 'from' attribute or something similar that indicates when the due attribute was added @priority(low)
+	☐ Find out ways to allow for 'tab' completion of dates? @priority(low)
+	☐ Allow users to determine whether tasks should be indented or not compared to the group header @priority(low)
+	☐ Allow the updating of a timestamp (will also be useful to update relative due attributes) @priority(low)
+	☐ Allow the unarchiving of a task @priority(low)
+	☐ Allow the unarchiving of all tasks @priority(low)
+	☐ Support visual selection mode for actions such as marking as done or cancelled, unarchiving, archiving, updating timestamps, transforming into task, sorting,,... @priority(low)
+	☐ Allow actions on group headers which will mark as done or cancelled, archive, unarchive, or update timestamps for all tasks belonging to that group header @priority(low)
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+	✓ Archiving doesn't work properly when file doesn't end in new line @done(2020-04-29 00:30) @project(bug fixes)
+	✓ Currently a task ending in a colon optionally followed by whitespace will result in highlighting as if it's a project header @v1 @done(2019-10-17 22:53) @project(bug fixes)
+	✓ Currently you can't add any whitespace after a project header, or it will lose its syntax highlighting @priority(critical) @done(2019-10-14 22:48) @project(bug fixes)
+	✓ When removing an attribute, and not inputting anything, it will remove a space between the end of the task description and the first attribute... @priority(critical) @done(2019-10-14 22:38) @project(bug fixes)
+	✓ Currently it is possible to add attributes to non-task lines @priority(high) @done(2019-10-14 22:25) @project(bug fixes)
+	✓ Allow the action of adding an attribute to be cancelled with a single escape key @done(2019-10-14 22:28) @project(bug fixes)
+  ✓ Prevent empty attributes from being added @priority(high) @done(2019-10-14 00:31) @project(bug fixes)
+  ✓ Is it possible to support adding and removing attributes in a more general way? @priority(high) @done(2019-10-13 22:59) @project(new features)
+	✓ Bug when sorting tasks, first group header, task without priority is removed and duplicates are added ?? @priority(critical) @done(2019-10-13 00:25) @project(bug fixes)
+	✓ Update 'Help' documentation to reflect changes and new features @priority(low) @done(2019-10-13 00:10) @project(documentation)
+	✘ You can copy paste a task above the Archive header, and then complete it @priority(low) @cancelled(2019-10-12 21:18) @project(bug fixes)
+	✓ Currently it's necessary to always have at least one empty line before a nested group header, because otherwise it will result in a wrong indendation @priority(medium) @done(2019-10-12 21:08) @project(bug fixes) @worked(4min)
+	✓ It's possible to create a task above the first group header when it is not on the first line @priority(low) @done(2019-10-12 21:13) @project(bug fixes)
+	✓ When changing from in progress to another state, it should add the 'worked' attribute @priority(medium) @done(2019-10-12 19:47) @project(new features)
+	✓ When sorting tasks on priority, duplicates are sometimes created... It seems to happen when you have empty lines below the group header or in between tasks @priority(critical) @done(2019-10-12 19:39) @project(bug fixes) @worked(1h39min)
+	✓ Sorting tasks doesn't work when there's no archive section yet... ?? @priority(critical) @done(2019-10-12 18:20) @project(bug fixes) @worked(1min)
+	✓ Prevent cursor from moving when marking a task as done, cancelled, or started @priority(high) @done(2019-10-12 17:58) @project(bug fixes) @worked(1min)
+	✓ Update issue with 'after' directory in readme @done(2019-10-12 17:49) @project(documentation) @worked(1min)
+	✓ Update missing 'silent!' in 'after\ftplugin\tasks.vim` in readme? @done(2019-10-12 17:49) @project(documentation) @worked(1min)
+	✓ Fix worked attribute having 0 minutes in case you finish it in less than 1 minute. By default it should add 1 minute @priority(medium) @done(2019-10-12 17:53) @project(bug fixes)
+	✓ Add a 'worked' attribute when a task is changed from 'inprogress' to any other state. This can help with tracking time. @priority(high) @done(2019-10-12 16:58) @project(new features) @worked(1h1min)
+	✓ Add support for new task state 'started' that will then add a 'started' attribute when in progress @priority(high) @done(2019-10-09 22:47) @project(new features)
+	✓ Prevent cursor from jumping when archiving tasks in case no tasks are archived (?) @priority(low) @done(2019-10-09 20:10) @project(bug fixes)
+	✓ Allow users to easily remap mappings @priority(high) @done(2019-10-06 22:42) @project(refactoring)
+	✓ Fix bug preventing TaskComplete or TaskCancel from toggling when used on a done or cancelled task @priority(critical) @done(2019-10-06 17:12) @project(bug fixes)
+	✓ Currently a line is a task if it has a marker in it, anywhere. A task should instead be optional whitespace, followed by a marker, followed by optional text @priority(medium) @done(2019-10-06 17:12) @project(bug fixes)
+	✓ Allow a regular line to be turned into a task @priority(high) @done(2019-10-06 15:49) @project(new features)
+	✓ Fix marking task with priority causing cursor to jump @priority(high) @done(2019-10-06 13:47) @project(bug fixes)
+	✓ Add support for commands that can sort on importance attribute @priority(high) @done(2019-10-06 13:48) @project(new features)
+	✓ Allow toggling of priority attributes and adding another priority should remove the other existing priority attribute (you will have to write a new function) @priority(critical) @done(2019-10-05 16:39) @project(new features)
+	✓ Add support for priority attribute (low, middle, high, critical) @done(2019-10-04 23:31) @project(new features)
+	✓ Remove namespace pollution by functions that shouldn't be exposed @done(2019-10-04 22:44) @project(refactoring)
+	✓ Don't issue error messages, just don't do anything since they're annoying... @done(2019-10-03 21:27) @project(refactoring)
+	✓ Prevent errors when GetProjects returns empty list @done(2019-10-03 21:16) @project(bug fixes)
+	✓ Fix project attribute addition in nested tasks @done(2019-10-03 19:13) @project(bug fixes)
+	✓ Refactor TaskComplete and TaskCancel to use a single function MarkTaskAs @done(2019-10-03 19:13) @project(refactoring)
+	✓ Consistent indendation on new tasks regardless of project's indendation and its nesting level @done(2019-10-02 19:06) @project(bug fixes)
+	✓ Prevent creation of new tasks inside archive section @done(2019-10-02 17:54) @project(bug fixes)
+	✓ Prevent creation of a task above a group header that doesn't belong to any group @done(2019-10-02 14:51) @project(bug fixes)
+	✓ Anythingwith a colon should only be considered a group header when it's at the start of a new line, or there's only whitespace in front of it @done(2019-10-02 14:51) @project(bug fixes)
+	✓ Fix archiving to not result in an error when the file doesn't end in a newline @done(2019-10-02 15:44) @project(bug fixes)
