@@ -63,6 +63,8 @@ function pretty_git_log {
     gsed -E \
         -e 's_tag: [^, )]*(, )?__g' \
         -e 's_origin/[^, )]+(, )?__g' \
+        -e 's/,\s*\)/)/' \
+        -e 's/\(\s*,/(/' \
         -e 's/ \(\)//' |
     # Replace (2 years, 3 months ago) with (2y)
     gsed -E \
