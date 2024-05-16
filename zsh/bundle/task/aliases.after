@@ -83,7 +83,7 @@ if has_command task; then
     local all_proj_override=""
     local proj_override=""
     if [[ "${1:-}" = "-a" ]]; then
-      all_proj_override="rc.list.all.projects=1"
+      all_proj_override="rc.summary.all.projects=1"
       shift
     fi
     if [[ -n ${1:-} ]]; then
