@@ -1,5 +1,3 @@
-eval "$(starship init zsh)"
-
 # setopt prompt_subst
 
 # # define colors
