@@ -55,3 +55,4 @@ report.current.description=The current tasks
 report.current.filter=status:pending -WAITING
 report.current.sort=start-/,urgency-
 
+list.all.tags=1
