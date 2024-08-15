@@ -1,7 +1,0 @@
-if has_command pkgx; then
-  source <(pkgx --shellcode)  #docs.pkgx.sh/shellcode
-
-  function manp {
-    pkgx +$1 -- man $1
-  }
-fi
