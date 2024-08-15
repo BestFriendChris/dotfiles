@@ -8,17 +8,17 @@ if has_command fasd; then
 
   if has_command fzf; then
     unalias s sd sf 2>/dev/null
-    s() {
-      fasd -Rl $* | fzf -e -1 -0 --no-sort +m
-    }
-
-    sd() {
-      fasd -Rld $* | fzf -e -1 -0 --no-sort +m
-    }
-
-    sf() {
-      fasd -Rlf $* | fzf -e -1 -0 --no-sort +m
-    }
+    # s() {
+    #   fasd -Rl $* | fzf -e -1 -0 --no-sort +m
+    # }
+    #
+    # sd() {
+    #   fasd -Rld $* | fzf -e -1 -0 --no-sort +m
+    # }
+    #
+    # sf() {
+    #   fasd -Rlf $* | fzf -e -1 -0 --no-sort +m
+    # }
 
     alias f="fasd -fl"
     alias d="fasd -dl"
