@@ -1,19 +1,16 @@
-if has_command openssl; then
-  cert_info() {
-    local servername
-    if [[ -z "$1" ]]; then
-      echo "Usage: $0 SERVER_NAME" >&2
-      return 1
-    fi
-    servername=$1
-    echo \
-      | openssl s_client \
-                -showcerts \
-                -servername ${servername} \
-                -connect ${servername}:443 \
-                2>/dev/null \
-      | openssl x509 -inform pem -noout -text
-  }
-fi
+cert_info() {
+  local servername
+  servername=${1:-}
+  if [[ -z "$servername" ]]; then
+    echo "Usage: $0 SERVER_NAME" >&2
+    return 1
+  elif [[ "$servername" != http* ]]; then
+    servername="https://$servername"
+  fi
+  curl -w %{certs} --silent -o /dev/null $servername \
+    | grep "^Subject\|^Issuer\|^Start\|^Expire\|END CERTIFICATE" \
+    | sed -e '/END CERTIFICATE/s/.*/ ◊ /' -e 's/:/:◊/' \
+    | column -t -s '◊'
+}
 
 # vim:ft=zsh
