@@ -22,6 +22,7 @@
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
     ~/.vscodevimrc: vscode/HOME_vscodevimrc
+    ~/.jjconfig.toml: jj/jjconfig.toml
 
 - brewfile:
     file: homebrew/Brewfile

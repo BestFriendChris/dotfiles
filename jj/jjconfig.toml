@@ -1,0 +1,33 @@
+[ui]
+default-command = "log"
+
+[template-aliases]
+# Username part of the email address
+'format_short_signature(signature)' = 'signature.username()'
+
+[revset-aliases]
+'thisofftrunk()' = 'trunk()..@ | (..trunk() ~ ..@) | latest(..trunk() & ..@)'
+
+# found at https://ofcr.se/jujutsu-merge-workflow
+#   usage: jj rebase -s 'all:roots(allofftrunk())' -d main
+#   will rebase all
+'allofftrunk()' = 'trunk()..@'
+
+
+# found at https://reasonablypolymorphic.com/blog/jj-strategy/index.html
+'accordion()' = '@ | bases | branches | curbranch::@ | @::nextbranch | downstream(@, branchesandheads)'
+'bases' = 'trunk()'
+'downstream(x,y)' = '(x::y) & y'
+'branches' = 'downstream(trunk(), branches()) & mine()'
+'branchesandheads' = 'branches | (heads(trunk()::) & mine())'
+'curbranch' = 'latest(branches::@- & branches)'
+'nextbranch' = 'roots(@:: & branchesandheads)'
+
+[aliases]
+h = ["log", "-r", "@-"]
+l = ["log", "-r", 'thisofftrunk()']
+r = ["log", "-r", "::@", "--limit", "10"]
+
+[git]
+private-commits = "description(glob:'private:*') | description(glob:'local:*')"
+
