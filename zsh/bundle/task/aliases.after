@@ -27,24 +27,39 @@ if has_command task; then
     fi
   }
 
+  function t.duetoday {
+    t +DUETODAY "$@"
+  }
+
   function t.browse {
     local task_id=${1:-}
     if [[ -z $task_id ]] then
-      >&2 echo "usage: t.browse <task_id>"
-      return 1
+      task_id=$(task ids)
     fi
-    local urls=$(task +ANNOTATED "$task_id" export | jq -r '.[]? | .annotations[]? | .description' | grep 'https\?://[^ ]\+')
+    local urls=$(
+      task +ANNOTATED "$task_id" export \
+        | jq -r '.[]? | "\(.uuid)◊\(.description)§\(.annotations[]? | .description)√"' \
+        | grep 'https\?://[^ ]\+'
+    )
     if [[ -z $urls ]]; then
       >&2 echo "No URLs found in task $task_id"
       return 0
     fi
-    echo $urls | fzf | grep -o 'https\?://[^ ]\+' | xargs open
+    local me="$ZDOTDIR/bundle/task/aliases.after"
+    echo $urls \
+      | sed 's/§/\n  /' \
+      | tr '√' '\0' \
+      | fzf --height 100% -d '◊' --with-nth=2 --reverse --read0 --no-hscroll --preview-window up:5 \
+      --preview "source $me; t.info \$(echo {} | grep -o '^[0-9a-fA-F]*')" \
+      | grep -o 'https\?://[^ ]\+' \
+      | xargs open
   }
 
   function tp.browse {
     local project=${_TASK_PROJECT:-}
     echo "Task project:$project"
-    t.browse project:$project
+    local task_ids=$(task project:$project ids)
+    t.browse $task_ids
   }
 
   function t.go {
@@ -67,6 +82,17 @@ if has_command task; then
     t $task_id stop 🛑 "$*"
   }
 
+  function t.info {
+    local task_id=${1:-}
+    if [[ -z $task_id ]] then
+      >&2 echo "usage: t.info <task_id>"
+      return 1
+    fi
+    task $task_id export | \
+      jq -r '.[]? | "\(.id) - \(.description) (proj:\(.project))", (.annotations[]? | "        \(.description)")' | \
+      sed -E 's,https?://[^ ]+,[URL],g'
+  }
+
   function t.cur {
     local task_id=$(task ids +ACTIVE -BLOCKED)
     if [[ -z $task_id ]]; then
@@ -74,9 +100,16 @@ if has_command task; then
       return 1
     fi
     [[ "${_TASK_CLEAR:-0}" = 1 ]] && clear
-    task $task_id export | \
-      jq -r '.[]? | "\(.id) - \(.description) (proj:\(.project))", (.annotations[]? | "        \(.description)")' | \
-      sed -E 's,https?://[^ ]+,[URL],g'
+    t.info $task_id
+  }
+
+  function t.cur.browse {
+    local task_id=$(task ids +ACTIVE -BLOCKED)
+    if [[ -z $task_id ]]; then
+      >&2 echo "No active task"
+      return 1
+    fi
+    t.browse $task_id
   }
 
   function t.sum {
@@ -100,7 +133,7 @@ if has_command task; then
     fi
     shift
     local parent_project=$(task $task_id _project)
-    task add project:$parent_project "$*"
+    task add project:$parent_project $*
     local new_id=$(task export newest | jq -r '.[0].id')
     task $task_id modify depends:$new_id
     echo "Created subtask $new_id"
