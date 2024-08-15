@@ -185,14 +185,12 @@ format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
 command = '''
 jj log -r@ --limit 1 --ignore-working-copy --no-graph --color always  -T '
   separate(" ",
-    if(hidden,
-      label("hidden",
-        change_id.shortest(4) ++ " hidden"
-      ),
-      label(if(divergent, "divergent"),
-        change_id.shortest(4) ++ if(divergent, "??")
-      )
-    ),
+    if(conflict, label("conflict",  "⊗")),
+    coalesce(
+      if(hidden, label("hidden", change_id.shortest(4) ++ " hidden")),
+      if(divergent, label("divergent", change_id.shortest(4) ++ "??")),
+      change_id.shortest(4),
+    )
   )
 '
 jj log -r@ --limit 1 --no-graph -T "" --stat --color always | tail -n1 | sd '(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)' '\033[1;36m(${1}m)\033[0m' | sd '\(0m\)' '' | sd "\n" " "
