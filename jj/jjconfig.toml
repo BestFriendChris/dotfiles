@@ -29,7 +29,7 @@ lh = ["log", "-r", "@-"]
 r = ["log", "-r", "::@", "--limit", "10"]
 
 [git]
-private-commits = "description(glob:'private:*') | description(glob:'local:*')"
+private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*')"
 
 [templates]
 draft_commit_description = '''
