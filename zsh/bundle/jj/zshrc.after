@@ -5,4 +5,51 @@ if has_command jj; then
     local cur_main=$(jj log -r 'trunk()' --limit 1 -T 'change_id' --no-graph --color never --quiet --ignore-working-copy)
     jj git fetch && jj log -r "$cur_main..trunk()"
   }
+
+  function jj.pull() {
+    jj.fetch && jj rebase -d 'trunk()'
+  }
+
+  function jj.br.move() {
+    local to="$1"
+    local query="$2"
+    if [[ -z "$to" ]]; then
+      jj log --ignore-working-copy --quiet
+      echo -n "Move branch to where: "; read to
+      [[ -z "$to" ]] && return 0
+    fi
+
+    local branch=$(
+      jj branch list -T 'name' --ignore-working-copy --quiet \
+        | fzf -e --prompt "branch> " --layout reverse --preview-window down --query "$query" --preview "
+            jj log \
+              --ignore-working-copy \
+              --quiet \
+              -r 'ancestors(branches(\"{}\"), 3)' \
+              --color always \
+              -T 'separate(\" \", author.username(), author.timestamp(), description.first_line())'"
+      )
+    if [[ -n "$branch" ]]; then
+      echo "Moving $branch"
+      jj branch move $branch --to $to
+    fi
+  }
+
+  function jj.br.track() {
+    local query="$1"
+    local branch=$(
+      jj branch list -a -T 'if(remote && !tracked, name ++ "@" ++ remote ++ "\n")' --ignore-working-copy --quiet \
+        | fzf -e -d @ --query "$query" --preview "
+            jj log \
+              --ignore-working-copy \
+              --quiet \
+              -r 'ancestors(remote_branches(\"{1}\", \"{2}\"), 3)' \
+              --color always \
+              -T 'separate(\"\n\", author.username() ++ \" \" ++ author.timestamp(), description.first_line())'"
+    )
+    if [[ -n "$branch" ]]; then
+      echo "Tracking $branch"
+      jj branch track $branch
+    fi
+  }
 fi
