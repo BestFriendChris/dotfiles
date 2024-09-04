@@ -1,6 +1,7 @@
 brew "asdf"
 brew "atuin"
 brew "coreutils"
+brew "ctags"
 brew "bat"
 brew "broot"
 brew "fd"

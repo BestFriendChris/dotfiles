@@ -2,3 +2,4 @@ bfc_*
 Session*.vim
 .elixir-tools
 .jj/
+tags

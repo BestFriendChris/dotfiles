@@ -23,6 +23,7 @@
     ~/.zshenv: zsh/HOME_zshenv
     ~/.vscodevimrc: vscode/HOME_vscodevimrc
     ~/.jjconfig.toml: jj/jjconfig.toml
+    ~/.ctags: ctags/HOME_ctags
 
 - brewfile:
     file: homebrew/Brewfile
