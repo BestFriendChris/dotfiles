@@ -83,9 +83,9 @@ if !exists("g:no_plugin_maps") && !exists("g:no_cobol_maps")
     vnoremap <silent> <buffer> < :call CobolIndentBlock(-v:count1)<CR>
     inoremap <silent> <buffer> <C-T> <C-R>=<SID>IncreaseIndent()<CR><C-R>=<SID>RestoreShiftwidth()<CR>
     inoremap <silent> <buffer> <C-D> <C-R>=<SID>DecreaseIndent()<CR><C-R>=<SID>RestoreShiftwidth()<CR>
-    if !maparg("<Tab>","i")
-        inoremap <silent> <buffer> <Tab> <C-R>=<SID>Tab()<CR><C-R>=<SID>RestoreShiftwidth()<CR>
-    endif
+    "if !maparg("<Tab>","i")
+    "    inoremap <silent> <buffer> <Tab> <C-R>=<SID>Tab()<CR><C-R>=<SID>RestoreShiftwidth()<CR>
+    "endif
     noremap <silent> <buffer> [[ m':call search('\c^\%(\s*\<Bar>.\{6\}\s\+\)\zs[A-Za-z0-9-]\+\s\+\%(division\<Bar>section\)\s*\.','bW')<CR>
     noremap <silent> <buffer> ]] m':call search('\c^\%(\s*\<Bar>.\{6\}\s\+\)\zs[A-Za-z0-9-]\+\s\+\%(division\<Bar>section\)\.','W')<CR>
     noremap <silent> <buffer> [] m':call <SID>toend('b')<CR>
