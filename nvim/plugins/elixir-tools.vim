@@ -45,6 +45,7 @@ function! s:ElixirTestMappings() abort
   let b:dispatch = "mix test %"
 
   nnoremap <buffer> <silent> <expr> '. ':Focus mix test '.join([expand("%"), line(".")], ":").'<CR>:Dispatch<CR>'
+  nnoremap <buffer> <silent> <expr> '% ':Focus mix test '.expand("%:h").'<CR>:Dispatch<CR>'
 
   " Neotest
   nnoremap <buffer> <silent> <LocalLeader>rt <Cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>
