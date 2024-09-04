@@ -11,6 +11,8 @@ $status\
 $sudo\
 $character"""
 
+command_timeout = 1000 # ms
+
 add_newline = false
 
 [character]
