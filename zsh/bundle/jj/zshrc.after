@@ -20,7 +20,7 @@ if has_command jj; then
     fi
 
     local branch=$(
-      jj branch list -T 'name' --ignore-working-copy --quiet \
+      jj branch list -T 'if(!remote, name ++ "\n")' --ignore-working-copy --quiet \
         | fzf -e --prompt "branch> " --layout reverse --preview-window down --query "$query" --preview "
             jj log \
               --ignore-working-copy \
