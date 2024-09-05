@@ -1,1 +1,3 @@
-alias ctags="$(brew --prefix)/bin/ctags"
+if [[ -x "$(brew --prefix)/bin/ctags" ]]; then
+  alias ctags="$(brew --prefix)/bin/ctags"
+fi
