@@ -1,5 +1,6 @@
 [ui]
 default-command = "log"
+movement.edit = true
 
 [template-aliases]
 # Username part of the email address
