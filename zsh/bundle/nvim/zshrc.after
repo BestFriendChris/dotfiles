@@ -1,0 +1,11 @@
+if has_command neovide; then
+
+  if has_command fzf; then
+    function nvimf() {
+      files=($(fd . ${1:-} | fzf --query "${2:-}" --multi --select-1 --exit-0))
+      if [[ -n "$files" ]]; then
+        nvim -p $files
+      fi
+    }
+  fi
+fi
