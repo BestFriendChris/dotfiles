@@ -2,5 +2,8 @@ typeset -Ux PATH path
 typeset -Ux FPATH fpath
 export EDITOR=nvim
 
+# Allow local completions
+fpath=(./.zsh_completions $fpath)
+
 # OSX defaults to a ulimit of 256
 ulimit -n 2048
