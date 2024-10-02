@@ -2,6 +2,10 @@
 default-command = "log"
 movement.edit = true
 
+[ui.diff]
+format = "git"
+tool = ["difft", "--color=always", "$left", "$right"]
+
 [template-aliases]
 # Username part of the email address
 'format_short_signature(signature)' = 'signature.username()'
