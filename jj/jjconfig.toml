@@ -34,7 +34,7 @@ lh = ["log", "-r", "@-"]
 r = ["log", "-r", "::@", "--limit", "10"]
 
 [git]
-private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*')"
+private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*') | description(glob:'wip:*')"
 
 [templates]
 draft_commit_description = '''
