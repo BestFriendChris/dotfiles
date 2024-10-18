@@ -16,7 +16,7 @@ zstyle ':completion:*:descriptions' format %d
 zstyle ':completion:*:descriptions' format %B%d%b        # bold
 
 autoload -Uz compinit
-compinit
+compinit -u
 # End of lines added by compinstall
 
 # vim:ft=zsh
