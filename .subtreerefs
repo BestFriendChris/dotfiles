@@ -3,6 +3,7 @@ dotbot/brewfile,.dotbot-plugins/brewfile,https://github.com/sobolevn/dotbot-brew
 vim-go,nvim/pack/external/opt/vim-go,https://github.com/fatih/vim-go.git,master
 vim/bqf,nvim/pack/external/opt/bqf,https://github.com/kevinhwang91/nvim-bqf.git,main
 vim/commentary,nvim/pack/external/opt/vim-commentary,https://github.com/tpope/vim-commentary.git,master
+vim/conform,nvim/pack/external/opt/conform,https://github.com/stevearc/conform.nvim.git,master
 vim/context-commentstring,nvim/pack/external/opt/vim-context-commentstring,https://github.com/suy/vim-context-commentstring.git,master
 vim/copilot,nvim/pack/external/opt/copilot,https://github.com/github/copilot.vim.git,release
 vim/dracula,nvim/pack/external/opt/dracula,git@github.com:dracula/vim.git,master
