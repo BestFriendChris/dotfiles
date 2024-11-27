@@ -11,7 +11,7 @@ function! s:ElixirToolsSetup() abort
     },
     elixirls = {
       enable = true,
-      tag = "v0.20.0",
+      tag = "v0.24.1",
       settings = elixirls.settings {
         dialyzerEnabled = false,
         enableTestLenses = false,
