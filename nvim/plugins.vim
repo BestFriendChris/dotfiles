@@ -40,6 +40,7 @@ call bfc#plugins#load('vim-surround')
 call bfc#plugins#load('vim-tasks')
 call bfc#plugins#load('vim-textobj-user')
 call bfc#plugins#load('vim-unimpaired')
+call bfc#plugins#load('vim-vinegar')
 call bfc#plugins#load('vim-wheel')
 
 call bfc#plugins#load('neotest')
