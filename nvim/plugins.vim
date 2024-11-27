@@ -43,8 +43,6 @@ call bfc#plugins#load('vim-unimpaired')
 call bfc#plugins#load('vim-vinegar')
 call bfc#plugins#load('vim-wheel')
 
-call bfc#plugins#load('neotest')
-
 " Languages
 call bfc#plugins#load('nvim-lspconfig')
 call bfc#plugins#load('zig.vim')
