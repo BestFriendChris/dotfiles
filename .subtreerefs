@@ -40,6 +40,6 @@ vim/vim-pencil,nvim/pack/external/opt/vim-pencil,https://github.com/preservim/vi
 vim/vim-projectionist,nvim/pack/external/opt/vim-projectionist,https://github.com/tpope/vim-projectionist.git,master
 vim/vim-tasks,nvim/pack/external/opt/vim-tasks,https://github.com/CrispyDrone/vim-tasks,d03249c69b0cf07aa95a47a63c6c8e5ccec51662
 vim/vim-textobj-user,nvim/pack/external/opt/vim-textobj-user,https://github.com/kana/vim-textobj-user.git,master
-vim/vim-vinegar,nvim/pack/external/opt/vim-vinegar,https://github.com/tpope/vim-vinegar.git,bb1bcddf43cfebe05eb565a84ab069b357d0b3d6
+vim/vim-vinegar,nvim/pack/external/opt/vim-vinegar,https://github.com/tpope/vim-vinegar.git,master
 vim/vim-wheel,nvim/pack/external/opt/vim-wheel,https://github.com/preservim/vim-wheel.git,master
 vim/zig,nvim/pack/external/opt/zig.vim,https://github.com/ziglang/zig.vim,master
