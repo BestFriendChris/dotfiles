@@ -1,57 +1,60 @@
 ; Variables
-
 (identifier) @variable
 
 ; Types
-
 (type) @type
 
 (scoped_type_identifier
-  (identifier) . (identifier) @type)
+  (identifier)
+  .
+  (identifier) @type)
 
 (struct_literal
-  . (identifier) @type)
+  .
+  (identifier) @type)
 
 (builtin_type) @type.builtin
 
 ; Constants
-
 ((identifier) @constant
   (#lua-match? @constant "^[A-Z_]+$"))
 
 ; Includes
-
 [
   "use"
-] @include
+  "export"
+] @keyword.import
 
 (use_statement
   (scoped_type_identifier
-    (identifier) @namespace))
+    (identifier) @module))
+
 (use_statement
-  (identifier) @namespace  "{")
+  (identifier) @module
+  "{")
+
 (use_statement
-  . (identifier) @namespace .)
+  .
+  (identifier) @module .)
 
 ((scoped_type_identifier
-  path: (_) @namespace)
-  (#set! "priority" 105))
+  path: (_) @module)
+  (#set! priority 105))
 
 ; Keywords
-
 [
   "def"
-  "enum"
-  "export"
   "let"
-  "struct"
-  "type"
-  "union"
 ] @keyword
 
 [
-  "fn"
-] @keyword.function
+  "enum"
+  "struct"
+  "union"
+  "type"
+] @keyword.type
+
+"fn" @keyword.function
 
 [
   "defer"
@@ -65,20 +68,20 @@
 ] @keyword.operator
 
 ; Typedefs
-
 (type_declaration
-  "type" (identifier) @type.definition . "=")
+  "type"
+  (identifier) @type.definition
+  .
+  "=")
 
 ; Qualifiers
-
 [
   "const"
   "static"
   "nullable"
-] @type.qualifier
+] @keyword.modifier
 
 ; Attributes
-
 [
   "@fini"
   "@init"
@@ -89,62 +92,72 @@
 ] @attribute
 
 ; Labels
-
 ((label) @label
-  (#set! "priority" 105))
+  (#set! priority 105))
 
 ; Functions
-
 (function_declaration
-  "fn" . (identifier) @function)
+  "fn"
+  .
+  (identifier) @function)
 
 (call_expression
-  . (identifier) @function.call)
+  .
+  (identifier) @function.call)
 
 (call_expression
-  . (scoped_type_identifier
-    . (identifier) . "::" . (identifier) @method.call))
+  .
+  (scoped_type_identifier
+    .
+    (identifier)
+    .
+    "::"
+    .
+    (identifier) @function.method.call))
 
 ((call_expression
-  . (identifier) @function.builtin)
+  .
+  (identifier) @function.builtin)
   (#any-of? @function.builtin "align" "assert" "free" "len" "offset" "size"))
 
 (size_expression
   "size" @function.builtin)
 
 ((function_declaration
-  "fn" . (identifier) @constructor)
+  "fn"
+  .
+  (identifier) @constructor)
   (#eq? @constructor "init"))
 
 ((call_expression
-  . (identifier) @constructor)
+  .
+  (identifier) @constructor)
   (#eq? @constructor "init"))
 
 ; Parameters
-
 (parameter
-  (_) @parameter . ":")
+  (_) @variable.parameter
+  .
+  ":")
 
 ; Fields
-
 ((member_expression
-  "." (_) @field)
-  (#set! "priority" 105))
+  "."
+  (_) @variable.member)
+  (#set! priority 105))
 
 (field
-  . (identifier) @field)
+  .
+  (identifier) @variable.member)
 
 (field_assignment
-  . (identifier) @field)
+  .
+  (identifier) @variable.member)
 
 ; Repeats
-
-[
-  "for"
-] @repeat
+"for" @keyword.repeat
 
 ; Conditionals
-
 [
   "if"
   "else"
@@ -152,10 +165,9 @@
   "switch"
   "match"
   "case"
-] @conditional
+] @keyword.conditional
 
 ; Operators
-
 [
   "+"
   "-"
@@ -196,12 +208,20 @@
 ] @operator
 
 ; Punctuation
+[
+  "{"
+  "}"
+] @punctuation.bracket
 
-[ "{" "}" ] @punctuation.bracket
+[
+  "["
+  "]"
+] @punctuation.bracket
 
-[ "[" "]" ] @punctuation.bracket
-
-[ "(" ")" ] @punctuation.bracket
+[
+  "("
+  ")"
+] @punctuation.bracket
 
 [
   ".."
@@ -209,11 +229,14 @@
   "_"
 ] @punctuation.special
 
-(pointer_type "*" @punctuation.special)
+(pointer_type
+  "*" @punctuation.special)
 
-(slice_type "*" @punctuation.special)
+(slice_type
+  "*" @punctuation.special)
 
-(error_type "!" @punctuation.special)
+(error_type
+  "!" @punctuation.special)
 
 [
   ","
@@ -225,7 +248,6 @@
 ] @punctuation.delimiter
 
 ; Literals
-
 [
   (string)
   (raw_string)
@@ -237,7 +259,7 @@
 
 (number) @number
 
-(float) @float
+(float) @number.float
 
 (boolean) @boolean
 
@@ -247,5 +269,4 @@
 ] @constant.builtin
 
 ; Comments
-
 (comment) @comment @spell

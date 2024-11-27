@@ -24,12 +24,15 @@
   "triangleadj"
   "lineadj"
   "triangle"
-] @type.qualifier
+] @keyword.modifier
 
-(
-  (identifier) @variable.builtin
-  (#lua-match? @variable.builtin "^SV_")
-)
+((identifier) @variable.builtin
+  (#lua-match? @variable.builtin "^SV_"))
 
 (hlsl_attribute) @attribute
-(hlsl_attribute ["[" "]"] @attribute)
+
+(hlsl_attribute
+  [
+    "["
+    "]"
+  ] @attribute)

@@ -1,141 +1,148 @@
-; highlights.scm
-
 ; Literals
 (integer) @number
 
-(float) @float
+(float) @number.float
 
 (complex) @number
 
 (string) @string
-(string (escape_sequence) @string.escape)
 
+(string
+  (string_content
+    (escape_sequence) @string.escape))
+
+; Comments
 (comment) @comment @spell
 
-((program . (comment) @preproc)
-  (#lua-match? @preproc "^#!/"))
-
-(identifier) @variable
-
-((dollar (identifier) @variable.builtin)
- (#eq? @variable.builtin "self"))
-
-((dollar _ (identifier) @field))
-
-; Parameters
-
-(formal_parameters (identifier) @parameter)
-
-(formal_parameters
- (default_parameter name: (identifier) @parameter))
-
-(default_argument name: (identifier) @parameter)
-
-; Namespace
-
-(namespace_get namespace: (identifier) @namespace)
-(namespace_get_internal namespace: (identifier) @namespace)
+((program
+  .
+  (comment) @keyword.directive @nospell)
+  (#lua-match? @keyword.directive "^#!/"))
 
 ; Operators
 [
- "="
- "<-"
- "<<-"
- "->"
-] @operator
-
-(unary operator: [
-  "-"
-  "+"
-  "!"
-  "~"
   "?"
-] @operator)
-
-(binary operator: [
-  "-"
-  "+"
-  "*"
-  "/"
-  "^"
-  "<"
-  ">"
-  "<="
-  ">="
-  "=="
-  "!="
+  ":="
+  "="
+  "<-"
+  "<<-"
+  "->"
+  "->>"
+  "~"
+  "|>"
   "||"
   "|"
   "&&"
   "&"
+  "<"
+  "<="
+  ">"
+  ">="
+  "=="
+  "!="
+  "+"
+  "-"
+  "*"
+  "/"
+  "::"
+  ":::"
+  "**"
+  "^"
+  "$"
+  "@"
   ":"
-  "~"
-] @operator)
-
-[
-  "|>"
-  (special)
+  "!"
+  "special"
 ] @operator
 
-(lambda_function "\\" @operator)
-
+; Punctuation
 [
- "("
- ")"
- "["
- "]"
- "{"
- "}"
+  "("
+  ")"
+  "{"
+  "}"
+  "["
+  "]"
+  "[["
+  "]]"
 ] @punctuation.bracket
 
-(dollar _ "$" @operator)
+(comma) @punctuation.delimiter
 
-(subset2
-  "[[" @punctuation.bracket
-  "]]" @punctuation.bracket)
+; Variables
+(identifier) @variable
 
-[
- (dots)
- (break)
- (next)
-] @keyword
+; Functions
+(binary_operator
+  lhs: (identifier) @function
+  operator: "<-"
+  rhs: (function_definition))
 
-[
-  (nan)
-  (na)
-  (null)
-  (inf)
-] @constant.builtin
+(binary_operator
+  lhs: (identifier) @function
+  operator: "="
+  rhs: (function_definition))
+
+; Calls
+(call
+  function: (identifier) @function.call)
+
+(extract_operator
+  rhs: (identifier) @variable.member)
+
+function: (extract_operator
+  rhs: (identifier) @function.method.call)
+
+; Parameters
+(parameters
+  (parameter
+    name: (identifier) @variable.parameter))
+
+(arguments
+  (argument
+    name: (identifier) @variable.parameter))
+
+; Namespace
+(namespace_operator
+  lhs: (identifier) @module)
+
+(call
+  function: (namespace_operator
+    rhs: (identifier) @function))
+
+; Keywords
+(function_definition
+  name: "function" @keyword.function)
+
+(function_definition
+  name: "\\" @operator)
+
+(return) @keyword.return
 
 [
   "if"
   "else"
-  "switch"
-] @conditional
+] @keyword.conditional
 
 [
   "while"
   "repeat"
   "for"
   "in"
-] @repeat
+  (break)
+  (next)
+] @keyword.repeat
 
 [
   (true)
   (false)
 ] @boolean
 
-"function" @keyword.function
-
-; Functions/Methods
-
-(call function: (identifier) @function.call)
-
-(call
-  (namespace_get function: (identifier) @function.call))
-
-(call
-  (namespace_get_internal function: (identifier) @function.call))
-
-(call
-  function: ((dollar _ (identifier) @method.call)))
+[
+  (null)
+  (inf)
+  (nan)
+  (na)
+  (dots)
+  (dot_dot_i)
+] @constant.builtin

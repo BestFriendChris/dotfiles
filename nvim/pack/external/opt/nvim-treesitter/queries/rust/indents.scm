@@ -3,11 +3,12 @@
   (struct_item)
   (enum_item)
   (impl_item)
-  (for_expression)
   (struct_expression)
-  (match_expression)
+  (struct_pattern)
+  (tuple_struct_pattern)
   (tuple_expression)
-  (match_arm)
+  (tuple_type)
+  (tuple_pattern)
   (match_block)
   (call_expression)
   (assignment_expression)
@@ -21,26 +22,82 @@
   (enum_variant_list)
   (parameters)
   (token_tree)
+  (token_repetition)
   (macro_definition)
 ] @indent.begin
-(trait_item body: (_) @indent.begin)
-(string_literal (escape_sequence)) @indent.begin
 
-(block "}" @indent.end)
-(enum_item
-  body: (enum_variant_list "}" @indent.end))
-(impl_item
-  body: (declaration_list "}" @indent.end))
-(match_expression
-  body: (match_block "}" @indent.end))
-(mod_item
-  body: (declaration_list "}" @indent.end))
-(struct_item
-  body: (field_declaration_list "}" @indent.end))
+; Typing in "(" inside macro definitions breaks the tree entirely
+; Making macro_definition becoming errors
+; Offset this by adding back one indent for start of macro rules
+(ERROR
+  .
+  "macro_rules!"
+  [
+    "("
+    "{"
+    "["
+  ] @indent.begin
+  (#set! indent.immediate)
+  (#set! indent.start_at_same_line))
+
+(macro_definition
+  [
+    ")"
+    "}"
+    "]"
+  ] @indent.end)
+
 (trait_item
-  body: (declaration_list "}" @indent.end))
+  body: (_) @indent.begin)
 
-(impl_item (where_clause) @indent.dedent)
+(string_literal
+  (escape_sequence)) @indent.begin
+
+(block
+  "}" @indent.end)
+
+(enum_item
+  body: (enum_variant_list
+    "}" @indent.end))
+
+(impl_item
+  body: (declaration_list
+    "}" @indent.end))
+
+(match_expression
+  body: (match_block
+    "}" @indent.end))
+
+(mod_item
+  body: (declaration_list
+    "}" @indent.end))
+
+(struct_item
+  body: (field_declaration_list
+    "}" @indent.end))
+
+(struct_expression
+  body: (field_initializer_list
+    "}" @indent.end))
+
+(struct_pattern
+  "}" @indent.end)
+
+(tuple_struct_pattern
+  ")" @indent.end)
+
+(tuple_type
+  ")" @indent.end)
+
+(tuple_pattern
+  ")" @indent.end)
+
+(trait_item
+  body: (declaration_list
+    "}" @indent.end))
+
+(impl_item
+  (where_clause) @indent.dedent)
 
 [
   "where"
@@ -48,13 +105,13 @@
   "]"
   "}"
 ] @indent.branch
-(impl_item (declaration_list) @indent.branch)
+
+(impl_item
+  (declaration_list) @indent.branch)
 
 [
   (line_comment)
   (string_literal)
 ] @indent.ignore
 
-
 (raw_string_literal) @indent.auto
-

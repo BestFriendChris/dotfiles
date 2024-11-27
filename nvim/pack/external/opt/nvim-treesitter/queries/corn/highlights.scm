@@ -1,5 +1,7 @@
-"let" @keyword
-"in" @keyword
+[
+  "let"
+  "in"
+] @keyword
 
 [
   "{"
@@ -10,11 +12,26 @@
 
 "." @punctuation.delimiter
 
+[
+  ".."
+  "="
+] @operator
+
 (input) @constant
+
+(null) @constant.builtin
+
 (comment) @comment @spell
 
 (string) @string
+
 (integer) @number
-(float) @float
+
+(float) @number.float
+
+(float
+  "." @number.float)
+
 (boolean) @boolean
-(null) @keyword
+
+(path_seg) @property

@@ -1,41 +1,40 @@
 ; Preprocs
-
-(preproc_file_line) @preproc
+(preproc_directive) @keyword.directive
 
 ; Namespaces
-
 (program_statement
-  (name) @namespace)
+  (name) @module)
 
 (end_program_statement
-  (name) @namespace)
+  (name) @module)
 
 (module_statement
-  (name) @namespace)
+  (name) @module)
 
 (end_module_statement
-  (name) @namespace)
+  (name) @module)
 
 (submodule_statement
-  (name) @namespace)
+  (name) @module)
 
 (end_submodule_statement
-  (name) @namespace)
+  (name) @module)
 
 ; Includes
-
 [
   "import"
   "include"
   "use"
-] @include
+] @keyword.import
 
 (import_statement
   ","
-  ["all" "none"] @keyword)
+  [
+    "all"
+    "none"
+  ] @keyword)
 
 ; Attributes
-
 [
   (none)
   "implicit"
@@ -46,33 +45,22 @@
   "type" @attribute)
 
 ; Keywords
-
 [
   "attributes"
   "associate"
   "block"
-  "class"
   "classis"
   "contains"
   "default"
   "dimension"
   "endassociate"
-  "endenum"
-  "endinterface"
-  "endmodule"
   "endselect"
-  "endsubmodule"
-  "endtype"
-  "enum"
   "enumerator"
   "equivalence"
   "extends"
   "goto"
-  "interface"
   "intrinsic"
   "non_intrinsic"
-  "module"
-  "submodule"
   "namelist"
   "parameter"
   "quiet"
@@ -84,26 +72,31 @@
   "sequence"
   "stop"
   "target"
-  "type"
   "typeis"
 ] @keyword
 
 [
-  (default)
-] @keyword
+  "class"
+  "enum"
+  "endenum"
+  "type"
+  "endtype"
+  "module"
+  "endmodule"
+  "submodule"
+  "endsubmodule"
+  "interface"
+  "endinterface"
+] @keyword.type
+
+(default) @keyword
 
 ; Types
+(type_name) @type
 
-[
-  (type_name)
-] @type
-
-[
-  (intrinsic_type)
-] @type.builtin
+(intrinsic_type) @type.builtin
 
 ; Qualifiers
-
 [
   "abstract"
   "allocatable"
@@ -140,17 +133,16 @@
   "value"
   "volatile"
   (procedure_qualifier)
-] @type.qualifier
+] @keyword.modifier
 
 [
   "common"
   "in"
   "inout"
   "out"
-] @storageclass
+] @keyword.modifier
 
 ; Labels
-
 [
   (statement_label)
   (statement_label_reference)
@@ -174,7 +166,6 @@
 ] @keyword.return
 
 ; Functions
-
 (function_statement
   (name) @function)
 
@@ -208,13 +199,9 @@
 ] @function.builtin
 
 ; Exceptions
-
-[
-  "error"
-] @exception
+"error" @keyword.exception
 
 ; Conditionals
-
 [
   "else"
   "elseif"
@@ -224,10 +211,9 @@
   "if"
   "then"
   "where"
-] @conditional
+] @keyword.conditional
 
 ; Repeats
-
 [
   "do"
   "concurrent"
@@ -238,27 +224,23 @@
   "continue"
   "cycle"
   "exit"
-] @repeat
+] @keyword.repeat
 
 ; Variables
-
 (identifier) @variable
 
 ; Parameters
-
 (keyword_argument
-  name: (identifier) @parameter)
+  name: (identifier) @variable.parameter)
 
 (parameters
-  (identifier) @parameter)
+  (identifier) @variable.parameter)
 
 ; Properties
-
 (derived_type_member_expression
-  (type_member) @property)
+  (type_member) @variable.member)
 
 ; Operators
-
 [
   "+"
   "-"
@@ -291,15 +273,26 @@
 ] @keyword.operator
 
 ; Punctuation
+[
+  "["
+  "]"
+] @punctuation.bracket
 
-[ "[" "]" ] @punctuation.bracket
+[
+  "("
+  ")"
+] @punctuation.bracket
 
-[ "(" ")" ] @punctuation.bracket
-
-[ "<<<" ">>>" ] @punctuation.bracket
+[
+  "<<<"
+  ">>>"
+] @punctuation.bracket
 
 (array_literal
-  ["(/" "/)"] @punctuation.bracket)
+  [
+    "(/"
+    "/)"
+  ] @punctuation.bracket)
 
 [
   ":"
@@ -311,7 +304,6 @@
 ] @punctuation.delimiter
 
 ; Literals
-
 (string_literal) @string
 
 (number_literal) @number
@@ -321,7 +313,6 @@
 (null_literal) @constant.builtin
 
 ; Comments
-
 (comment) @comment @spell
 
 ((comment) @comment.documentation

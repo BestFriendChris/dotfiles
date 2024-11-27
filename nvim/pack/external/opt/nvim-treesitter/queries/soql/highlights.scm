@@ -1,46 +1,48 @@
 (field_identifier
-  (identifier) @property)
+  (identifier) @variable.member)
 
 (field_identifier
   (dotted_identifier
-    (identifier) @property))
+    (identifier) @variable.member))
 
 (type_of_clause
-  (identifier) @property)
+  (identifier) @variable.member)
 
 (when_expression
   (identifier) @type)
 
 (when_expression
   (field_list
-    (identifier) @property))
+    (identifier) @variable.member))
 
 (when_expression
   (field_list
     (dotted_identifier
-      (identifier) @property )))
+      (identifier) @variable.member)))
 
 (else_expression
   (field_list
-    (identifier) @property ))
+    (identifier) @variable.member))
 
 (else_expression
   (field_list
     (dotted_identifier
-      (identifier) @property )))
+      (identifier) @variable.member)))
 
 (alias_expression
   (identifier) @label)
 
-(storage_identifier) @storageclass
-(function_name) @function
+(storage_identifier) @keyword.modifier
+
+(_
+  function_name: (identifier) @function)
+
 (date_literal) @string.special
 
 [
   ","
   "."
   ":"
-  "?"
   "("
   ")"
 ] @punctuation.delimiter
@@ -62,18 +64,27 @@
   ">="
 ] @operator
 
-(value_comparison_operator  [ "<" ">" ] @operator)
+(value_comparison_operator
+  [
+    "<"
+    ">"
+  ] @operator)
 
-(set_comparison_operator "IN" @keyword.operator)
+(set_comparison_operator
+  "IN" @keyword.operator)
 
 [
   (int)
   (decimal)
   (currency_literal)
 ] @number
+
 (string_literal) @string
-(date) @variable.readonly
-(date_time) @variable.readonly
+
+[
+  (date)
+  (date_time)
+] @string.special
 
 [
   "TRUE"
@@ -85,7 +96,6 @@
 [
   "ABOVE"
   "ABOVE_OR_BELOW"
-  "ALL_ROWS"
   "ALL"
   "AS"
   "ASC"
@@ -122,7 +132,7 @@
   "WHEN"
   "ELSE"
   "THEN"
-] @conditional
+] @keyword.conditional
 
 ; Using Scope
 [
@@ -146,5 +156,3 @@
   "User_Mode"
   "UserId"
 ] @keyword
-
-

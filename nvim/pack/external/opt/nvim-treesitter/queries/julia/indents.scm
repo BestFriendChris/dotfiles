@@ -2,7 +2,6 @@
   (struct_definition)
   (macro_definition)
   (function_definition)
-
   (compound_statement)
   (if_statement)
   (try_statement)
@@ -11,13 +10,10 @@
   (let_statement)
   (quote_statement)
   (do_clause)
-
   (assignment)
   (for_binding)
-
   (call_expression)
   (parenthesized_expression)
-
   (tuple_expression)
   (comprehension_expression)
   (matrix_expression)
@@ -48,10 +44,6 @@
 ] @indent.ignore
 
 ((argument_list) @indent.align
-  (#set! indent.open_delimiter "(")
-  (#set! indent.close_delimiter ")"))
-
-((parameter_list) @indent.align
   (#set! indent.open_delimiter "(")
   (#set! indent.close_delimiter ")"))
 

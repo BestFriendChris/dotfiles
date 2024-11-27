@@ -1,38 +1,43 @@
-;; Primitives
+; Primitives
 (comment) @comment @spell
+
 (nat) @number
+
 (unit) @constant.builtin
+
 (literal_char) @character
+
 (literal_text) @string
+
 (literal_boolean) @boolean
 
-;; Keywords
+; Keywords
+(type_kw) @keyword.type
+
 [
   (kw_forall)
-  (unique_kw)
-  (type_kw)
   (do)
   (kw_let)
   (ability)
   (where)
 ] @keyword
 
-(kw_equals) @keyword.operator
-(structural_kw) @type.qualifier
-(unique) @type.qualifier
+(structural) @keyword.modifier
+
+(unique) @keyword.modifier
 
 (type_constructor) @constructor
 
-(doc_block) @comment.documentation
-
+((doc_block) @comment.documentation @spell
+  (#set! priority 90))
 
 [
   (operator)
-  (pipe) 
-  (arrow_symbol) 
-  ">"
+  (pipe)
+  (arrow_symbol)
   (or)
-] @keyword.operator
+  (kw_equals)
+] @operator
 
 [
   "if"
@@ -41,36 +46,66 @@
   (match)
   (with)
   (cases)
-] @conditional
+] @keyword.conditional
 
 (blank_pattern) @variable.builtin
 
-(pattern) @variable (constructor_or_variable_pattern) @type
+(pattern) @variable
 
-(use_clause) @include
+(use_clause) @keyword.import
 
-;; Types
-(record_field name: (wordy_id) @variable type: (wordy_id) @type)
+; Types
+(record_field
+  (field_name) @variable.member
+  type: (regular_identifier) @type)
+
 (type_name) @type
 
-(ability_declaration type_name: (wordy_id) @type type_arg: (wordy_id) @parameter)
-(effect (wordy_id) @attribute) ;; NOTE: an effect is a special type
+(type_declaration
+  (regular_identifier) @type)
 
+(ability_name
+  (path)? @module
+  (regular_identifier) @type)
 
-;; Namespaces
-(path) @namespace
-(namespace) @namespace
+(ability_declaration
+  (ability_name) @type
+  (type_argument) @variable.parameter)
 
-;; Terms
-(type_signature term_name: (path) @namespace term_name: (wordy_id) @variable)
-(type_signature term_name: (wordy_id) @variable)
+(constructor
+  (constructor_name) @constructor)
+
+(constructor
+  type: (regular_identifier) @type)
+
+(effect
+  (regular_identifier) @attribute) ; NOTE: an effect is a special type
+
+; Namespaces
+(path) @module
+
+(namespace) @module
+
+; Terms
+(type_signature
+  term_name: (path) @module
+  term_name: (regular_identifier) @variable)
+
+(type_signature
+  term_name: (regular_identifier) @variable)
+
 (term_type) @type
 
-(function_application function_name: (path) function_name: (wordy_id) @function)
+(term_definition
+  name: (path) @module)
 
-(term_definition name: (wordy_id) @variable)
-(term_definition param: (wordy_id) @parameter)
-;; Punctuation
+(term_definition
+  name: (regular_identifier) @variable)
+
+(term_definition
+  param: (regular_identifier) @variable.parameter)
+
+; Punctuation
 [
   (type_signature_colon)
   ":"
@@ -85,4 +120,6 @@
   "]"
 ] @punctuation.bracket
 
-(test_watch_expression (wordy_id) @preproc)
+(watch_expression) @keyword.directive
+
+(test_watch_expression) @keyword.directive

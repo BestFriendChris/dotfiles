@@ -20,22 +20,22 @@
 # THE SOFTWARE.
 
 @0xd508eebdc2dc42b8;
-# <- @preproc
+# <- @keyword.directive
 #                  ^ @punctuation.delimiter
 
 using Cxx = import "c++.capnp";
-# <- @include
+# <- @keyword.import
 #     ^^^ @type
 #         ^ @operator
-#           ^^^^^^ @include
-#                  ^^^^^^^^^^^ @string
+#           ^^^^^^ @keyword.import
+#                  ^^^^^^^^^^^ @string.special.path
 
 # Use a namespace likely to cause trouble if the generated code doesn't use fully-qualified
 # names for stuff in the capnproto namespace.
 $Cxx.namespace("capnproto_test::capnp::test");
 
 enum TestEnum {
-# <- @keyword
+# <- @keyword.type
 #    ^^^^^^^^ @type
   foo @0;
 # ^^^ @constant
@@ -51,9 +51,9 @@ enum TestEnum {
 # <- @punctuation.bracket
 
 struct TestAllTypes {
-# <- @keyword
+# <- @keyword.type
   voidField      @0  : Void;
-# ^^^^^^^^^ @field
+# ^^^^^^^^^ @variable.member
 #                    ^ @punctuation.special
 #                      ^^^^ @type.builtin
   boolField      @1  : Bool;
@@ -97,7 +97,7 @@ struct TestInterleavedGroups {
     foo @0 :UInt32;
     bar @2 :UInt64;
     union {
-#   ^^^^^ @keyword
+#   ^^^^^ @keyword.type
       qux @4 :UInt16;
       corge :group {
 #     ^^^^^ @type
@@ -114,7 +114,7 @@ struct TestInterleavedGroups {
   }
 
   group2 :group {
-#         ^^^^^ @keyword
+#         ^^^^^ @keyword.type
     foo @1 :UInt32;
     bar @3 :UInt64;
     union {
@@ -150,7 +150,7 @@ struct TestUnionDefaults {
 
 struct TestUsing {
   using OuterNestedEnum = TestNestedTypes.NestedEnum;
-# ^^^^^ @include
+# ^^^^^ @keyword.import
   using TestNestedTypes.NestedStruct.NestedEnum;
 
   outerNestedEnum @1 :OuterNestedEnum = bar;
@@ -179,7 +179,7 @@ struct TestWholeFloatDefault {
   bigField @1 :Float32 = 2e30;
   const constant :Float32 = 456;
   const bigConstant :Float32 = 4e30;
-#                              ^^^^ @float
+#                              ^^^^ @number.float
 }
 
 struct TestGenerics(Foo, Bar) {
@@ -214,10 +214,10 @@ struct TestGenerics(Foo, Bar) {
       qux @3 :Qux;
 
       interface DeepNestInterface(Quux) {
-#     ^^^^^^^^^ @keyword
+#     ^^^^^^^^^ @keyword.type
         # At one time this failed to compile.
         call @0 () -> ();
-#       ^^^^ @method
+#       ^^^^ @function.method
 #                  ^^ @punctuation.delimiter
       }
     }
@@ -225,14 +225,14 @@ struct TestGenerics(Foo, Bar) {
 
   interface Interface(Qux) {
     call @0 Inner2(Text) -> (qux :Qux, gen :TestGenerics(TestAllTypes, TestAnyPointer));
-#                            ^^^ @parameter
-#                                      ^^^ @parameter
+#                            ^^^ @variable.parameter
+#                                      ^^^ @variable.parameter
   }
 
   annotation ann(struct) :Foo;
-# ^^^^^^^^^^ @keyword
-#            ^^^ @method
-#                ^^^^^^ @parameter.builtin
+# ^^^^^^^^^^ @keyword.type
+#            ^^^ @function.method
+#                ^^^^^^ @variable.parameter.builtin
 
   using AliasFoo = Foo;
   using AliasInner = Inner;
@@ -328,7 +328,7 @@ struct TestEmptyStruct {}
 
 struct TestConstants {
   const voidConst      :Void    = void;
-# ^^^^^ @type.qualifier
+# ^^^^^ @keyword.modifier
   const boolConst      :Bool    = true;
   const int8Const      :Int8    = -123;
   const int16Const     :Int16   = -12345;
@@ -423,7 +423,7 @@ const genericConstant :TestGenerics(TestAllTypes, Text) =
     (foo = (int16Field = 123), rev = (foo = "text", rev = (foo = (int16Field = 321))));
 
 const embeddedData :Data = embed "testdata/packed";
-#                          ^^^^^ @include
+#                          ^^^^^ @keyword.import
 const embeddedText :Text = embed "testdata/short.txt";
 const embeddedStruct :TestAllTypes = embed "testdata/binary";
 
@@ -452,7 +452,7 @@ const anyPointerConstants :TestAnyPointerConstants = (
 
 interface TestInterface {
   foo @0 (i :UInt32, j :Bool) -> (x :Text);
-#                                 ^ @parameter
+#                                 ^ @variable.parameter
   bar @1 () -> ();
   baz @2 (s: TestAllTypes);
 }

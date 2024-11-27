@@ -1,17 +1,12 @@
 ; Preprocs
-
-(preprocessor_directive) @preproc
+(preprocessor_directive) @keyword.directive
 
 ; Includes
-
-"include" @include
+"include" @keyword.import
 
 ; Keywords
-
 [
   "assert"
-  "class"
-  "multiclass"
   "field"
   "let"
   "def"
@@ -21,36 +16,32 @@
 ] @keyword
 
 [
-  "in"
-] @keyword.operator
+  "multiclass"
+  "class"
+] @keyword.type
+
+"in" @keyword.operator
 
 ; Conditionals
-
 [
   "if"
   "else"
   "then"
-] @conditional
+] @keyword.conditional
 
 ; Repeats
-
-[
-  "foreach"
-] @repeat
+"foreach" @keyword.repeat
 
 ; Variables
-
 (identifier) @variable
 
-(var) @variable.builtin 
+(var) @variable.builtin
 
 ; Parameters
-
-(template_arg (identifier) @parameter)
-
+(template_arg
+  (identifier) @variable.parameter)
 
 ; Types
-
 (type) @type
 
 [
@@ -63,43 +54,53 @@
   "code"
 ] @type.builtin
 
-(class name: (identifier) @type)
+(class
+  name: (identifier) @type)
 
-(multiclass name: (identifier) @type)
+(multiclass
+  name: (identifier) @type)
 
-(def name: (value (_) @type))
+(def
+  name: (value
+    (_) @type))
 
-(defm name: (value (_) @type))
+(defm
+  name: (value
+    (_) @type))
 
-(defset name: (identifier) @type)
+(defset
+  name: (identifier) @type)
 
-(parent_class_list (identifier) @type (value (_) @type)?)
+(parent_class_list
+  (identifier) @type
+  (value
+    (_) @type)?)
 
-(anonymous_record (identifier) @type)
+(anonymous_record
+  (identifier) @type)
 
-(anonymous_record (value (_) @type))
+(anonymous_record
+  (value
+    (_) @type))
 
 ((identifier) @type
   (#lua-match? @type "^_*[A-Z][A-Z0-9_]+$"))
 
 ; Fields
-
 (instruction
-  (identifier) @field)
+  (identifier) @variable.member)
 
 (let_instruction
-  (identifier) @field)
+  (identifier) @variable.member)
 
 ; Functions
-
 ([
   (bang_operator)
   (cond_operator)
 ] @function
-  (#set! "priority" 105))
+  (#set! priority 105))
 
 ; Operators
-
 [
   "="
   "#"
@@ -109,7 +110,6 @@
 ] @operator
 
 ; Literals
-
 (string) @string
 
 (code) @string.special
@@ -121,14 +121,25 @@
 (uninitialized_value) @constant.builtin
 
 ; Punctuation
+[
+  "{"
+  "}"
+] @punctuation.bracket
 
-[ "{" "}" ] @punctuation.bracket
+[
+  "["
+  "]"
+] @punctuation.bracket
 
-[ "[" "]" ] @punctuation.bracket
+[
+  "("
+  ")"
+] @punctuation.bracket
 
-[ "(" ")" ] @punctuation.bracket
-
-[ "<" ">" ] @punctuation.bracket
+[
+  "<"
+  ">"
+] @punctuation.bracket
 
 [
   "."
@@ -136,17 +147,13 @@
   ";"
 ] @punctuation.delimiter
 
-[
- "!"
-] @punctuation.special
+"!" @punctuation.special
 
 ; Comments
-
 [
   (comment)
   (multiline_comment)
 ] @comment @spell
 
-
-((comment) @preproc
-  (#lua-match? @preproc "^.*RUN"))
+((comment) @keyword.directive @nospell
+  (#lua-match? @keyword.directive "^.*RUN"))

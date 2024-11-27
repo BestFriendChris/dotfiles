@@ -1,21 +1,61 @@
-["%parameter" "%token" "%type" "%start" "%attribute" "%left" "%right" "%nonassoc" "%public" "%inline" "%prec"] @keyword
-["%on_error_reduce"] @exception
+[
+  "%parameter"
+  "%token"
+  "%type"
+  "%start"
+  "%attribute"
+  "%left"
+  "%right"
+  "%nonassoc"
+  "%public"
+  "%inline"
+  "%prec"
+] @keyword
 
-["let"] @keyword.function
+"%on_error_reduce" @keyword.exception
 
-[(equality_symbol) ":" "|" ";" ","] @punctuation.delimiter
+"let" @keyword.function
 
-["=" "~" "_"] @operator
+[
+  (equality_symbol)
+  ":"
+  "|"
+  ";"
+  ","
+] @punctuation.delimiter
+
+[
+  "="
+  "~"
+] @operator
+
 (modifier) @operator
 
-["<" ">" "{" "}" "%{" "%}" "%%"] @punctuation.special
+"_" @character.special
 
-["(" ")"] @punctuation.bracket
+[
+  "<"
+  ">"
+  "{"
+  "}"
+  "%{"
+  "%}"
+  "%%"
+] @punctuation.special
 
-(old_rule [(symbol)] @function)
-(new_rule [(lid)] @function)
+[
+  "("
+  ")"
+] @punctuation.bracket
 
-(precedence [(symbol)] @parameter)
+(old_rule
+  (symbol) @function)
+
+(new_rule
+  (lid) @function)
+
+(precedence
+  (symbol) @variable.parameter)
 
 (funcall) @function.call
 
@@ -23,6 +63,11 @@
 (uid) @constant
 
 (ocaml_type) @type
+
 (ocaml) @none
 
-[(comment) (line_comment) (ocaml_comment)] @comment @spell
+[
+  (comment)
+  (line_comment)
+  (ocaml_comment)
+] @comment @spell

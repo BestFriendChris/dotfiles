@@ -1,50 +1,54 @@
-;; Punctuation
-
+; Punctuation
 [
- "%["
- "@["
- "~["
- "*["
- "]"
- "("
- ")"
+  "%["
+  "@["
+  "~["
+  "*["
+  "]"
+  "("
+  ")"
 ] @punctuation.bracket
 
-[":" ","] @punctuation.delimiter
+"," @punctuation.delimiter
 
-(["\"" "'"] @punctuation.special @conceal
-            (#set! conceal ""))
+(eq) @operator
 
-["%" "?" "#"] @character.special
+([
+  "\""
+  "'"
+] @punctuation.special
+  (#set! conceal ""))
 
-;; Entities
+[
+  "%"
+  "?"
+  "#"
+] @character.special
 
-(intent) @namespace
+; Entities
+(intent) @module
 
 (slot) @type
 
-(variation) @type.qualifier
+(variation) @attribute
 
-(alias) @property
+(alias) @keyword.directive
 
 (number) @number
 
 (argument
-  key: (string) @label
+  key: (string) @property
   value: (string) @string)
 
 (escape) @string.escape
 
-;; Import
+; Import
+"import" @keyword.import
 
-"import" @include
+(file) @string.special.path
 
-(file) @string.special
+; Text
+(word) @spell
 
-;; Text
-
-(word) @text @spell
-
-;; Comment
-
+; Comment
 (comment) @comment @spell

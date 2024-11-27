@@ -1,6 +1,5 @@
 ; Types
 ;------
-
 (scalar_type_definition
   (name) @type)
 
@@ -42,7 +41,6 @@
 
 ; Directives
 ;-----------
-
 (directive_definition
   "@" @attribute
   (name) @attribute)
@@ -51,7 +49,6 @@
 
 ; Properties
 ;-----------
-
 (field
   (name) @property)
 
@@ -69,9 +66,8 @@
 (enum_value
   (name) @property)
 
-; Variable Definitions and Arguments 
+; Variable Definitions and Arguments
 ;-----------------------------------
-
 (operation_definition
   (name) @variable)
 
@@ -80,17 +76,17 @@
 
 (input_fields_definition
   (input_value_definition
-    (name) @parameter))
+    (name) @variable.parameter))
 
 (argument
-  (name) @parameter)
+  (name) @variable.parameter)
 
 (arguments_definition
   (input_value_definition
-    (name) @parameter))
+    (name) @variable.parameter))
 
 (variable_definition
-  (variable) @parameter)
+  (variable) @variable.parameter)
 
 (argument
   (value
@@ -98,18 +94,16 @@
 
 ; Constants
 ;----------
-
 (string_value) @string
 
 (int_value) @number
 
-(float_value) @float
+(float_value) @number.float
 
 (boolean_value) @boolean
 
 ; Literals
 ;---------
-
 (description
   (string_value) @string.documentation @spell)
 
@@ -123,17 +117,12 @@
 
 ; Keywords
 ;----------
-
 [
   "query"
   "mutation"
   "subscription"
   "fragment"
   "scalar"
-  "type"
-  "interface"
-  "union"
-  "enum"
   "input"
   "extend"
   "directive"
@@ -143,23 +132,32 @@
   "implements"
 ] @keyword
 
+[
+  "enum"
+  "union"
+  "type"
+  "interface"
+] @keyword.type
+
 ; Punctuation
 ;------------
-
 [
- "("
- ")"
- "["
- "]"
- "{"
- "}"
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
 ] @punctuation.bracket
 
 "=" @operator
 
 "|" @punctuation.delimiter
+
 "&" @punctuation.delimiter
+
 ":" @punctuation.delimiter
 
 "..." @punctuation.special
+
 "!" @punctuation.special

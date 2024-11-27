@@ -1,13 +1,8 @@
 ; inherits: c
 
-[
-  "task"
-  "sub"
-] @keyword.function
+"task" @keyword.function
 
-[
-  "until"
-] @repeat
+"until" @keyword.repeat
 
 [
   "acquire"

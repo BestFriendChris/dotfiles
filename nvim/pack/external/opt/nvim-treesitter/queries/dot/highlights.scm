@@ -10,6 +10,7 @@
 ] @keyword
 
 (string_literal) @string
+
 (number_literal) @number
 
 [
@@ -33,21 +34,16 @@
 
 (subgraph
   id: (id
-    (identifier) @namespace)
-)
+    (identifier) @module))
 
 (attribute
   name: (id
-    (identifier) @field)
-)
+    (identifier) @variable.member))
 
 (attribute
   value: (id
-    (identifier) @constant)
-)
+    (identifier) @constant))
 
-(comment) @comment
+(comment) @comment @spell
 
-(preproc) @preproc
-
-(comment) @spell
+(preproc) @keyword.directive

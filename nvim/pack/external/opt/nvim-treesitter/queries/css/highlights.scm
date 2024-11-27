@@ -1,89 +1,107 @@
 [
- "@media"
- "@charset"
- "@namespace"
- "@supports"
- "@keyframes"
- (at_keyword)
- (to)
- (from)
- ] @keyword
+  "@media"
+  "@charset"
+  "@namespace"
+  "@supports"
+  "@keyframes"
+  (at_keyword)
+] @keyword.directive
 
-"@import" @include
+"@import" @keyword.import
+
+[
+  (to)
+  (from)
+] @keyword
 
 (comment) @comment @spell
 
+(tag_name) @tag
+
+(class_name) @type
+
+(id_name) @constant
+
 [
- (tag_name)
- (nesting_selector)
- (universal_selector)
- ] @type
+  (property_name)
+  (feature_name)
+] @property
+
+[
+  (nesting_selector)
+  (universal_selector)
+] @character.special
 
 (function_name) @function
 
 [
- "~"
- ">"
- "+"
- "-"
- "*"
- "/"
- "="
- "^="
- "|="
- "~="
- "$="
- "*="
- "and"
- "or"
- "not"
- "only"
- ] @operator
-
-(important) @type.qualifier
-
-(attribute_selector (plain_value) @string)
-(pseudo_element_selector "::" (tag_name) @property)
-(pseudo_class_selector (class_name) @property)
+  "~"
+  ">"
+  "+"
+  "-"
+  "*"
+  "/"
+  "="
+  "^="
+  "|="
+  "~="
+  "$="
+  "*="
+] @operator
 
 [
- (class_name)
- (id_name)
- (property_name)
- (feature_name)
- (attribute_name)
- ] @property
+  "and"
+  "or"
+  "not"
+  "only"
+] @keyword.operator
 
-(namespace_name) @namespace
+(important) @keyword.modifier
 
-((property_name) @type.definition
-  (#lua-match? @type.definition "^[-][-]"))
-((plain_value) @type
-  (#lua-match? @type "^[-][-]"))
+(attribute_selector
+  (plain_value) @string)
 
-[
- (string_value)
- (color_value)
- (unit)
- ] @string
+(pseudo_element_selector
+  "::"
+  (tag_name) @attribute)
 
-[
- (integer_value)
- (float_value)
- ] @number
+(pseudo_class_selector
+  (class_name) @attribute)
 
-[
- "#"
- ","
- "."
- ":"
- "::"
- ";"
- ] @punctuation.delimiter
+(attribute_name) @tag.attribute
+
+(namespace_name) @module
+
+((property_name) @variable
+  (#lua-match? @variable "^[-][-]"))
+
+((plain_value) @variable
+  (#lua-match? @variable "^[-][-]"))
 
 [
- "{"
- ")"
- "("
- "}"
- ] @punctuation.bracket
+  (string_value)
+  (color_value)
+  (unit)
+] @string
+
+(integer_value) @number
+
+(float_value) @number.float
+
+[
+  "#"
+  ","
+  "."
+  ":"
+  "::"
+  ";"
+] @punctuation.delimiter
+
+[
+  "{"
+  ")"
+  "("
+  "}"
+  "["
+  "]"
+] @punctuation.bracket

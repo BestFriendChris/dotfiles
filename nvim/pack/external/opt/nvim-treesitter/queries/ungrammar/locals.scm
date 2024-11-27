@@ -1,7 +1,8 @@
-(grammar) @scope
+(grammar) @local.scope
 
-(definition) @definition
+[
+  (definition)
+  (label_name)
+] @local.definition
 
-(label_name) @definition.label
-
-(identifier) @reference
+(identifier) @local.reference

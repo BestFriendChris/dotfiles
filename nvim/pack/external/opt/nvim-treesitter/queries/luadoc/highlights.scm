@@ -1,9 +1,8 @@
 ; Keywords
-
 [
   "@module"
   "@package"
-] @include
+] @keyword.import @nospell
 
 [
   "@class"
@@ -14,6 +13,7 @@
   "@generic"
   "@vararg"
   "@diagnostic"
+  "@cast"
   "@deprecated"
   "@meta"
   "@source"
@@ -25,106 +25,152 @@
   "@enum"
   "@language"
   "@see"
+  "@as"
   "extends"
   (diagnostic_identifier)
-] @keyword
+] @keyword @nospell
 
-[
-  "@async"
-] @keyword.coroutine
+"@async" @keyword.coroutine @nospell
 
-(language_injection "@language" (identifier) @keyword)
+(language_injection
+  "@language"
+  (identifier) @keyword @nospell)
 
-(function_type ["fun" "function"] @keyword.function)
+(function_type
+  [
+    "fun"
+    "function"
+  ] @keyword.function @nospell)
 
 (source_annotation
-  filename: (identifier) @text.uri @string.special
-  extension: (identifier) @text.uri @string.special)
+  filename: (identifier) @string.special.path @nospell
+  extension: (identifier) @string.special.path @nospell)
 
 (version_annotation
-  version: _ @constant.builtin)
+  version: _ @constant.builtin @nospell)
 
-[
-  "@return"
-] @keyword.return
+"@return" @keyword.return @nospell
 
 ; Qualifiers
-
 [
   "public"
   "protected"
   "private"
+  "package"
   "@public"
   "@protected"
   "@private"
-] @type.qualifier
-
+  "(exact)"
+  "(key)"
+] @keyword.modifier @nospell
 
 ; Variables
-
-(identifier) @variable
+(identifier) @variable @nospell
 
 [
   "..."
   "self"
-] @variable.builtin
+] @variable.builtin @nospell
 
 ; Macros
-
-(alias_annotation (identifier) @function.macro)
+(alias_annotation
+  (identifier) @function.macro @nospell)
 
 ; Parameters
+(param_annotation
+  (identifier) @variable.parameter @nospell)
 
-(param_annotation (identifier) @parameter)
-
-(parameter (identifier) @parameter)
+(parameter
+  (identifier) @variable.parameter @nospell)
 
 ; Fields
+(field_annotation
+  (identifier) @variable.member @nospell)
 
-(field_annotation (identifier) @field)
+(table_literal_type
+  field: (identifier) @variable.member @nospell)
 
-(table_literal_type field: (identifier) @field)
+(member_type
+  [
+    "#"
+    "."
+  ]
+  .
+  (identifier) @variable.member @nospell)
 
-(member_type ["#" "."] . (identifier) @field)
+(member_type
+  (identifier) @module @nospell)
+
+(member_type
+  (identifier) @type @nospell .)
 
 ; Types
+(table_type
+  "table" @type.builtin @nospell)
 
-(table_type "table" @type.builtin)
+(builtin_type) @type.builtin @nospell
 
-(builtin_type) @type.builtin
+(class_annotation
+  (identifier) @type @nospell)
 
-(class_annotation (identifier) @type)
+(enum_annotation
+  (identifier) @type @nospell)
 
-(enum_annotation (identifier) @type)
-
-((array_type ["[" "]"] @type)
-  (#set! "priority" 105))
+((array_type
+  [
+    "["
+    "]"
+  ] @type)
+  (#set! priority 105))
 
 (type) @type
 
 ; Operators
-
 [
   "|"
+  "+"
+  "-"
 ] @operator
 
 ; Literals
+[
+  (string)
+  (literal_type)
+  "`"
+] @string
 
-(string) @namespace ; only used in @module
+(module_annotation
+  (string) @module @nospell)
 
-(literal_type) @string
-
-(number) @number
+[
+  (number)
+  (numeric_literal_type)
+] @number
 
 ; Punctuation
+[
+  "["
+  "]"
+  "[["
+  "]]"
+  "[=["
+  "]=]"
+] @punctuation.bracket
 
-[ "[" "]" ] @punctuation.bracket
+[
+  "{"
+  "}"
+] @punctuation.bracket
 
-[ "{" "}" ] @punctuation.bracket
+[
+  "("
+  ")"
+] @punctuation.bracket
 
-[ "(" ")" ] @punctuation.bracket
-
-[ "<" ">" ] @punctuation.bracket
+[
+  "<"
+  ">"
+] @punctuation.bracket
 
 [
   ","
@@ -139,14 +185,14 @@
 ] @punctuation.special
 
 ; Comments
-
 (comment) @comment @spell
 
 (at_comment
-  (identifier) @type
+  (identifier) @type @nospell
   (_) @comment @spell)
 
 (class_at_comment
-  (identifier) @type
-  ("extends"? (identifier)? @type)
+  (identifier) @type @nospell
+  ("extends"?
+    (identifier)? @type @nospell)
   (_) @comment @spell)

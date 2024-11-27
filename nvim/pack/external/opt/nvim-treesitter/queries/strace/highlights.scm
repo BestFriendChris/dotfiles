@@ -11,15 +11,15 @@
 [
   (errorName)
   (errorDescription)
-] @exception
+] @keyword.exception
 
 (syscall) @function.builtin
 
 ; Literals
-
-(integer) @number
-
-(pointer) @number.special
+[
+  (integer)
+  (pointer)
+] @number
 
 (value) @label
 
@@ -34,7 +34,6 @@
 ] @operator
 
 ; Punctuation
-
 [
   "+++"
   "---"
@@ -42,7 +41,12 @@
   "~"
 ] @punctuation.special
 
-[ "(" ")" "[" "]" ] @punctuation.bracket
+[
+  "("
+  ")"
+  "["
+  "]"
+] @punctuation.bracket
 
 [
   ","

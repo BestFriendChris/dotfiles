@@ -1,66 +1,40 @@
-;; ----------------------------------------------------------------------------
-;; Parameters and variables
-
-;; NOTE: These are at the top, so that they have low priority,
-;; and don't override destructured parameters 
-
+; ----------------------------------------------------------------------------
+; Parameters and variables
+; NOTE: These are at the top, so that they have low priority,
+; and don't override destructured parameters
 (variable) @variable
-(pat_wildcard) @variable
 
-(function
-  patterns: (patterns (_) @parameter))
+(decl/function
+  patterns: (patterns
+    (_) @variable.parameter))
 
-(exp_lambda (_)+ @parameter "->")
+(expression/lambda
+  (_)+ @variable.parameter
+  "->")
 
-(function 
-  infix: (infix
-    lhs: (_) @parameter))
-(function 
-  infix: (infix
-    rhs: (_) @parameter))
+(decl/function
+  (infix
+    (pattern) @variable.parameter))
 
-;; ----------------------------------------------------------------------------
-;; Literals and comments
-
+; ----------------------------------------------------------------------------
+; Literals and comments
 (integer) @number
-(exp_negation) @number
-(exp_literal (float)) @float
-(char) @character
-(string) @string
 
-(con_unit) @symbol  ; unit, as in ()
+(negation) @number
+
+(expression/literal
+  (float)) @number.float
+
+(char) @character
+
+(string) @string
 
 (comment) @comment
 
-; FIXME: The below documentation comment queries are inefficient
-; and need to be anchored, using something like
-; ((comment) @_first . (comment)+ @comment.documentation)
-; once https://github.com/neovim/neovim/pull/24738 has been merged.
-;
-; ((comment) @comment.documentation 
-;   (#lua-match? @comment.documentation "^-- |"))
-;
-; ((comment) @_first @comment.documentation 
-;  (comment) @comment.documentation 
-;   (#lua-match? @_first "^-- |"))
-;
-; ((comment) @comment.documentation 
-;   (#lua-match? @comment.documentation "^-- %^"))
-;
-; ((comment) @_first @comment.documentation 
-;  (comment) @comment.documentation 
-;   (#lua-match? @_first "^-- %^"))
-;
-; ((comment) @comment.documentation 
-;   (#lua-match? @comment.documentation "^{-"))
-;
-; ((comment) @_first @comment.documentation 
-;  (comment) @comment.documentation 
-;   (#lua-match? @_first "^{-"))
+(haddock) @comment.documentation
 
-;; ----------------------------------------------------------------------------
-;; Punctuation
-
+; ----------------------------------------------------------------------------
+; Punctuation
 [
   "("
   ")"
@@ -71,20 +45,18 @@
 ] @punctuation.bracket
 
 [
-  (comma)
+  ","
   ";"
 ] @punctuation.delimiter
 
-
-;; ----------------------------------------------------------------------------
-;; Keywords, operators, includes
-
+; ----------------------------------------------------------------------------
+; Keywords, operators, includes
 [
   "forall"
-  "∀"
-] @repeat
+  ; "∀" ; utf-8 is not cross-platform safe
+] @keyword.repeat
 
-(pragma) @preproc
+(pragma) @keyword.directive
 
 [
   "if"
@@ -92,24 +64,18 @@
   "else"
   "case"
   "of"
-] @conditional
+] @keyword.conditional
 
 [
   "import"
   "qualified"
   "module"
-] @include
+] @keyword.import
 
 [
   (operator)
   (constructor_operator)
-  (type_operator)
-  (tycon_arrow)
-  (qualified_module)  ; grabs the `.` (dot), ex: import System.IO
-  (qualified_type)
-  (qualified_variable)
   (all_names)
-  (wildcard)
   "."
   ".."
   "="
@@ -123,17 +89,13 @@
   "@"
 ] @operator
 
+(wildcard) @character.special
 
-(module) @namespace
-((qualified_module (module) @constructor)
- . (module))
-(qualified_type (module) @namespace)
-(qualified_variable (module) @namespace)
-(import (module) @namespace)
-(import (module) @constructor . (module))
+(module
+  (module_id) @module)
 
 [
-  (where)
+  "where"
   "let"
   "in"
   "class"
@@ -157,293 +119,349 @@
   "infixr"
 ] @keyword
 
-
-;; ----------------------------------------------------------------------------
-;; Functions and variables
-
-(signature name: (variable) @function)
-
-(function name: (variable) @function)
-
-(function 
-  name: (variable) @variable
-  rhs: [
-   (exp_literal)
-   (exp_apply 
-     (exp_name 
-       [(constructor)
-        (variable)
-       ]))
-   (quasiquote)
-   ((exp_name) . (operator))
+; ----------------------------------------------------------------------------
+; Functions and variables
+(decl
+  [
+    name: (variable) @function
+    names: (binding_list
+      (variable) @function)
   ])
 
-(function 
+(decl/bind
+  name: (variable) @variable)
+
+; Consider signatures (and accompanying functions)
+; with only one value on the rhs as variables
+(decl/signature
   name: (variable) @variable
-  rhs: (exp_infix [
-   (exp_literal)
-   (exp_apply 
-     (exp_name 
-       [(constructor)
-        (variable)
-       ]))
-   (quasiquote)
-   ((exp_name) . (operator))
-  ]))
+  type: (type))
 
-;; Consider signatures (and accompanying functions)
-;; with only one value on the rhs as variables
-(signature . (variable) @variable . (_) . )
-((signature . (variable) @_name . (_) . )
- . (function name: (variable) @variable)
- (#eq? @_name @variable))
-;; but consider a type that involves 'IO' a function
-(signature name: (variable) @function 
-  . (type_apply (type_name) @_type)
-    (#eq? @_type "IO"))
-((signature name: (variable) @_name 
-  . (type_apply (type_name) @_type)
-    (#eq? @_type "IO"))
- . (function name: (variable) @function)
-   (#eq? @_name @function))
+((decl/signature
+  name: (variable) @_name
+  type: (type))
+  .
+  (decl
+    name: (variable) @variable)
+  match: (_)
+  (#eq? @_name @variable))
 
-;; functions with parameters
-;; + accompanying signatures
-(function
+; but consider a type that involves 'IO' a decl/function
+(decl/signature
   name: (variable) @function
-  patterns: (patterns))
-((signature) @function
- . (function
-    name: (variable) @function
-    patterns: (patterns)))
-(function
+  type: (type/apply
+    constructor: (name) @_type)
+  (#eq? @_type "IO"))
+
+((decl/signature
+  name: (variable) @_name
+  type: (type/apply
+    constructor: (name) @_type)
+  (#eq? @_type "IO"))
+  .
+  (decl
+    name: (variable) @function)
+  match: (_)
+  (#eq? @_name @function))
+
+((decl/signature) @function
+  .
+  (decl/function
+    name: (variable) @function))
+
+(decl/bind
   name: (variable) @function
-  rhs: (exp_lambda))
+  (match
+    expression: (expression/lambda)))
 
 ; view patterns
-(pat_view (exp_name [
-  ((variable) @function.call)
-  (qualified_variable (variable) @function.call)
-]))
+(view_pattern
+  [
+    (expression/variable) @function.call
+    (expression/qualified
+      (variable) @function.call)
+  ])
 
 ; consider infix functions as operators
-(exp_infix [
-  (variable) @operator
-  (qualified_variable (variable) @operator)
-])
-; partially applied infix functions (sections) also get highlighted as operators
-(exp_section_right [
-  ((variable) @operator)
-  (qualified_variable (variable) @operator)
-]) 
-(exp_section_left [
-  ((variable) @operator)
-  (qualified_variable (variable) @operator)
-])
-
-; function calls with an infix operator
-; e.g. func <$> a <*> b
-(exp_infix 
-  (exp_name 
-    [
-      ((variable) @function.call)
-      (qualified_variable (
-        (module) @namespace
-        (variable) @function.call))
-    ])
-  . (operator))
-; infix operators applied to variables
-((exp_name (variable) @variable) . (operator))
-((operator) . (exp_name [
-  ((variable) @variable)
-  (qualified_variable (variable) @variable)
-]))
-; function calls with infix operators
-((exp_name [
-    ((variable) @function.call)
-    (qualified_variable (variable) @function.call)
-  ]) . (operator) @_op
- (#any-of? @_op "$" "<$>" ">>=" "=<<"))
-; right hand side of infix operator
-((exp_infix 
-   [(operator)(variable)] ; infix or `func`
-  . (exp_name [
-      ((variable) @function.call)
-      (qualified_variable (variable) @function.call)
-    ])) . (operator) @_op
- (#any-of? @_op "$" "<$>" "=<<"))
-; function composition, arrows, monadic composition (lhs)
-((exp_name [
-  ((variable) @function)
-  (qualified_variable (variable) @function)
- ]) . (operator) @_op
- (#any-of? @_op "." ">>>" "***" ">=>" "<=<"))
-; right hand side of infix operator
-((exp_infix 
-   [(operator)(variable)] ; infix or `func`
-  . (exp_name [
-      ((variable) @function)
-      (qualified_variable (variable) @function)
-    ])) . (operator) @_op
- (#any-of? @_op "." ">>>" "***" ">=>" "<=<"))
-; function composition, arrows, monadic composition (rhs)
-((operator) @_op . (exp_name [
-  ((variable) @function)
-  (qualified_variable (variable) @function)
- ])
- (#any-of? @_op "." ">>>" "***" ">=>" "<=<" ))
-        
-(exp_apply (exp_name 
+(infix_id
   [
-    ((variable) @function.call)
-    (qualified_variable (variable) @function.call)
-  ]))
+    (variable) @operator
+    (qualified
+      (variable) @operator)
+  ])
+
+; decl/function calls with an infix operator
+; e.g. func <$> a <*> b
+(infix
+  left_operand: [
+    (variable) @function.call
+    (qualified
+      ((module) @module
+        (variable) @function.call))
+  ])
+
+; infix operators applied to variables
+((expression/variable) @variable
+  .
+  (operator))
+
+((operator)
+  .
+  [
+    (expression/variable) @variable
+    (expression/qualified
+      (variable) @variable)
+  ])
+
+; infix operator function definitions
+(function
+  (infix
+    left_operand: [
+      (variable) @variable
+      (qualified
+        ((module) @module
+          (variable) @variable))
+    ])
+  match: (match))
+
+; decl/function calls with infix operators
+([
+  (expression/variable) @function.call
+  (expression/qualified
+    (variable) @function.call)
+]
+  .
+  (operator) @_op
+  (#any-of? @_op "$" "<$>" ">>=" "=<<"))
+
+; right hand side of infix operator
+((infix
+  [
+    (operator)
+    (infix_id
+      (variable))
+  ] ; infix or `func`
+  .
+  [
+    (variable) @function.call
+    (qualified
+      (variable) @function.call)
+  ])
+  .
+  (operator) @_op
+  (#any-of? @_op "$" "<$>" "=<<"))
+
+; decl/function composition, arrows, monadic composition (lhs)
+([
+  (expression/variable) @function
+  (expression/qualified
+    (variable) @function)
+]
+  .
+  (operator) @_op
+  (#any-of? @_op "." ">>>" "***" ">=>" "<=<"))
+
+; right hand side of infix operator
+((infix
+  [
+    (operator)
+    (infix_id
+      (variable))
+  ] ; infix or `func`
+  .
+  [
+    (variable) @function
+    (qualified
+      (variable) @function)
+  ])
+  .
+  (operator) @_op
+  (#any-of? @_op "." ">>>" "***" ">=>" "<=<"))
+
+; function composition, arrows, monadic composition (rhs)
+((operator) @_op
+  .
+  [
+    (expression/variable) @function
+    (expression/qualified
+      (variable) @function)
+  ]
+  (#any-of? @_op "." ">>>" "***" ">=>" "<=<"))
+
+; function defined in terms of a function composition
+(decl/function
+  name: (variable) @function
+  (match
+    expression: (infix
+      operator: (operator) @_op
+      (#any-of? @_op "." ">>>" "***" ">=>" "<=<"))))
+
+(apply
+  [
+    (expression/variable) @function.call
+    (expression/qualified
+      (variable) @function.call)
+  ])
 
 ; function compositions, in parentheses, applied
 ; lhs
-(exp_apply 
-  . (exp_parens (exp_infix
-    (exp_name [((variable) @function.call) (qualified_variable (variable) @function.call)])
-    . (operator))))
+(apply
+  .
+  (expression/parens
+    (infix
+      [
+        (variable) @function.call
+        (qualified
+          (variable) @function.call)
+      ]
+      .
+      (operator))))
+
 ; rhs
-(exp_apply 
-  . (exp_parens (exp_infix
-    (operator) 
-    . (exp_name [((variable) @function.call) (qualified_variable (variable) @function.call)])))
-      )
+(apply
+  .
+  (expression/parens
+    (infix
+      (operator)
+      .
+      [
+        (variable) @function.call
+        (qualified
+          (variable) @function.call)
+      ])))
 
-;; variables being passed to a function call
-(exp_apply (_)+
-  . (exp_name [
-    ((variable) @variable)
-    (qualified_variable (variable) @variable)
-  ]))
+; variables being passed to a function call
+(apply
+  (_)
+  .
+  [
+    (expression/variable) @variable
+    (expression/qualified
+      (variable) @variable)
+  ])
 
-;; Consider functions with only one value on the rhs
-;; as variables, e.g. x = Rec {} or x = foo
-(function
-  . (variable) @variable
-  . [
-     (exp_record)
-     (exp_name (variable))
-     (exp_list)
-     (exp_tuple)
-     (exp_cond)
-    ] . )
+; main is always a function
+; (this prevents `main = undefined` from being highlighted as a variable)
+(decl/bind
+  name: (variable) @function
+  (#eq? @function "main"))
 
-;; main is always a function
-;; (this prevents `main = undefined` from being highlighted as a variable)
-(function name: (variable) @function (#eq? @function "main"))
+; scoped function types (func :: a -> b)
+(signature
+  pattern: (pattern/variable) @function
+  type: (function))
 
-;; scoped function types (func :: a -> b)
-(pat_typed 
-  pattern: (pat_name (variable) @function)
-  type: (fun))
+; signatures that have a function type
+; + binds that follow them
+(decl/signature
+  name: (variable) @function
+  type: (function))
 
-;; signatures that have a function type
-;; + functions that follow them
-((signature (variable) @function (fun)))
-((signature (variable) @_type (fun)) . (function (variable) @function) (#eq? @function @_type))
-((signature (variable) @function (context (fun))))
-((signature (variable) @_type (context (fun))) . (function (variable) @function) (#eq? @function @_type))
-((signature (variable) @function (forall (context (fun)))) . (function (variable)))
-((signature (variable) @_type (forall (context (fun)))) . (function (variable) @function) (#eq? @function @_type))
+((decl/signature
+  name: (variable) @_name
+  type: (quantified_type))
+  .
+  (decl/bind
+    (variable) @function)
+  (#eq? @function @_name))
 
-;; ----------------------------------------------------------------------------
-;; Types
+; Treat constructor assignments (smart constructors) as functions, e.g. mkJust = Just
+(bind
+  name: (variable) @function
+  match: (match
+    expression: (constructor)))
 
-(type) @type
-(type_star) @type
-(type_variable) @type
+; Function composition
+(bind
+  name: (variable) @function
+  match: (match
+    expression: (infix
+      operator: (operator) @_op
+      (#eq? @_op "."))))
+
+; ----------------------------------------------------------------------------
+; Types
+(name) @type
+
+(type/unit) @type
+
+(type/unit
+  [
+    "("
+    ")"
+  ] @type)
+
+(type/list
+  [
+    "["
+    "]"
+  ] @type)
+
+(type/star) @type
 
 (constructor) @constructor
 
 ; True or False
-((constructor) @boolean (#any-of? @boolean "True" "False"))
+((constructor) @boolean
+  (#any-of? @boolean "True" "False"))
+
 ; otherwise (= True)
 ((variable) @boolean
   (#eq? @boolean "otherwise"))
 
-;; ----------------------------------------------------------------------------
-;; Quasi-quotes
-
+; ----------------------------------------------------------------------------
+; Quasi-quotes
 (quoter) @function.call
 
-(quasiquote 
-  (quoter) @_name (#eq? @_name "qq")
-  (quasiquote_body) @string)
-;; namespaced quasi-quoter
 (quasiquote
-  (_
-    (module) @namespace
-    . (variable) @function.call
-  ))
+  quoter: [
+    (quoter) @_name
+    (quoter
+      (qualified
+        id: (variable) @_name))
+  ]
+  (#eq? @_name "qq")
+  body: (quasiquote_body) @string)
+
+; namespaced quasi-quoter
+(quoter
+  [
+    (variable) @function.call
+    (_
+      (module) @module
+      .
+      (variable) @function.call)
+  ])
 
 ; Highlighting of quasiquote_body for other languages is handled by injections.scm
+; ----------------------------------------------------------------------------
+; Exceptions/error handling
+((variable) @keyword.exception
+  (#any-of? @keyword.exception
+    "error" "undefined" "try" "tryJust" "tryAny" "catch" "catches" "catchJust" "handle" "handleJust"
+    "throw" "throwIO" "throwTo" "throwError" "ioError" "mask" "mask_" "uninterruptibleMask"
+    "uninterruptibleMask_" "bracket" "bracket_" "bracketOnErrorSource" "finally" "fail"
+    "onException" "expectationFailure"))
 
-;; ----------------------------------------------------------------------------
-;; Exceptions/error handling
+; ----------------------------------------------------------------------------
+; Debugging
+((variable) @keyword.debug
+  (#any-of? @keyword.debug
+    "trace" "traceId" "traceShow" "traceShowId" "traceWith" "traceShowWith" "traceStack" "traceIO"
+    "traceM" "traceShowM" "traceEvent" "traceEventWith" "traceEventIO" "flushEventLog" "traceMarker"
+    "traceMarkerIO"))
 
-((variable) @exception
-  (#any-of? @exception 
-   "error"
-   "undefined"
-   "try"
-   "tryJust"
-   "tryAny"
-   "catch"
-   "catches"
-   "catchJust"
-   "handle"
-   "handleJust"
-   "throw"
-   "throwIO"
-   "throwTo"
-   "throwError"
-   "ioError"
-   "mask"
-   "mask_"
-   "uninterruptibleMask"
-   "uninterruptibleMask_"
-   "bracket"
-   "bracket_"
-   "bracketOnErrorSource"
-   "finally"
-   "onException"
-   "expectationFailure"))
+; ----------------------------------------------------------------------------
+; Fields
+(field_name
+  (variable) @variable.member)
 
-;; ----------------------------------------------------------------------------
-;; Debugging
-((variable) @debug
-  (#any-of? @debug 
-   "trace"
-   "traceId"
-   "traceShow"
-   "traceShowId"
-   "traceWith"
-   "traceShowWith"
-   "traceStack"
-   "traceIO"
-   "traceM"
-   "traceShowM"
-   "traceEvent"
-   "traceEventWith"
-   "traceEventIO"
-   "flushEventLog"
-   "traceMarker"
-   "traceMarkerIO"))
+(import_name
+  (name)
+  .
+  (children
+    (variable) @variable.member))
 
-
-;; ----------------------------------------------------------------------------
-;; Fields
-(field (variable) @field)
-(pat_field (variable) @field)
-(exp_projection field: (variable) @field)
-(import_item (type) . (import_con_names (variable) @field))
-(exp_field field: [((variable) @field) (qualified_variable (variable) @field)])
-
-
-;; ----------------------------------------------------------------------------
-;; Spell checking
-
+; ----------------------------------------------------------------------------
+; Spell checking
 (comment) @spell

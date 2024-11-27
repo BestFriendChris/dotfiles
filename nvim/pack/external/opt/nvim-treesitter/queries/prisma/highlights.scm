@@ -1,13 +1,16 @@
 (variable) @variable
 
 [
- "datasource"
- "enum"
- "generator"
- "model"
- "type"
- "view"
+  "datasource"
+  "generator"
+  "model"
+  "view"
 ] @keyword
+
+[
+  "type"
+  "enum"
+] @keyword.type
 
 (comment) @comment @spell
 
@@ -19,9 +22,14 @@
 ] @function
 
 (arguments) @property
+
 (column_type) @type
+
 (enumeral) @constant
-(column_declaration (identifier) @variable)
+
+(column_declaration
+  (identifier) @variable)
+
 (string) @string
 
 [

@@ -1,80 +1,89 @@
-;; XML declaration
+; Text declaration
+(TextDecl
+  "xml" @keyword.directive)
 
-(XMLDecl "xml" @preproc)
+(TextDecl
+  [
+    "version"
+    "encoding"
+  ] @tag.attribute)
 
-(XMLDecl [ "version" "encoding" ] @tag.attribute)
+(TextDecl
+  (EncName) @string.special)
 
-(XMLDecl (EncName) @string.special)
+(TextDecl
+  (VersionNum) @number)
 
-(XMLDecl (VersionNum) @number)
+; Processing instructions
+(PI) @keyword.directive
 
-;; Processing instructions
-
-(PI) @preproc
-
-;; Element declaration
-
+; Element declaration
 (elementdecl
-  "ELEMENT" @define
+  "ELEMENT" @keyword.directive.define
   (Name) @tag)
 
 (contentspec
-  (_ (Name) @tag.attribute))
+  (_
+    (Name) @tag.attribute))
 
 "#PCDATA" @type.builtin
 
-[ "EMPTY" "ANY" ] @type.qualifier
+[
+  "EMPTY"
+  "ANY"
+] @keyword.modifier
 
-[ "*" "?" "+" ] @character.special
+[
+  "*"
+  "?"
+  "+"
+] @character.special
 
-;; Entity declaration
-
+; Entity declaration
 (GEDecl
-  "ENTITY" @define
+  "ENTITY" @keyword.directive.define
   (Name) @constant)
 
-(GEDecl (EntityValue) @string)
+(GEDecl
+  (EntityValue) @string)
 
 (NDataDecl
   "NDATA" @keyword
   (Name) @label)
 
-;; Parsed entity declaration
-
+; Parsed entity declaration
 (PEDecl
-  "ENTITY" @define
+  "ENTITY" @keyword.directive.define
   "%" @operator
   (Name) @function.macro)
 
-(PEDecl (EntityValue) @string)
+(PEDecl
+  (EntityValue) @string)
 
-;; Notation declaration
-
+; Notation declaration
 (NotationDecl
-  "NOTATION" @preproc
+  "NOTATION" @keyword.directive
   (Name) @label)
 
-((NotationDecl
-  (ExternalID
-    (SystemLiteral (URI) @string.special))
- (#set! "priority" 105)))
-
-;; Attlist declaration
-
+; Attlist declaration
 (AttlistDecl
-  "ATTLIST" @define
+  "ATTLIST" @keyword.directive.define
   (Name) @tag)
 
-(AttDef (Name) @tag.attribute)
+(AttDef
+  (Name) @tag.attribute)
 
-(AttDef (Enumeration (Nmtoken) @string))
+(AttDef
+  (Enumeration
+    (Nmtoken) @string))
 
 [
   (StringType)
   (TokenizedType)
 ] @type.builtin
 
-(NotationType "NOTATION" @type.builtin)
+(NotationType
+  "NOTATION" @type.builtin)
 
 [
   "#REQUIRED"
@@ -82,38 +91,58 @@
   "#FIXED"
 ] @attribute
 
-;; Entities
-
+; Entities
 (EntityRef) @constant
 
 ((EntityRef) @constant.builtin
- (#any-of? @constant.builtin
-   "&amp;" "&lt;" "&gt;" "&quot;" "&apos;"))
+  (#any-of? @constant.builtin "&amp;" "&lt;" "&gt;" "&quot;" "&apos;"))
 
 (CharRef) @character
 
 (PEReference) @function.macro
 
-;; External references
-
-[ "PUBLIC" "SYSTEM" ] @keyword
+; External references
+[
+  "PUBLIC"
+  "SYSTEM"
+] @keyword
 
 (PubidLiteral) @string.special
 
-(SystemLiteral (URI) @text.uri)
+(SystemLiteral
+  (URI) @string.special.url)
 
-;; Delimiters & punctuation
+; Delimiters & punctuation
+[
+  "<?"
+  "?>"
+  "<!"
+  ">"
+  "<!["
+  "]]>"
+] @tag.delimiter
 
-[ "<?" "?>" "<!" ">" "]]>" ] @tag.delimiter
+[
+  "("
+  ")"
+  "["
+] @punctuation.bracket
 
-[ "(" ")" "[" ] @punctuation.bracket
+[
+  "\""
+  "'"
+] @punctuation.delimiter
 
-[ "\"" "'" ] @punctuation.delimiter
+[
+  ","
+  "|"
+  "="
+] @operator
 
-[ "," "|" "=" ] @operator
-
-;; Misc
-
-[ "INCLUDE" "IGNORE" ] @include
+; Misc
+[
+  "INCLUDE"
+  "IGNORE"
+] @keyword.import
 
 (Comment) @comment @spell

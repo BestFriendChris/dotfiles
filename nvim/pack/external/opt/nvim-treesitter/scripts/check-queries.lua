@@ -1,4 +1,5 @@
 #!/usr/bin/env -S nvim -l
+vim.opt.rtp:prepend "./"
 
 -- Equivalent to print(), but this will ensure consistent output regardless of
 -- operating system.
@@ -35,23 +36,14 @@ local function extract_captures()
   return captures
 end
 
-local function list_any(list, predicate)
-  for _, v in pairs(list) do
-    if predicate(v) then
-      return true
-    end
-  end
-  return false
-end
-
 local function do_check()
   local timings = {}
-  local parsers = require("nvim-treesitter.info").installed_parsers()
   local queries = require "nvim-treesitter.query"
+  local parsers = #_G.arg > 0 and { unpack(_G.arg) } or require("nvim-treesitter.info").installed_parsers()
   local query_types = queries.built_in_query_groups
 
   local captures = extract_captures()
-  local last_error
+  local errors = {}
 
   io_print "::group::Check parsers"
 
@@ -66,21 +58,17 @@ local function do_check()
       io_print("Checking " .. lang .. " " .. query_type .. string.format(" (%.02fms)", duration * 1e-6))
       if not ok then
         local err_msg = lang .. " (" .. query_type .. "): " .. query
-        io_print(err_msg)
-        last_error = err_msg
+        errors[#errors + 1] = err_msg
       else
         if query then
           for _, capture in ipairs(query.captures) do
             local is_valid = (
               vim.startswith(capture, "_") -- Helpers.
-              or list_any(captures[query_type], function(documented_capture)
-                return vim.startswith(capture, documented_capture)
-              end)
+              or vim.tbl_contains(captures[query_type], capture)
             )
             if not is_valid then
               local error = string.format("(x) Invalid capture @%s in %s for %s.", capture, query_type, lang)
-              io_print(error)
-              last_error = error
+              errors[#errors + 1] = error
             end
           end
         end
@@ -90,10 +78,12 @@ local function do_check()
 
   io_print "::endgroup::"
 
-  if last_error then
-    io_print()
-    io_print "Last error: "
-    error(last_error)
+  if #errors > 0 then
+    io_print "\nCheck failed!\nErrors:"
+    for _, err in ipairs(errors) do
+      print(err)
+    end
+    error()
   end
   return timings
 end
@@ -129,8 +119,5 @@ if ok then
   io_print "Check successful!"
   vim.cmd "q"
 else
-  io_print "Check failed:"
-  io_print(result)
-  io_print "\n"
   vim.cmd "cq"
 end

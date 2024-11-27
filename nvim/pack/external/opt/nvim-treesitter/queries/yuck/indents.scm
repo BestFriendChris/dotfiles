@@ -11,16 +11,20 @@
 ; ((list (identifier) (property)) @indent.align
 ;   (#set! indent.open_delimiter "(")
 ;   (#set! indent.close_delimiter ")"))
-
-[")" "}" "]"] @indent.end
-
-[ "{" "}" ] @indent.branch
-
-[ "(" ")" ] @indent.branch
-
-[ "[" "]" ] @indent.branch
-
 [
- (ERROR)
- (comment)
+  ")"
+  "}"
+  "]"
+] @indent.end @indent.branch
+
+; I do not know what/when this should be added.
+; Commenting this out for now
+; [
+;   "("
+;   "{"
+;   "["
+; ] @indent.branch
+[
+  (ERROR)
+  (comment)
 ] @indent.auto

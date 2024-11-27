@@ -1,53 +1,199 @@
-; inherits: dtd
+; XML declaration
+(XMLDecl
+  "xml" @keyword.directive)
 
-;; XML declaration
+(XMLDecl
+  [
+    "version"
+    "encoding"
+    "standalone"
+  ] @tag.attribute)
 
-(XMLDecl "standalone" @tag.attribute)
+(XMLDecl
+  (EncName) @string.special)
 
-(XMLDecl [ "yes" "no" ] @boolean)
+(XMLDecl
+  (VersionNum) @number)
 
-;; Processing instructions
+(XMLDecl
+  [
+    "yes"
+    "no"
+  ] @boolean)
 
-(XmlModelPI "xml-model" @preproc)
+; Processing instructions
+(PI) @keyword.directive
 
-(StyleSheetPI "xml-stylesheet" @preproc)
+; Element declaration
+(elementdecl
+  "ELEMENT" @keyword.directive.define
+  (Name) @tag)
 
-(PseudoAtt (Name) @tag.attribute)
+(contentspec
+  (_
+    (Name) @tag.attribute))
 
-(PseudoAtt (PseudoAttValue) @string)
+"#PCDATA" @type.builtin
 
-;; Doctype declaration
+[
+  "EMPTY"
+  "ANY"
+] @keyword.modifier
 
-(doctypedecl "DOCTYPE" @define)
+[
+  "*"
+  "?"
+  "+"
+] @character.special
 
-(doctypedecl (Name) @type.definition)
+; Entity declaration
+(GEDecl
+  "ENTITY" @keyword.directive.define
+  (Name) @constant)
 
-;; Tags
+(GEDecl
+  (EntityValue) @string)
 
-(STag (Name) @tag)
+(NDataDecl
+  "NDATA" @keyword
+  (Name) @label)
 
-(ETag (Name) @tag)
+; Parsed entity declaration
+(PEDecl
+  "ENTITY" @keyword.directive.define
+  "%" @operator
+  (Name) @function.macro)
 
-(EmptyElemTag (Name) @tag)
+(PEDecl
+  (EntityValue) @string)
 
-;; Attributes
+; Notation declaration
+(NotationDecl
+  "NOTATION" @keyword.directive
+  (Name) @label)
 
-(Attribute (Name) @tag.attribute)
+; Attlist declaration
+(AttlistDecl
+  "ATTLIST" @keyword.directive.define
+  (Name) @tag)
 
-(Attribute (AttValue) @string)
+(AttDef
+  (Name) @tag.attribute)
 
-;; Text
+(AttDef
+  (Enumeration
+    (Nmtoken) @string))
 
-(CharData) @text @spell
+[
+  (StringType)
+  (TokenizedType)
+] @type.builtin
+
+(NotationType
+  "NOTATION" @type.builtin)
+
+[
+  "#REQUIRED"
+  "#IMPLIED"
+  "#FIXED"
+] @attribute
+
+; Entities
+(EntityRef) @constant
+
+((EntityRef) @constant.builtin
+  (#any-of? @constant.builtin "&amp;" "&lt;" "&gt;" "&quot;" "&apos;"))
+
+(CharRef) @character
+
+(PEReference) @function.macro
+
+; External references
+[
+  "PUBLIC"
+  "SYSTEM"
+] @keyword
+
+(PubidLiteral) @string.special
+
+(SystemLiteral
+  (URI) @string.special.url)
+
+; Processing instructions
+(XmlModelPI
+  "xml-model" @keyword.directive)
+
+(StyleSheetPI
+  "xml-stylesheet" @keyword.directive)
+
+(PseudoAtt
+  (Name) @tag.attribute)
+
+(PseudoAtt
+  (PseudoAttValue) @string)
+
+; Doctype declaration
+(doctypedecl
+  "DOCTYPE" @keyword.directive.define)
+
+(doctypedecl
+  (Name) @type.definition)
+
+; Tags
+(STag
+  (Name) @tag)
+
+(ETag
+  (Name) @tag)
+
+(EmptyElemTag
+  (Name) @tag)
+
+; Attributes
+(Attribute
+  (Name) @tag.attribute)
+
+(Attribute
+  (AttValue) @string)
+
+; Delimiters & punctuation
+[
+  "<?"
+  "?>"
+  "<"
+  ">"
+  "</"
+  "/>"
+  "<!"
+  "]]>"
+] @tag.delimiter
+
+[
+  "("
+  ")"
+  "["
+  "]"
+] @punctuation.bracket
+
+[
+  "\""
+  "'"
+] @punctuation.delimiter
+
+[
+  ","
+  "|"
+  "="
+] @operator
+
+; Text
+(CharData) @none @spell
 
 ((CDSect
-  (CDStart) @text.environment
-  (CData) @text.literal
-  "]]>" @text.environment)
- (#set! "priority" 105))
+  (CDStart) @module
+  (CData) @markup.raw
+  "]]>" @module)
+  (#set! priority 105))
 
-;; Delimiters & punctuation
-
-[ "<" "</" "/>" ] @tag.delimiter
-
-"]" @punctuation.bracket
+; Misc
+(Comment) @comment @spell

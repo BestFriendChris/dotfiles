@@ -1,22 +1,31 @@
 (metadata) @comment
 
+(comment) @comment @spell
+
+[
+  "{"
+  "}"
+] @punctuation.bracket
+
+"%" @punctuation.special
+
 (ingredient
-  "@" @tag
-  (name)? @text.title
-	(amount
-	  (quantity)? @number
-		(units)? @tag.attribute)?)
+  "@" @punctuation.delimiter
+  (name)? @string.special.symbol
+  (amount
+    (quantity)? @number
+    (units)? @constant)?)
 
 (timer
-  "~" @tag
-  (name)? @text.title
-	(amount
-	  (quantity)? @number
-		(units)? @tag.attribute)?)
+  "~" @punctuation.delimiter
+  (name)? @string.special.symbol
+  (amount
+    (quantity)? @number
+    (units)? @constant)?)
 
 (cookware
-  "#" @tag
-  (name)? @text.title
-	(amount
-	  (quantity)? @number
-		(units)? @tag.attribute)?)
+  "#" @punctuation.delimiter
+  (name)? @string.special.symbol
+  (amount
+    (quantity)? @number
+    (units)? @constant)?)

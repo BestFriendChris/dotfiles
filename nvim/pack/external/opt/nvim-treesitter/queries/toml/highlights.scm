@@ -1,34 +1,39 @@
-; Properties
-;-----------
+(bare_key) @property
 
-(bare_key) @type
-(quoted_key) @string
-(pair (bare_key)) @property
-
-; Literals
-;---------
+[
+  (string)
+  (quoted_key)
+] @string
 
 (boolean) @boolean
+
 (comment) @comment @spell
-(string) @string
+
+(escape_sequence) @string.escape
+
 (integer) @number
-(float) @float
-(offset_date_time) @string.special
-(local_date_time) @string.special
-(local_date) @string.special
-(local_time) @string.special
 
-; Punctuation
-;------------
+(float) @number.float
 
-"." @punctuation.delimiter
-"," @punctuation.delimiter
+[
+  (local_date)
+  (local_date_time)
+  (local_time)
+  (offset_date_time)
+] @string.special
 
 "=" @operator
 
-"[" @punctuation.bracket
-"]" @punctuation.bracket
-"[[" @punctuation.bracket
-"]]" @punctuation.bracket
-"{" @punctuation.bracket
-"}" @punctuation.bracket
+[
+  "."
+  ","
+] @punctuation.delimiter
+
+[
+  "["
+  "]"
+  "[["
+  "]]"
+  "{"
+  "}"
+] @punctuation.bracket
