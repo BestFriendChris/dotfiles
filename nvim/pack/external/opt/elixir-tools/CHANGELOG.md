@@ -2,6 +2,127 @@
 
 ## Unreleased
 
+## [0.16.1](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.16.0...v0.16.1) (2024-10-02)
+
+
+### Bug Fixes
+
+* print elixirls repo if it fails to clone ([#226](https://github.com/elixir-tools/elixir-tools.nvim/issues/226)) ([ac8d529](https://github.com/elixir-tools/elixir-tools.nvim/commit/ac8d529626a3bfef59d8c88a0bf95ab62441bf36))
+
+## [0.16.0](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.15.0...v0.16.0) (2024-07-10)
+
+
+### Features
+
+* **projectionist:** allow disabling the projectionist integration ([#221](https://github.com/elixir-tools/elixir-tools.nvim/issues/221)) ([057f6e5](https://github.com/elixir-tools/elixir-tools.nvim/commit/057f6e522d757cafd6251db326c25bf704404e1d))
+
+
+### Bug Fixes
+
+* nvim test runner breaking changes ([057f6e5](https://github.com/elixir-tools/elixir-tools.nvim/commit/057f6e522d757cafd6251db326c25bf704404e1d))
+* **projectionist:** do not overwrite existing projections ([057f6e5](https://github.com/elixir-tools/elixir-tools.nvim/commit/057f6e522d757cafd6251db326c25bf704404e1d))
+
+## [0.15.0](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.14.3...v0.15.0) (2024-07-05)
+
+
+### Features
+
+* deprecate Credo Language Server ([63a9920](https://github.com/elixir-tools/elixir-tools.nvim/commit/63a9920e559154847170b278fd45817f5f4bdef0))
+
+## [0.14.3](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.14.2...v0.14.3) (2024-06-14)
+
+
+### Bug Fixes
+
+* bump Elixir LS version ([f147a6a](https://github.com/elixir-tools/elixir-tools.nvim/commit/f147a6afa87e9f21b4c720171f7d6146c87e49e2)), closes [#215](https://github.com/elixir-tools/elixir-tools.nvim/issues/215)
+
+## [0.14.2](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.14.1...v0.14.2) (2024-05-23)
+
+
+### Bug Fixes
+
+* **elixirls:** only refresh for the current buffer ([d04320b](https://github.com/elixir-tools/elixir-tools.nvim/commit/d04320b40459c097388dbe8e20711bbfa9bcdadd))
+
+## [0.14.1](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.14.0...v0.14.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* **elixirls:** properly setup codelens autocmd ([5945e44](https://github.com/elixir-tools/elixir-tools.nvim/commit/5945e44ded3a5b61ae3ab03a06d6928846e0aab0))
+
+## [0.14.0](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.13.2...v0.14.0) (2024-05-02)
+
+
+### Features
+
+* add alias-refactor command ([#206](https://github.com/elixir-tools/elixir-tools.nvim/issues/206)) ([2ee9274](https://github.com/elixir-tools/elixir-tools.nvim/commit/2ee9274f0d34115276451e8fd78eecb98557c7a4))
+
+
+### Bug Fixes
+
+* **nextls:** only activate for valid buffers ([76d6025](https://github.com/elixir-tools/elixir-tools.nvim/commit/76d6025f0dcfb15b170a901c31a6adbf8c9e7492))
+
+## [0.13.2](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.13.1...v0.13.2) (2024-03-08)
+
+
+### Bug Fixes
+
+* correct spelling of Next LS ([972c66e](https://github.com/elixir-tools/elixir-tools.nvim/commit/972c66e4d58c4f7175db122942c1c8783c2eb296))
+
+## [0.13.1](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.13.0...v0.13.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* **nextls:** force a download ([#203](https://github.com/elixir-tools/elixir-tools.nvim/issues/203)) ([123dbc2](https://github.com/elixir-tools/elixir-tools.nvim/commit/123dbc2463aef2c547212a3a961e3018e722a326))
+
+## [0.13.0](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.12.1...v0.13.0) (2024-02-26)
+
+
+### Features
+
+* **nextls:** to-pipe, from-pipe subcommand ([#180](https://github.com/elixir-tools/elixir-tools.nvim/issues/180)) ([5705ab1](https://github.com/elixir-tools/elixir-tools.nvim/commit/5705ab10c2f1b65963c376acc88789c85f292505))
+
+## [0.12.1](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.12.0...v0.12.1) (2024-02-14)
+
+
+### Bug Fixes
+
+* set spitfire var to correct value ([55a5112](https://github.com/elixir-tools/elixir-tools.nvim/commit/55a5112be09cb96b08989ca6ada34ccaf1ace405))
+
+## [0.12.0](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.11.2...v0.12.0) (2024-02-14)
+
+
+### Features
+
+* **nextls:** enable spitfire option ([42aec43](https://github.com/elixir-tools/elixir-tools.nvim/commit/42aec43111af3d6adf1ab69ff6f14a5af510ff5e))
+
+## [0.11.2](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.11.1...v0.11.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* bump elixirls ([#197](https://github.com/elixir-tools/elixir-tools.nvim/issues/197)) ([f0cb80c](https://github.com/elixir-tools/elixir-tools.nvim/commit/f0cb80c7e9d012c7c64342b5539fa3697ec5800f)), closes [#196](https://github.com/elixir-tools/elixir-tools.nvim/issues/196)
+
+## [0.11.1](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.11.0...v0.11.1) (2023-12-30)
+
+
+### Bug Fixes
+
+* compile ElixirLS with Elixir v1.16 ([#188](https://github.com/elixir-tools/elixir-tools.nvim/issues/188)) ([1c11579](https://github.com/elixir-tools/elixir-tools.nvim/commit/1c1157974e2b296d5041abb4a9cbab58803de423))
+
+## [0.11.0](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.10.1...v0.11.0) (2023-11-10)
+
+
+### Features
+
+* **nextls:** multi-root workspaces ([#184](https://github.com/elixir-tools/elixir-tools.nvim/issues/184)) ([156cf40](https://github.com/elixir-tools/elixir-tools.nvim/commit/156cf40454fadb912895e2d17b7a59b6cc92d0a7))
+
+
+### Bug Fixes
+
+* update vim.iter ([103aaa5](https://github.com/elixir-tools/elixir-tools.nvim/commit/103aaa56c826e752ee046142153b09b1763512a3))
+
 ## [0.10.1](https://github.com/elixir-tools/elixir-tools.nvim/compare/v0.10.0...v0.10.1) (2023-10-02)
 
 

@@ -18,7 +18,6 @@
 ## Features
 
 - [Next LS](https://github.com/elixir-tools/next-ls) installation and configuration.
-- [Credo Language Server](https://github.com/elixir-tools/credo-language-server) installation and configuration.
 - [ElixirLS](https://github.com/elixir-lsp/elixir-ls) installation and configuration.
 - `:Mix` command with autocomplete
 - [vim-projectionist](https://github.com/tpope/vim-projectionist) support
@@ -40,7 +39,6 @@ Requires 0.8
 
     elixir.setup {
       nextls = {enable = true},
-      credo = {},
       elixirls = {
         enable = true,
         settings = elixirls.settings {
@@ -52,6 +50,9 @@ Requires 0.8
           vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
           vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
         end,
+      },
+      projectionist = {
+        enable = true
       }
     }
   end,
@@ -71,21 +72,21 @@ use({ "elixir-tools/elixir-tools.nvim", tag = "stable", requires = { "nvim-lua/p
 
 ## Minimal Setup
 
-The minimal setup will configure both ElixirLS and credo-language-server.
+The minimal setup will configure both ElixirLS but not Next LS.
 
 ```lua
 require("elixir").setup()
 ```
 
-NextLS, ElixirLS,  and credo-language-server can be enabled/disabled by setting the `enable` flag in the respective options table.
+Next LS, ElixirLS, and Projectionist can be enabled/disabled by setting the `enable` flag in the respective options table.
 
 The defaults are shown below.
 
 ```lua
 require("elixir").setup({
   nextls = {enable = false},
-  credo = {enable = true},
   elixirls = {enable = true},
+  projectionist = {enable = true},
 })
 ```
 
@@ -118,15 +119,7 @@ elixir.setup {
       -- custom keybinds
     end
   },
-  credo = {
-    enable = true, -- defaults to true
-    port = 9000, -- connect via TCP with the given port. mutually exclusive with `cmd`. defaults to nil
-    cmd = "path/to/credo-language-server", -- path to the executable. mutually exclusive with `port`
-    version = "0.1.0-rc.3", -- version of credo-language-server to install and use. defaults to the latest release
-    on_attach = function(client, bufnr)
-      -- custom keybinds
-    end
-  },
+  ,
   elixirls = {
     -- specify a repository and branch
     repo = "mhanberg/elixir-ls", -- defaults to elixir-lsp/elixir-ls
@@ -166,9 +159,12 @@ elixir.setup {
       ```
 ### Full List
 
-| Command | Subcommand | Description                                                                                          |
-|---------|------------|------------------------------------------------------------------------------------------------------|
-| nextls  | uninstall  | Removes the `nextls` executable from the default location: `~/.cache/elixir-tools/nextls/bin/nextls` |
+| Command | Subcommand     | Description                                                                                          |
+|---------|----------------|------------------------------------------------------------------------------------------------------|
+| nextls  | alias-refactor | Aliases the module under the cursor, refactoring similar calls as well                                |
+| nextls  | to-pipe        | Extracts the first argument to a pipe call                                                           |
+| nextls  | from-pipe      | Inlines the pipe call to a function call inlining the first argument                                 |
+| nextls  | uninstall      | Removes the `nextls` executable from the default location: `~/.cache/elixir-tools/nextls/bin/nextls` |
 
 ## Next LS
 
@@ -193,18 +189,6 @@ and it will not prompt you to install and use it from there.
 ### Commands
 
 Next LS command are available as subcommands of the `:Elixir` command
-
-## Credo Language Server
-
-> **Note**
-> Credo Language Server integration utilizes `Mix.install/2`, so you must be running Elixir >= 1.12
-
-> **Note**
-> Credo Language Server creates a `.elixir-tools` directory in your project root. You'll want to add that to your gitignore.
-
-- Uses your project's Credo version.
-- Full project diagnostics
-- Code Actions
 
 ## ElixirLS
 
@@ -362,3 +346,39 @@ You can run any `mix` command in your project, complete with... autocomplete!
 :Efeature {args}
 
 : Create or edit a Wallaby test module.
+
+## Contributing
+
+### Setup
+
+elixir-tools.nvim uses a combination of [Nix](https://nixos.org) and [just](https://github.com/casey/just) to provide the development tooling, but you can also install all of this manually.
+
+#### Nix + just
+
+```bash
+# enter a nix shell, provides language deps and just
+$ nix develop
+
+# install test runner and plugin dependencies
+$ just init
+
+# run tests, optionally include the Neovim version to test
+$ just test
+$ just test 0.8.3
+
+# format the code
+$ just format
+```
+
+#### Manually
+
+Install the following software:
+
+- [Neovim](https://neovim.io)
+- [Lua 5.1](https://sourceforge.net/projects/luabinaries/files/5.1.5/)
+- [Luarocks](https://github.com/luarocks/luarocks/wiki/Download)
+- [nvim-test](https://github.com/lewis6991/nvim-test)
+- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) (into the folder "deps")
+- [stylua](https://github.com/JohnnyMorganz/StyLua)
+
+To run the tests, you can reference the commands run in the justfile

@@ -1,4 +1,4 @@
-*elixir-tools.nvim.txt*      For NVIM v0.8.0     Last change: 2023 November 08
+*elixir-tools.nvim.txt*      For NVIM v0.8.0      Last change: 2024 October 02
 
 ==============================================================================
 Table of Contents                        *elixir-tools.nvim-table-of-contents*
@@ -14,10 +14,11 @@ Table of Contents                        *elixir-tools.nvim-table-of-contents*
 4. Features                                       |elixir-tools.nvim-features|
   - Commands                             |elixir-tools.nvim-features-commands|
   - Next LS                               |elixir-tools.nvim-features-next-ls|
-  - Credo Language Server   |elixir-tools.nvim-features-credo-language-server|
   - ElixirLS                             |elixir-tools.nvim-features-elixirls|
   - Mix                                       |elixir-tools.nvim-features-mix|
   - Projectionist                   |elixir-tools.nvim-features-projectionist|
+  - Contributing                     |elixir-tools.nvim-features-contributing|
+5. Links                                             |elixir-tools.nvim-links|
 
 ==============================================================================
 1. Overview                                       *elixir-tools.nvim-overview*
@@ -38,7 +39,6 @@ with Neovim <https://github.com/neovim/neovim>.
 FEATURES                                 *elixir-tools.nvim-overview-features*
 
 - Next LS <https://github.com/elixir-tools/next-ls> installation and configuration.
-- Credo Language Server <https://github.com/elixir-tools/credo-language-server> installation and configuration.
 - ElixirLS <https://github.com/elixir-lsp/elixir-ls> installation and configuration.
 - `:Mix` command with autocomplete
 - vim-projectionist <https://github.com/tpope/vim-projectionist> support
@@ -63,7 +63,6 @@ LAZY.NVIM                                *elixir-tools.nvim-install-lazy.nvim*
     
         elixir.setup {
           nextls = {enable = true},
-          credo = {},
           elixirls = {
             enable = true,
             settings = elixirls.settings {
@@ -75,6 +74,9 @@ LAZY.NVIM                                *elixir-tools.nvim-install-lazy.nvim*
               vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
               vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
             end,
+          },
+          projectionist = {
+            enable = true
           }
         }
       end,
@@ -98,22 +100,22 @@ PACKER.NVIM                            *elixir-tools.nvim-install-packer.nvim*
 
 MINIMAL SETUP                *elixir-tools.nvim-getting-started-minimal-setup*
 
-The minimal setup will configure both ElixirLS and credo-language-server.
+The minimal setup will configure both ElixirLS but not Next LS.
 
 >lua
     require("elixir").setup()
 <
 
-NextLS, ElixirLS, and credo-language-server can be enabled/disabled by setting
-the `enable` flag in the respective options table.
+Next LS, ElixirLS, and Projectionist can be enabled/disabled by setting the
+`enable` flag in the respective options table.
 
 The defaults are shown below.
 
 >lua
     require("elixir").setup({
       nextls = {enable = false},
-      credo = {enable = true},
       elixirls = {enable = true},
+      projectionist = {enable = true},
     })
 <
 
@@ -148,15 +150,7 @@ some personal configuration.
           -- custom keybinds
         end
       },
-      credo = {
-        enable = true, -- defaults to true
-        port = 9000, -- connect via TCP with the given port. mutually exclusive with `cmd`. defaults to nil
-        cmd = "path/to/credo-language-server", -- path to the executable. mutually exclusive with `port`
-        version = "0.1.0-rc.3", -- version of credo-language-server to install and use. defaults to the latest release
-        on_attach = function(client, bufnr)
-          -- custom keybinds
-        end
-      },
+      ,
       elixirls = {
         -- specify a repository and branch
         repo = "mhanberg/elixir-ls", -- defaults to elixir-lsp/elixir-ls
@@ -202,13 +196,20 @@ COMMANDS                                 *elixir-tools.nvim-features-commands*
 
 
 
-  ---------------------------------------------------------------------------------
-  Command   Subcommand   Description
-  --------- ------------ ----------------------------------------------------------
-  nextls    uninstall    Removes the nextls executable from the default location:
-                         ~/.cache/elixir-tools/nextls/bin/nextls
+  ------------------------------------------------------------------------------------
+  Command   Subcommand       Description
+  --------- ---------------- ---------------------------------------------------------
+  nextls    alias-refactor   Aliases the module under the cursor, refactoring similar
+                             calls as well
 
-  ---------------------------------------------------------------------------------
+  nextls    to-pipe          Extracts the first argument to a pipe call
+
+  nextls    from-pipe        Inlines the pipe call to a function call inlining the
+                             first argument
+
+  nextls    uninstall        Removes the nextls executable from the default location:
+                             ~/.cache/elixir-tools/nextls/bin/nextls
+  ------------------------------------------------------------------------------------
 
 NEXT LS                                   *elixir-tools.nvim-features-next-ls*
 
@@ -238,19 +239,6 @@ there.
 COMMANDS ~
 
 Next LS command are available as subcommands of the `:Elixir` command
-
-
-CREDO LANGUAGE SERVER       *elixir-tools.nvim-features-credo-language-server*
-
-
-  **Note** Credo Language Server integration utilizes `Mix.install/2`, so you
-  must be running Elixir >= 1.12
-
-  **Note** Credo Language Server creates a `.elixir-tools` directory in your
-  project root. You’ll want to add that to your gitignore.
-- Uses your project’s Credo version.
-- Full project diagnostics
-- Code Actions
 
 
 ELIXIRLS                                 *elixir-tools.nvim-features-elixirls*
@@ -451,6 +439,48 @@ vim-projectionist <https://github.com/tpope/vim-projectionist> integration!
 :Efeature {args}                       Create or edit a Wallaby test module.
 
 
+
+
+CONTRIBUTING                         *elixir-tools.nvim-features-contributing*
+
+
+SETUP ~
+
+elixir-tools.nvim uses a combination of Nix <https://nixos.org> and just
+<https://github.com/casey/just> to provide the development tooling, but you can
+also install all of this manually.
+
+
+NIX + JUST
+
+>bash
+    # enter a nix shell, provides language deps and just
+    $ nix develop
+    
+    # install test runner and plugin dependencies
+    $ just init
+    
+    # run tests, optionally include the Neovim version to test
+    $ just test
+    $ just test 0.8.3
+    
+    # format the code
+    $ just format
+<
+
+
+MANUALLY
+
+Install the following software:
+
+- Neovim <https://neovim.io>
+- Lua 5.1 <https://sourceforge.net/projects/luabinaries/files/5.1.5/>
+- Luarocks <https://github.com/luarocks/luarocks/wiki/Download>
+- nvim-test <https://github.com/lewis6991/nvim-test>
+- plenary.nvim <https://github.com/nvim-lua/plenary.nvim> (into the folder "deps")
+- stylua <https://github.com/JohnnyMorganz/StyLua>
+
+To run the tests, you can reference the commands run in the justfile
 
 ==============================================================================
 5. Links                                             *elixir-tools.nvim-links*
