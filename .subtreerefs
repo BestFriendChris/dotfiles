@@ -15,6 +15,7 @@ vim/dracula,nvim/pack/external/opt/dracula,git@github.com:dracula/vim.git,master
 vim/elixir-tools,nvim/pack/external/opt/elixir-tools,https://github.com/elixir-tools/elixir-tools.nvim.git,main
 vim/eunuch,nvim/pack/external/opt/vim-eunuch,https://github.com/tpope/vim-eunuch.git,master
 vim/firenvim,nvim/pack/external/opt/firenvim,https://github.com/glacambre/firenvim.git,master
+vim/friendly-snippets,nvim/pack/external/opt/friendly-snippets,https://github.com/rafamadriz/friendly-snippets.git,main
 vim/fzf,nvim/pack/external/opt/fzf,https://github.com/junegunn/fzf.git,master
 vim/highlighter,nvim/pack/external/opt/vim-highlighter,https://github.com/azabiong/vim-highlighter.git,main
 vim/lightspeed,nvim/pack/external/opt/lightspeed,https://github.com/ggandor/lightspeed.nvim.git,main
