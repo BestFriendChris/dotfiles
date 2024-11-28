@@ -4,6 +4,7 @@ vim-go,nvim/pack/external/opt/vim-go,https://github.com/fatih/vim-go.git,master
 vim/bqf,nvim/pack/external/opt/bqf,https://github.com/kevinhwang91/nvim-bqf.git,main
 vim/cmp-buffer,nvim/pack/external/opt/cmp-buffer,https://github.com/hrsh7th/cmp-buffer.git,main
 vim/cmp-nvim-lsp,nvim/pack/external/opt/cmp-nvim-lsp,https://github.com/hrsh7th/cmp-nvim-lsp.git,main
+vim/cmp-path,nvim/pack/external/opt/cmp-path,https://github.com/hrsh7th/cmp-path.git,main
 vim/commentary,nvim/pack/external/opt/vim-commentary,https://github.com/tpope/vim-commentary.git,master
 vim/conform,nvim/pack/external/opt/conform,https://github.com/stevearc/conform.nvim.git,master
 vim/context-commentstring,nvim/pack/external/opt/vim-context-commentstring,https://github.com/suy/vim-context-commentstring.git,master
