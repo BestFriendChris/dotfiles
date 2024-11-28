@@ -24,6 +24,7 @@
     ~/.vscodevimrc: vscode/HOME_vscodevimrc
     ~/.jjconfig.toml: jj/jjconfig.toml
     ~/.ctags: ctags/HOME_ctags
+    ~/.vsnip: nvim/vsnip
 
 - brewfile:
     file: homebrew/Brewfile

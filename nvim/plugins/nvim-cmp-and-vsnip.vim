@@ -6,6 +6,12 @@ packadd! nvim-cmp
 
 packadd! cmp-vsnip
 packadd! vim-vsnip
+packadd! friendly-snippets
+
+imap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-l>'
+smap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-l>'
+imap <expr> <C-h>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-h>'
+smap <expr> <C-h>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-h>'
 
 lua <<EOF
   local cmp = require'cmp'
