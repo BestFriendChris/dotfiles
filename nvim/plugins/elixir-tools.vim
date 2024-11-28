@@ -5,6 +5,8 @@ function! s:ElixirToolsSetup() abort
   local elixir = require('elixir')
   local elixirls = require('elixir.elixirls')
 
+  local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+
   elixir.setup {
     nextls = {
       enable = false,
@@ -16,7 +18,8 @@ function! s:ElixirToolsSetup() abort
         dialyzerEnabled = false,
         enableTestLenses = false,
       },
-    }
+    },
+    capabilities = cmp_capabilities,
   }
 EOF
 endfunction
