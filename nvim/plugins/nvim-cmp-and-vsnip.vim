@@ -13,18 +13,25 @@ smap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-l
 imap <expr> <C-h>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-h>'
 smap <expr> <C-h>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-h>'
 
+inoremap <C-Space> <Cmd>lua require'cmp'.complete()<CR>
+snoremap <C-Space> <Cmd>lua require'cmp'.complete()<CR>
+cnoremap <C-Space> <Cmd>lua require'cmp'.complete()<CR>
+
 lua <<EOF
   local cmp = require'cmp'
 
   cmp.setup({
+    completion = {
+      autocomplete = false
+    },
     snippet = {
       expand = function(args)
         vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
       end,
     },
     window = {
-      -- completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
