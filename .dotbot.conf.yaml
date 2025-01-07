@@ -19,6 +19,7 @@
     ~/.config/nvim: nvim
     ~/.config/starship.toml: starship/starship.toml
     ~/.config/task: taskwarrior
+    ~/.config/ghostty: ghostty
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
     ~/.vscodevimrc: vscode/HOME_vscodevimrc
