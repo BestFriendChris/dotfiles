@@ -8,4 +8,6 @@ if has_command neovide; then
       fi
     }
   fi
+
+  alias vless="nvim -mR"
 fi
