@@ -160,6 +160,7 @@ theme = Dracula+
 # 
 #   * `inherit` - The working directory of the launching process.
 working-directory = 
+window-inherit-working-directory = false
 
 # The font that will be used for the application's window and tab titles.
 # 
