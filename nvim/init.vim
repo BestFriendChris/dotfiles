@@ -15,6 +15,8 @@ set visualbell
 set wildmode=list:longest
 set foldlevelstart=999
 set sessionoptions=curdir,folds,help,tabpages,winsize
+set path=,,.
+setlocal path=,,.
 
 let maplocalleader=","
 
