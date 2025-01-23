@@ -46,7 +46,7 @@ if has_command jj; then
             jj log \
               --ignore-working-copy \
               --quiet \
-              -r 'ancestors(remote_branches(\"{1}\", \"{2}\"), 3)' \
+              -r 'ancestors(remote_bookmarks(\"{1}\", \"{2}\"), 3)' \
               --color always \
               -T 'separate(\"\n\", author.username() ++ \" \" ++ author.timestamp(), description.first_line())'"
     )
