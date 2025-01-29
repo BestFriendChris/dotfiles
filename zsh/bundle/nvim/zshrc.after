@@ -1,8 +1,10 @@
-if has_command neovide; then
+if has_command nvim; then
 
   if has_command fzf; then
     function nvimf() {
-      files=($(fd . ${1:-} | fzf --query "${2:-}" --multi --select-1 --exit-0))
+      local query="${1:-}"
+      local searchpath="${2:-}"
+      files=($(fd . ${searchpath} | fzf --query "$query" --multi --select-1 --exit-0))
       if [[ -n "$files" ]]; then
         nvim -p $files
       fi
