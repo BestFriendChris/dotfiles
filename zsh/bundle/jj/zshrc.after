@@ -55,4 +55,29 @@ if has_command jj; then
       jj bookmark track $bookmark
     fi
   }
+
+  function jj.bk.untrack() {
+    local query="$1"
+    local remote="${2:-origin}"
+    local bookmark=$(
+      jj bookmark list --remote "$remote" --tracked -T 'if(remote && tracked && name != "main" && name != "master", name ++ "\n")' --ignore-working-copy --quiet \
+        | fzf -e -d @ --query "$query" --preview "
+            jj log \
+              --ignore-working-copy \
+              --quiet \
+              -r 'ancestors(\"{1}\", 3)' \
+              --color always \
+              -T 'separate(\"\n\", author.username() ++ \" \" ++ author.timestamp(), description.first_line())'"
+    )
+    if [[ -n "$bookmark" ]]; then
+      jj log -r "immutable_heads()..${bookmark}" --quiet --ignore-working-copy
+
+      echo "Untracking ${bookmark}@${remote}"
+      jj bookmark untrack "${bookmark}@${remote}"
+
+
+      echo "Deleting ${bookmark}"
+      jj bookmark delete "${bookmark}"
+    fi
+  }
 fi
