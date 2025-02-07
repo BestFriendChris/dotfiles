@@ -8,7 +8,7 @@ tool = ["difft", "--color=always", "$left", "$right"]
 
 [template-aliases]
 # Username part of the email address
-'format_short_signature(signature)' = 'signature.username()'
+'format_short_signature(signature)' = 'signature.email().local()'
 
 [revset-aliases]
 'thisofftrunk()' = 'trunk()..@ | (..trunk() ~ ..@) | latest(..trunk() & ..@)'
