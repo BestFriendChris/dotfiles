@@ -40,6 +40,7 @@ vim/telescope,nvim/pack/external/opt/telescope,https://github.com/nvim-telescope
 vim/telescope-file-browser-lspconfig,nvim/pack/external/opt/telescope-file-browser,https://github.com/nvim-telescope/telescope-file-browser.nvim.git,master
 vim/telescope-fzy-native,nvim/pack/external/opt/telescope-fzy-native,https://github.com/nvim-telescope/telescope-fzy-native.nvim.git,master
 vim/unimpaired,nvim/pack/external/opt/vim-unimpaired,https://github.com/tpope/vim-unimpaired.git,master
+vim/vim-argumentative,nvim/pack/external/opt/vim-argumentative,https://github.com/PeterRincker/vim-argumentative.git,master
 vim/vim-dispatch,nvim/pack/external/opt/vim-dispatch,https://github.com/tpope/vim-dispatch.git,master
 vim/vim-exchange,nvim/pack/external/opt/vim-exchange,https://github.com/tommcdo/vim-exchange.git,master
 vim/vim-floaterm,nvim/pack/external/opt/vim-floaterm,https://github.com/voldikss/vim-floaterm.git,master
