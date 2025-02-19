@@ -24,7 +24,7 @@ if has_command jj; then
 
     local bookmark=$(
       jj bookmark list -T 'if(!remote, name ++ "\n")' --ignore-working-copy --quiet \
-        | fzf -e --prompt "bookmark> " --layout reverse --preview-window down --query "$query" --preview "
+        | fzf --select-1 -e --prompt "bookmark> " --layout reverse --preview-window down --query "$query" --preview "
             jj log \
               --ignore-working-copy \
               --quiet \
@@ -61,7 +61,7 @@ if has_command jj; then
     local remote="${2:-origin}"
     local bookmark=$(
       jj bookmark list --remote "$remote" --tracked -T 'if(remote && tracked && name != "main" && name != "master", name ++ "\n")' --ignore-working-copy --quiet \
-        | fzf -e -d @ --query "$query" --preview "
+        | fzf --select-1 -e -d @ --query "$query" --preview "
             jj log \
               --ignore-working-copy \
               --quiet \
