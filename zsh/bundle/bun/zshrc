@@ -1,0 +1,7 @@
+if test -d "$HOME/.bun/bin"; then
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$PATH:$BUN_INSTALL/bin"
+fi
+
+# bun completions
+[ -s "/Users/bfc/.bun/_bun" ] && source "/Users/bfc/.bun/_bun"
