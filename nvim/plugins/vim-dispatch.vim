@@ -9,7 +9,7 @@ nnoremap <silent> m? <Cmd>echo ":Dispatch" dispatch#make_focus(v:count > 1 ? 0 :
 
 nnoremap <silent> '' <Cmd>Dispatch<CR>
 nnoremap <silent> '<CR> <Cmd>FocusDispatch!<CR>:Dispatch<CR>
-nnoremap <silent> '<Space> :Dispatch<Space>
+nnoremap <silent> '<Space> :FocusDispatch!<Space>
 nnoremap <silent> '! <Cmd>Dispatch!<CR>
 nnoremap <silent> '? <Cmd>FocusDispatch<CR>
 
