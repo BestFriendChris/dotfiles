@@ -1,4 +1,4 @@
 unalias run-help
 autoload run-help
 HELPDIR=/opt/homebrew/share/zsh/help
-export path=($path '/opt/homebrew/bin' '/opt/homebrew/sbin')
+export path=('/opt/homebrew/bin' '/opt/homebrew/sbin' $path)
