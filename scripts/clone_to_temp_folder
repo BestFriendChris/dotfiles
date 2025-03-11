@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+set -e
+
+CLONE_URL=$(git remote get-url origin)
+USER_NAME=$(git config user.name)
+USER_EMAIL=$(git config user.email)
+
+TEMP_DIR=$(mktemp -d)
+trap 'rm -rf $TEMP_DIR' EXIT
+
+cd $TEMP_DIR
+
+git clone $CLONE_URL dotfiles
+cd dotfiles
+git config user.name $USER_NAME
+git config user.email $USER_EMAIL
+
+echo
+echo "~~~~~ Entering subshell at $PWD ~~~~~"
+
+zsh
