@@ -62,8 +62,8 @@ function _add_submodules {
     git fetch -q -n "$submodule_url" "$submodule_hash"
 
     _pr_header "Squashing commit $submodule_hash"
-    noglob git commit-tree $submodule_hash^{tree} -m "
-Squashed '$submodule_path' content from commit $(git rev-parse --short $submodule_hash)
+    noglob git commit-tree $submodule_hash^{tree} -m \
+"Squashed '$submodule_path' content from commit $(git rev-parse --short $submodule_hash)
 
 git-subtree-dir: $submodule_path
 git-subtree-split: $submodule_hash

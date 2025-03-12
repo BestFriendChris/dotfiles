@@ -262,8 +262,8 @@ function _add_subtree {
   git rev-parse FETCH_HEAD | read subtree_hash
 
   _pr_header "Squashing $branch ($subtree_hash)"
-  noglob git commit-tree $subtree_hash^{tree} -m "
-Squashed '$subtree_path' content from commit $(git rev-parse --short $subtree_hash)
+  noglob git commit-tree $subtree_hash^{tree} -m \
+"Squashed '$subtree_path' content from commit $(git rev-parse --short $subtree_hash)
 
 git-subtree-dir: $subtree_path
 git-subtree-split: $subtree_hash
