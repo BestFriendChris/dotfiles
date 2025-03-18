@@ -60,6 +60,12 @@ lua <<EOF
   vim.keymap.set('n', '<Leader>f.G', function() builtin.grep_string({ cwd = utils.buffer_dir() }) end, {
     desc = 'Telescope grep_string (cwd = buffer_dir)'
   })
+  vim.keymap.set('v', '<Leader>f.G', function() builtin.grep_string({ cwd = utils.buffer_dir() }) end, {
+    desc = 'Telescope grep_string (cwd = buffer_dir)'
+  })
+  vim.keymap.set('n', '<Leader>f..', function() builtin.current_buffer_fuzzy_find({ skip_empty_lines = true }) end, {
+    desc = 'Telescope current_buffer_fuzzy_find'
+  })
 EOF
 endfunction
 
@@ -68,6 +74,7 @@ call bfc#plugins#on_load(funcref('<SID>TelescopeSetup'))
 nnoremap <Leader>ff <Cmd>Telescope find_files<cr>
 nnoremap <Leader>fg <Cmd>Telescope live_grep<cr>
 nnoremap <Leader>fG <Cmd>Telescope grep_string<cr>
+vnoremap <Leader>fG <Cmd>Telescope grep_string<cr>
 nnoremap <Leader>fb <Cmd>Telescope buffers<cr>
 nnoremap <Leader>fh <Cmd>Telescope help_tags<cr>
 

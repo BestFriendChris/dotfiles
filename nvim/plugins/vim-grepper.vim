@@ -10,7 +10,9 @@ function! s:GrepperSetup() abort
   xmap gs <Plug>(GrepperOperator)
 
   nnoremap <silent> <Leader>g <Cmd>Grepper -tool rg<CR>
+  vnoremap <silent> <Leader>g y:Grepper -tool rg -query '<C-R>"'<CR>
   nnoremap <silent> <Leader>G <Cmd>Grepper -tool rg -dir file<CR>
+  vnoremap <silent> <Leader>G y:Grepper -tool rg -dir file -query '<C-R>"'<CR>
   nnoremap <silent> <Leader>* <Cmd>Grepper -tool rg -cword -noprompt<CR>
 
   command! GrepTodo Grepper -noprompt -tool rg -query '(TODO|FIXME|XXX):'
