@@ -1,0 +1,50 @@
+if has_command zellij; then
+  # eval "$(zellij setup --generate-completion zsh)"
+  CWD=$0:A:h
+  fpath+=( \
+    $CWD/completions \
+  )
+
+  function zr () { zellij run --name "$*" -- zsh -ic "$*";}
+  function zrf () { zellij run --name "$*" --floating -- zsh -ic "$*";}
+  function zri () { zellij run --name "$*" --in-place -- zsh -ic "$*";}
+  function ze () { zellij edit "$*";}
+  function zef () { zellij edit --floating "$*";}
+  function zei () { zellij edit --in-place "$*";}
+  function zpipe () {
+    if [ -z "$1" ]; then
+      zellij pipe;
+    else
+      zellij pipe -p $1;
+    fi
+  }
+
+  function za () {
+    if [ -n "$ZELLIJ" ]; then
+      echo "Unable to attach while already in a zellij session"
+      return 1
+    fi
+    local zj_sessions=$(zellij list-sessions --no-formatting | grep -v "^[^ ]*-" | fzf | sed 's/ .*//')
+    if [ -n "$zj_sessions" ]; then
+      zellij attach $zj_sessions
+    fi
+  }
+
+  function zl () {
+    if [ -z "$ZELLIJ" ]; then
+      if [ -z "$1" ]; then
+        zellij -l welcome;
+      else
+        zellij -l $1;
+      fi
+    else
+      if [ -z "$1" ]; then
+        local zj_layout_dir=$(zellij setup --check | grep "LAYOUT DIR" - | grep -o '".*"' - | tr -d '"')
+        local zj_layout=$(fd --type file . "$zj_layout_dir" | sed -e 's|.*/||' -e 's|\.kdl||' | fzf)
+        test -z "$zj_layout" || zellij action new-tab -l "$zj_layout"
+      else
+        zellij action new-tab -l $1
+      fi
+    fi
+  }
+fi
