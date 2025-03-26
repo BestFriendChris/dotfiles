@@ -20,6 +20,10 @@
     ~/.config/starship.toml: starship/starship.toml
     ~/.config/task: taskwarrior
     ~/.config/ghostty: ghostty
+    ~/.config/zellij/config.kdl: zellij/config.kdl
+    ~/.config/zellij/layouts/:
+      path: zellij/layouts/*
+      glob: true
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
     ~/.vscodevimrc: vscode/HOME_vscodevimrc
@@ -34,5 +38,3 @@
 
 - shell:
     - ["nvim --headless +BfcPostInstall +qall", "Installing and Updating vim plugins"]
-    - ["sudo candy setup", "Setting up candy"]
-    - ["brew services start candy", "Starting candy service"]

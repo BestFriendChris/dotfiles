@@ -1,0 +1,29 @@
+layout {
+    tab name="zellij_config" focus=true hide_floating_panes=true {
+        
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane focus=true cwd="/Users/bfc/.config/zellij" edit="./config.kdl"
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+        floating_panes {
+            pane cwd="/Users/bfc/.config/zellij" {
+                x "10%"
+                y "10%"
+                width "80%"
+                height "80%"
+            }
+        }
+    }
+    new_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane 
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}
