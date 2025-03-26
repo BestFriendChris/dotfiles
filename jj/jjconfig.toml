@@ -32,6 +32,7 @@ tool = ["difft", "--color=always", "$left", "$right"]
 l = ["log", "-r", 'thisofftrunk()']
 lh = ["log", "-r", "@-"]
 r = ["log", "-r", "::@", "--limit", "10"]
+lf = ["log", "-T" , "builtin_log_compact_full_description"]
 
 [git]
 private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*') | description(glob:'wip:*')"
