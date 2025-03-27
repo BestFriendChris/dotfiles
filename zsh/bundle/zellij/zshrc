@@ -40,7 +40,7 @@ if has_command zellij; then
     else
       if [ -z "$1" ]; then
         local zj_layout_dir=$(zellij setup --check | grep "LAYOUT DIR" - | grep -o '".*"' - | tr -d '"')
-        local zj_layout=$(fd --type file . "$zj_layout_dir" | sed -e 's|.*/||' -e 's|\.kdl||' | fzf)
+        local zj_layout=$(fd -tf -tl . "$zj_layout_dir" | sed -e 's|.*/||' -e 's|\.kdl||' | fzf)
         test -z "$zj_layout" || zellij action new-tab -l "$zj_layout"
       else
         zellij action new-tab -l $1
