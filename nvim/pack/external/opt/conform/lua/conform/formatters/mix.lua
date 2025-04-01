@@ -5,7 +5,8 @@ return {
     description = "Format Elixir files using the mix format command.",
   },
   command = "mix",
-  args = { "format", "--stdin-filename", "$FILENAME", "-" },
+  args = { "format", "$FILENAME" },
+  stdin = false,
   cwd = require("conform.util").root_file({
     "mix.exs",
   }),
