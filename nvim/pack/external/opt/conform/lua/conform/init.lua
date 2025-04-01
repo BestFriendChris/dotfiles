@@ -52,7 +52,7 @@ local function check_for_default_opts(conf)
     if type(k) == "string" then
       notify(
         string.format(
-          'conform.setup: the "_" and "*" keys in formatters_by_ft do not support configuring format options, such as "%s"',
+          'conform.setup: the "*" key in formatters_by_ft does not support configuring format options, such as "%s"',
           k
         ),
         vim.log.levels.WARN
@@ -72,7 +72,6 @@ M.setup = function(opts)
 
   M.formatters = vim.tbl_extend("force", M.formatters, opts.formatters or {})
   M.formatters_by_ft = vim.tbl_extend("force", M.formatters_by_ft, opts.formatters_by_ft or {})
-  check_for_default_opts(M.formatters_by_ft["_"])
   check_for_default_opts(M.formatters_by_ft["*"])
   M.default_format_opts =
     vim.tbl_extend("force", M.default_format_opts, opts.default_format_opts or {})
@@ -222,10 +221,6 @@ M.setup = function(opts)
       end,
     })
   end
-
-  vim.api.nvim_create_user_command("ConformInfo", function()
-    require("conform.health").show_window()
-  end, { desc = "Show information about Conform formatters" })
 end
 
 ---@param obj any
@@ -242,8 +237,15 @@ local function get_matching_filetype(bufnr)
     bufnr = vim.api.nvim_get_current_buf()
   end
   local filetypes = vim.split(vim.bo[bufnr].filetype, ".", { plain = true })
-  table.insert(filetypes, "_")
-  for _, filetype in ipairs(filetypes) do
+  -- Reverse the list so we can check the most specific filetypes first.
+  -- Start with the whole filetype, so users can specify an entire compound filetype if they want.
+  -- (e.g. "markdown.vimwiki")
+  local rev_filetypes = { vim.bo[bufnr].filetype }
+  for i = #filetypes, 1, -1 do
+    table.insert(rev_filetypes, filetypes[i])
+  end
+  table.insert(rev_filetypes, "_")
+  for _, filetype in ipairs(rev_filetypes) do
     local ft_formatters = M.formatters_by_ft[filetype]
     -- Sometimes people put an empty table here, and that should not count as configuring formatters
     -- for a filetype.
@@ -265,17 +267,11 @@ M.list_formatters_for_buffer = function(bufnr)
 
   local function dedupe_formatters(names, collect)
     for _, name in ipairs(names) do
-      if type(name) == "table" then
-        notify_once(
-          "deprecated[conform]: The nested {} syntax to run the first formatter has been replaced by the stop_after_first option (see :help conform.format).\nSupport for the old syntax will be dropped on 2025-01-01.",
-          vim.log.levels.WARN
-        )
-        local alternation = {}
-        dedupe_formatters(name, alternation)
-        if not vim.tbl_isempty(alternation) then
-          table.insert(collect, alternation)
-        end
-      elseif not seen[name] then
+      assert(
+        type(name) == "string",
+        "The nested {} syntax to run the first formatter has been replaced by the stop_after_first option (see :help conform.format)."
+      )
+      if not seen[name] then
         table.insert(collect, name)
         seen[name] = true
       end
@@ -373,36 +369,18 @@ M.resolve_formatters = function(names, bufnr, warn_on_missing, stop_after_first)
   end
 
   for _, name in ipairs(names) do
-    if type(name) == "string" then
-      local info = M.get_formatter_info(name, bufnr)
-      add_info(info, warn_on_missing)
-    else
-      notify_once(
-        "deprecated[conform]: The nested {} syntax to run the first formatter has been replaced by the stop_after_first option (see :help conform.format).\nSupport for the old syntax will be dropped on 2025-01-01.",
-        vim.log.levels.WARN
-      )
-      -- If this is an alternation, take the first one that's available
-      for i, v in ipairs(name) do
-        local info = M.get_formatter_info(v, bufnr)
-        if add_info(info, warn_on_missing and i == #name) then
-          break
-        end
-      end
-    end
+    assert(
+      type(name) == "string",
+      "The nested {} syntax to run the first formatter has been replaced by the stop_after_first option (see :help conform.format)."
+    )
+    local info = M.get_formatter_info(name, bufnr)
+    add_info(info, warn_on_missing)
 
     if stop_after_first and #all_info > 0 then
       break
     end
   end
   return all_info
-end
-
----Check if there are any formatters configured specifically for the buffer's filetype
----@param bufnr integer
----@return boolean
-local function has_filetype_formatters(bufnr)
-  local matching_filetype = get_matching_filetype(bufnr)
-  return matching_filetype ~= nil and matching_filetype ~= "_"
 end
 
 ---@param opts table
@@ -534,9 +512,8 @@ M.format = function(opts, callback)
     end
   end
 
-  -- check if formatters were configured for this buffer's filetype specifically (i.e. not the "_"
-  -- or "*" formatters) AND that at least one of the configured formatters is available
-  local any_formatters = has_filetype_formatters(opts.bufnr) and not vim.tbl_isempty(formatters)
+  -- check if at least one of the configured formatters is available
+  local any_formatters = not vim.tbl_isempty(formatters)
 
   if
     has_lsp
@@ -663,7 +640,7 @@ M.list_formatters_to_run = function(bufnr)
   local formatters = M.resolve_formatters(formatter_names, bufnr, false, opts.stop_after_first)
 
   local has_lsp = has_lsp_formatter(opts)
-  local any_formatters = has_filetype_formatters(opts.bufnr) and not vim.tbl_isempty(formatters)
+  local any_formatters = not vim.tbl_isempty(formatters)
 
   if
     has_lsp
@@ -689,17 +666,11 @@ M.list_all_formatters = function()
     end
 
     for _, formatter in ipairs(ft_formatters) do
-      if type(formatter) == "table" then
-        notify_once(
-          "deprecated[conform]: The nested {} syntax to run the first formatter has been replaced by the stop_after_first option (see :help conform.format).\nSupport for the old syntax will be dropped on 2025-01-01.",
-          vim.log.levels.WARN
-        )
-        for _, v in ipairs(formatter) do
-          formatters[v] = true
-        end
-      else
-        formatters[formatter] = true
-      end
+      assert(
+        type(formatter) == "string",
+        "The nested {} syntax to run the first formatter has been replaced by the stop_after_first option (see :help conform.format)."
+      )
+      formatters[formatter] = true
     end
   end
 
@@ -813,7 +784,7 @@ M.get_formatter_info = function(formatter, bufnr)
 
   if vim.fn.executable(command) == 0 then
     available = false
-    available_msg = "Command not found"
+    available_msg = string.format("Command '%s' not found", command)
   elseif config.condition and not config.condition(config, ctx) then
     available = false
     available_msg = "Condition failed"
@@ -836,24 +807,6 @@ M.get_formatter_info = function(formatter, bufnr)
     available = available,
     available_msg = available_msg,
   }
-end
-
----Check if the buffer will use LSP formatting when lsp_format = "fallback"
----@deprecated
----@param options? table Options passed to |vim.lsp.buf.format|
----@return boolean
-M.will_fallback_lsp = function(options)
-  notify_once(
-    "deprecated[conform]: will_fallback_lsp is deprecated. Use list_formatters_to_run instead.\nThis method will be removed on 2025-01-01.",
-    vim.log.levels.WARN
-  )
-  options = vim.tbl_deep_extend("keep", options or {}, {
-    bufnr = vim.api.nvim_get_current_buf(),
-  })
-  if options.bufnr == 0 then
-    options.bufnr = vim.api.nvim_get_current_buf()
-  end
-  return not has_filetype_formatters(options.bufnr) and has_lsp_formatter(options)
 end
 
 M.formatexpr = function(opts)

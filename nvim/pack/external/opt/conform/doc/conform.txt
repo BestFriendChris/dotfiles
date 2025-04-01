@@ -249,7 +249,9 @@ get_formatter_info({formatter}, {bufnr}): conform.FormatterInfo *conform.get_for
 --------------------------------------------------------------------------------
 FORMATTERS                                                    *conform-formatters*
 
+`air` - R formatter and language server.
 `alejandra` - The Uncompromising Nix Code Formatter.
+`ansible-lint` - ansible-lint with --fix.
 `asmfmt` - Go Assembler Formatter
 `ast-grep` - A CLI tool for code structural search, lint and rewriting. Written
            in Rust.
@@ -263,7 +265,6 @@ FORMATTERS                                                    *conform-formatter
             pyflakes.
 `autopep8` - A tool that automatically formats Python code to conform to the PEP
            8 style guide.
-`awk` - Format awk programs with awk
 `bean-format` - Reformat Beancount files to right-align all the numbers at the
               same, minimal column.
 `beautysh` - A Bash beautifier for the masses.
@@ -274,6 +275,8 @@ FORMATTERS                                                    *conform-formatter
         maintain them.
 `biome-check` - A toolchain for web projects, aimed to provide functionalities
               to maintain them.
+`biome-organize-imports` - A toolchain for web projects, aimed to provide
+                         functionalities to maintain them.
 `black` - The uncompromising Python code formatter.
 `blade-formatter` - An opinionated blade template formatter for Laravel that
                   respects readability.
@@ -283,7 +286,7 @@ FORMATTERS                                                    *conform-formatter
 `buf` - A new way of working with Protocol Buffers.
 `buildifier` - buildifier is a tool for formatting bazel BUILD and .bzl files
              with a standard convention.
-`cabal_fmt` - Format cabal files with cabal-fmt
+`cabal_fmt` - Format cabal files with cabal-fmt.
 `caramel_fmt` - Format Caramel code.
 `cbfmt` - A tool to format codeblocks inside markdown and org documents.
 `clang-format` - Tool to format C/C++/… code according to a set of rules and
@@ -292,11 +295,13 @@ FORMATTERS                                                    *conform-formatter
          Clojure code.
 `cljstyle` - Formatter for Clojure code.
 `cmake_format` - Parse cmake listfiles and format them nicely.
+`codeql` - Format queries and libraries with CodeQL.
 `codespell` - Check code for common misspellings.
 `commitmsgfmt` - Formats commit messages better than fmt(1) and Vim.
 `crlfmt` - Formatter for CockroachDB's additions to the Go style guide.
 `crystal` - Format Crystal code.
 `csharpier` - The opinionated C# code formatter.
+`css_beautify` - Beautifier for css.
 `cue_fmt` - Format CUE files using `cue fmt` command.
 `d2` - D2 is a modern diagram scripting language that turns text to diagrams.
 `darker` - Run black only on changed lines.
@@ -332,10 +337,12 @@ FORMATTERS                                                    *conform-formatter
 `fnlfmt` - A formatter for Fennel code.
 `forge_fmt` - Forge is a command-line tool that ships with Foundry. Forge tests,
             builds, and deploys your smart contracts.
+`format-dune-file` - Auto-formatter for Dune files.
 `format-queries` - Tree-sitter query formatter.
 `fourmolu` - A fork of ormolu that uses four space indentation and allows
            arbitrary configuration.
 `fprettify` - Auto-formatter for modern fortran source code.
+`gawk` - Format awk programs with gawk.
 `gci` - GCI, a tool that controls Go package import order and makes it always
       deterministic.
 `gdformat` - A formatter for Godot's gdscript.
@@ -351,14 +358,18 @@ FORMATTERS                                                    *conform-formatter
             unreferenced ones.
 `goimports-reviser` - Right imports sorting & code formatting tool (goimports
                     alternative).
+`gojq` - Pure Go implementation of jq.
+`golangci-lint` - Fast linters runner for Go (with formatter).
 `golines` - A golang formatter that fixes long lines.
 `google-java-format` - Reformats Java source code according to Google Java
                      Style.
 `grain_format` - Code formatter for the grain programming language.
 `hcl` - A formatter for HCL files.
 `hindent` - Haskell pretty printer.
+`html_beautify` - Beautifier for html.
 `htmlbeautifier` - A normaliser/beautifier for HTML that also understands
                  embedded Ruby. Ideal for tidying up Rails templates.
+`hurlfmt` - Formats hurl files.
 `imba_fmt` - Code formatter for the Imba programming language.
 `indent` - GNU Indent.
 `injected` - Format treesitter injected languages.
@@ -367,6 +378,7 @@ FORMATTERS                                                    *conform-formatter
         automatically separate them into sections and by type.
 `joker` - Small Clojure interpreter, linter and formatter.
 `jq` - Command-line JSON processor.
+`js_beautify` - Beautifier for javascript.
 `jsonnetfmt` - jsonnetfmt is a command line tool to format jsonnet files.
 `just` - Format Justfile.
 `kcl` - The KCL Format tool modifies the files according to the KCL code style.
@@ -402,6 +414,9 @@ FORMATTERS                                                    *conform-formatter
             official style guide.
 `nixfmt` - The official (but not yet stable) formatter for Nix code.
 `nixpkgs_fmt` - nixpkgs-fmt is a Nix code formatter for nixpkgs.
+`nomad_fmt` - The fmt commands check the syntax and rewrites Nomad configuration
+            and jobspec files to canonical format.
+`nph` - An opinionated code formatter for Nim.
 `npm-groovy-lint` - Lint, format and auto-fix your Groovy / Jenkinsfile / Gradle
                   files using command line.
 `nufmt` - The nushell formatter.
@@ -427,12 +442,16 @@ FORMATTERS                                                    *conform-formatter
            necessary.
 `prettierd` - prettier, as a daemon, for ludicrous formatting speed.
 `pretty-php` - The opinionated PHP code formatter.
+`prettypst` - Formatter for Typst.
 `puppet-lint` - Check that your Puppet manifests conform to the style guide.
 `purs-tidy` - A syntax tidy-upper for PureScript.
 `pyink` - A Python formatter, forked from Black with a few different formatting
         behaviors.
+`pyproject-fmt` - Apply a consistent format to your pyproject.toml file with
+                comment support.
 `python-ly` - A Python package and commandline tool to manipulate LilyPond
             files.
+`reformat-gherkin` - Formatter for Gherkin language.
 `reorder-python-imports` - Rewrites source to reorder python imports
 `rescript-format` - The built-in ReScript formatter.
 `roc` - A fast, friendly, functional language.
@@ -446,6 +465,7 @@ FORMATTERS                                                    *conform-formatter
 `ruff_organize_imports` - An extremely fast Python linter, written in Rust.
                         Organize imports.
 `rufo` - Rufo is an opinionated ruby formatter.
+`runic` - Julia code formatter.
 `rustfmt` - A tool for formatting rust code according to style guidelines.
 `rustywind` - A tool for formatting Tailwind CSS classes.
 `scalafmt` - Code formatter for Scala.
@@ -461,6 +481,7 @@ FORMATTERS                                                    *conform-formatter
            dialects and templated code.
 `sqlfmt` - sqlfmt formats your dbt SQL files so you don't have to. It is similar
          in nature to Black, gofmt, and rustfmt (but for SQL)
+`sqruff` - sqruff is a SQL linter and formatter written in Rust.
 `squeeze_blanks` - Squeeze repeated blank lines into a single blank line via
                  `cat -s`.
 `standard-clj` - A JavaScript library to format Clojure code according to
@@ -485,6 +506,7 @@ FORMATTERS                                                    *conform-formatter
 `terraform_fmt` - The terraform-fmt command rewrites `terraform` configuration
                 files to a canonical format and style.
 `terragrunt_hclfmt` - Format hcl files into a canonical format.
+`tex-fmt` - An extremely fast LaTeX formatter written in Rust.
 `tlint` - Tighten linter for Laravel conventions with support for auto-
         formatting.
 `tofu_fmt` - The tofu-fmt command rewrites OpenTofu configuration files to a

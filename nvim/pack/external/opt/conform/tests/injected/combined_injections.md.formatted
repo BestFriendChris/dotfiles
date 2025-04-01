@@ -1,14 +1,15 @@
 text
 
-|<!-- comment -->|
+<!-- comment -->
 
 ```lua
-|local foo = 'bar'|
+>local foo = 'bar'<
 ```
 
 
-|<!-- comment -->|
+<!-- comment -->
 
 ```lua
-|local foo = 'bar'|
+>local foo = 'bar'
+local bar = 3<
 ```

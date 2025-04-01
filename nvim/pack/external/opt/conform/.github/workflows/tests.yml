@@ -43,7 +43,7 @@ jobs:
         uses: JohnnyMorganz/stylua-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          version: v0.20.0
+          version: v2.0.2
           args: --check lua tests
 
   run_tests:
@@ -51,6 +51,8 @@ jobs:
       matrix:
         include:
           - nvim_tag: v0.10.0
+          - nvim_tag: v0.10.4
+          - nvim_tag: v0.11.0
 
     name: Run tests
     runs-on: ubuntu-22.04
