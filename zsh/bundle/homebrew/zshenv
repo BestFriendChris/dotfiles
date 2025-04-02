@@ -6,3 +6,4 @@ fpath+=( \
   /opt/homebrew/share/zsh/site-functions \
 )
 
+export path=('/opt/homebrew/bin' '/opt/homebrew/sbin' $path)
