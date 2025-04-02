@@ -102,7 +102,7 @@ nnoremap * /\C\<<C-R>=expand('<cword>')<CR>\><CR>
 nnoremap # ?\C\<<C-R>=expand('<cword>')<CR>\><CR>
 
 nnoremap gf <Cmd>e <cfile><CR>
-nnoremap ^wgf <Cmd>tabe <cfile><CR>
+nnoremap <C-W>gf <Cmd>tabe <cfile><CR>
 
 nnoremap <Leader><Space> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 
