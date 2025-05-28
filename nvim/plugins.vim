@@ -54,6 +54,7 @@ call bfc#plugins#load('zig')
 call bfc#plugins#load('nvim-cmp-and-vsnip')
 call bfc#plugins#load('elixir-tools')
 call bfc#plugins#load('bfc-terraform')
+call bfc#plugins#load('rustaceanvim')
 
 call bfc#plugins#load('cfilter')
 call bfc#plugins#load('grep')
