@@ -32,13 +32,14 @@ vim/polyglot,nvim/pack/external/opt/vim-polyglot,https://github.com/sheerun/vim-
 vim/pqf,nvim/pack/external/opt/pqf,https://github.com/yorickpeterse/nvim-pqf.git,main
 vim/quick-scope,nvim/pack/external/opt/quick-scope,https://github.com/unblevable/quick-scope.git,master
 vim/repeat,nvim/pack/external/opt/vim-repeat,https://github.com/tpope/vim-repeat.git,master
+vim/rustaceanvim,nvim/pack/external/opt/rustaceanvim,https://github.com/mrcjkb/rustaceanvim.git,master
 vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vim-scriptease.git,master
 vim/speeddating,nvim/pack/external/opt/vim-speeddating,https://github.com/tpope/vim-speeddating.git,master
 vim/splitjoin,nvim/pack/external/opt/splitjoin,https://github.com/AndrewRadev/splitjoin.vim.git,main
 vim/surround,nvim/pack/external/opt/vim-surround,https://github.com/tpope/vim-surround.git,master
-vim/telescope,nvim/pack/external/opt/telescope,https://github.com/nvim-telescope/telescope.nvim.git,master
 vim/telescope-file-browser-lspconfig,nvim/pack/external/opt/telescope-file-browser,https://github.com/nvim-telescope/telescope-file-browser.nvim.git,master
 vim/telescope-fzy-native,nvim/pack/external/opt/telescope-fzy-native,https://github.com/nvim-telescope/telescope-fzy-native.nvim.git,master
+vim/telescope,nvim/pack/external/opt/telescope,https://github.com/nvim-telescope/telescope.nvim.git,master
 vim/unimpaired,nvim/pack/external/opt/vim-unimpaired,https://github.com/tpope/vim-unimpaired.git,master
 vim/vim-argumentative,nvim/pack/external/opt/vim-argumentative,https://github.com/PeterRincker/vim-argumentative.git,master
 vim/vim-dispatch,nvim/pack/external/opt/vim-dispatch,https://github.com/tpope/vim-dispatch.git,master
