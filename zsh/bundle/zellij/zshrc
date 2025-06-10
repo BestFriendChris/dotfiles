@@ -8,6 +8,7 @@ if has_command zellij; then
   function zr () { zellij run --name "$*" -- zsh -ic "$*";}
   function zrf () { zellij run --name "$*" --floating -- zsh -ic "$*";}
   function zri () { zellij run --name "$*" --in-place -- zsh -ic "$*";}
+  function zrid () { zellij run --name "$*" --in-place -- zsh -ic "direnv exec . $*";}
   function ze () { zellij edit "$*";}
   function zef () { zellij edit --floating "$*";}
   function zei () { zellij edit --in-place "$*";}
