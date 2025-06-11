@@ -127,8 +127,6 @@ noremap <Leader>y "+y
 " Clear quickfix list
 command! Cclear cexpr [] | cclose
 
-nnoremap <Leader>] :tab tag <C-R><C-W><CR>
-
 tnoremap <C-\><C-\> <C-\><C-N>
 
 "--------------------------------------------------------------------------------
