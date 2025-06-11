@@ -1,0 +1,5 @@
+if has_command fd; then
+  fdf() {
+    fd . $*
+  }
+fi
