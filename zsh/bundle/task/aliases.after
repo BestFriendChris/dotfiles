@@ -138,6 +138,35 @@ if has_command task; then
     task $task_id modify depends:$new_id
     echo "Created subtask $new_id"
   }
+
+  # Routing tasks in the inbox project
+  function ti {
+    if [[ -z ${1:-} ]]; then
+      echo "Listing inbox tasks"
+      task project:inbox export | \
+        jq -r '.[]? | "\(.id) - \(.description)", (.annotations[]? | "        \(.description)")'
+      return 0
+    fi
+    local task_id="${1:-}"
+
+    local task_info="$(
+      task project:inbox $task_id export | \
+        jq -r '.[]? | "\(.id) - \(.description)", (.annotations[]? | "        \(.description)")'
+      )"
+    if [[ -z $task_info ]]; then
+      >&2 echo "Task $task_id not found in inbox"
+      return 1
+    fi
+
+    local new_project="${2:-}"
+    if [[ -z "$new_project" ]]; then
+      echo $task_info
+      echo -n "» New project: "; read new_project
+    fi
+
+    task $task_id modify project:$new_project
+  }
 fi
+
 
 # vim:ft=zsh
