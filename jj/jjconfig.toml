@@ -1,10 +1,20 @@
 [ui]
 default-command = "log"
 movement.edit = true
+merge-editor = "nvim"
 
 [ui.diff]
 format = "git"
 tool = ["difft", "--color=always", "$left", "$right"]
+
+[merge-tools.nvim]
+program = "nvim"
+merge-args = ["-f", "-d", "$output", "-M",
+    "$left", "$base", "$right",
+    "-c", "wincmd J", "-c", "set modifiable",
+    "-c", "set write"]
+merge-tool-edits-conflict-markers = true
+
 
 [template-aliases]
 # Username part of the email address
