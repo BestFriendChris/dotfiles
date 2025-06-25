@@ -11,6 +11,7 @@
 - link:
     ~/.config/atuin: atuin
     ~/.config/git: git/config
+    ~/.config/macrowhisper: macrowhisper
     ~/.config/kitty/:
       path: kitty/*
       glob: true

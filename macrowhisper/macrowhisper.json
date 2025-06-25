@@ -1,0 +1,74 @@
+{
+  "defaults" : {
+    "actionDelay" : 0,
+    "activeInsert" : "autoPaste",
+    "history" : null,
+    "icon" : "",
+    "moveTo" : "",
+    "noEsc" : false,
+    "noNoti" : false,
+    "noUpdates" : false,
+    "pressReturn" : false,
+    "restoreClipboard" : true,
+    "returnDelay" : 0.1,
+    "simKeypress" : false,
+    "watch" : "~/Documents/superwhisper"
+  },
+  "inserts" : {
+    "autoPaste" : {
+      "action" : ".autoPaste",
+      "actionDelay" : null,
+      "icon" : "•",
+      "moveTo" : "",
+      "noEsc" : null,
+      "pressReturn" : null,
+      "simKeypress" : null,
+      "triggerApps" : "",
+      "triggerLogic" : "or",
+      "triggerModes" : "",
+      "triggerVoice" : ""
+    }
+  },
+  "scriptsAS" : {
+
+  },
+  "scriptsShell" : {
+    "TaskAdd" : {
+      "action" : "/usr/local/bin/task project:inbox add '{{swResult}}'",
+      "actionDelay" : null,
+      "moveTo" : "",
+      "noEsc" : null,
+      "triggerApps" : "",
+      "triggerLogic" : "or",
+      "triggerModes" : "",
+      "triggerVoice" : "add task"
+    }
+  },
+  "shortcuts" : {
+
+  },
+  "urls" : {
+    "OpenAI" : {
+      "action" : "https://chat.openai.com/?q={{result}}",
+      "actionDelay" : null,
+      "moveTo" : "",
+      "noEsc" : null,
+      "openWith" : "",
+      "triggerApps" : "",
+      "triggerLogic" : "or",
+      "triggerModes" : "",
+      "triggerVoice" : "ask openai|ask open ai|ask chatgpt"
+    },
+    "Perplexity" : {
+      "action" : "https://www.perplexity.ai/?q={{result||\\.$||}}",
+      "actionDelay" : null,
+      "moveTo" : "",
+      "noEsc" : null,
+      "openWith" : "",
+      "triggerApps" : "",
+      "triggerLogic" : "or",
+      "triggerModes" : "",
+      "triggerVoice" : "ask perplexity"
+    }
+  }
+}
