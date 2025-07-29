@@ -55,4 +55,10 @@ report.current.description=The current tasks
 report.current.filter=status:pending -WAITING
 report.current.sort=start-/,urgency-
 
+report.by_project.columns=id,project.indented,depends.indicator,wait.remaining,scheduled.countdown,due.countdown,until.countdown,description
+report.by_project.labels=ID,Project,D,Wait,S,Due,Until,Description
+report.by_project.description=Tasks grouped by project
+report.by_project.filter=status:pending -WAITING
+report.by_project.sort=project+/,entry+
+
 list.all.tags=1
