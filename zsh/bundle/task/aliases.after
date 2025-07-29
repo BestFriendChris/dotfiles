@@ -93,6 +93,12 @@ if has_command task; then
       sed -E 's,https?://[^ ]+,[URL],g'
   }
 
+  function tp.info {
+    local project=${_TASK_PROJECT:-}
+    echo "Task project:$project"
+    t.info project:$project
+  }
+
   function t.cur {
     local task_id=$(task ids +ACTIVE -BLOCKED)
     if [[ -z $task_id ]]; then
@@ -159,6 +165,10 @@ if has_command task; then
     fi
 
     local new_project="${2:-}"
+    if [ -z "${new_project}" -a -n "${_TASK_PROJECT:-}" ]; then
+      echo "Task project:${_TASK_PROJECT:-}"
+      new_project=${_TASK_PROJECT:-}
+    fi
     if [[ -z "$new_project" ]]; then
       echo $task_info
       echo -n "» New project: "; read new_project
