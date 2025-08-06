@@ -20,6 +20,7 @@
     ~/.config/starship.toml: starship/starship.toml
     ~/.config/task: taskwarrior
     ~/.config/ghostty: ghostty
+    ~/.config/weechat: weechat
     ~/.config/zellij/config.kdl: zellij/config.kdl
     ~/.config/zellij/layouts/:
       path: zellij/layouts/*
