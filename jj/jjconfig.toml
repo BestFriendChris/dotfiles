@@ -30,19 +30,23 @@ merge-tool-edits-conflict-markers = true
 
 
 # found at https://reasonablypolymorphic.com/blog/jj-strategy/index.html
-'accordion()' = '@ | bases | branches | curbranch::@ | @::nextbranch | downstream(@, branchesandheads)'
+'accordion()' = '@ | bases | bookmarks | curbookmark::@ | @::nextbookmark | downstream(@, bookmarksandheads)'
 'bases' = 'trunk()'
 'downstream(x,y)' = '(x::y) & y'
-'branches' = 'downstream(trunk(), branches()) & mine()'
-'branchesandheads' = 'branches | (heads(trunk()::) & mine())'
-'curbranch' = 'latest(branches::@- & branches)'
-'nextbranch' = 'roots(@:: & branchesandheads)'
+'bookmarks' = 'downstream(trunk(), bookmarks()) & mine()'
+'bookmarksandheads' = 'bookmarks | (heads(trunk()::) & mine())'
+'curbookmark' = 'latest(bookmarks::@- & bookmarks)'
+'nextbookmark' = 'roots(@:: & bookmarksandheads)'
+'closest_bookmark(to)' = 'heads(::to & bookmarks())'
+'closest_pushable(to)' = 'heads(::to & mutable() & ~description(exact:"") & (~empty() | merges()))'
 
 [aliases]
 l = ["log", "-r", 'thisofftrunk()']
 lh = ["log", "-r", "@-"]
 r = ["log", "-r", "::@", "--limit", "10"]
 lf = ["log", "-T" , "builtin_log_compact_full_description"]
+tug = ["bookmark", "move", "--from", "closest_bookmark(@)", "--to", "closest_pushable(@)"]
+tugmain= ["bookmark", "move", "--from", "trunk()", "--to", "closest_pushable(@)"]
 
 [git]
 private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*') | description(glob:'wip:*')"
