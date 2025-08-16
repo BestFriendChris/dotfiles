@@ -1,0 +1,5 @@
+if [[ -d ~/.radicle/bin ]]; then
+  export PATH="$PATH:/Users/bfc/.radicle/bin"
+fi
+
+# vim:ft=zsh
