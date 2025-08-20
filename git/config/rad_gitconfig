@@ -1,0 +1,8 @@
+# Run the following in a rad repo
+# $ git config --add include.path ~/.config/git/rad_gitconfig
+
+[alias]
+  patch = push rad HEAD:refs/patches
+  patch-draft = push rad -o patch.draft HEAD:refs/patches
+
+# vim:ft=gitconfig

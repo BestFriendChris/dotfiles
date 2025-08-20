@@ -1,0 +1,17 @@
+# Copy into .jj/repo/config.toml in any rad repositories
+
+[revset-aliases]
+"trunk()" = "main@rad"
+"immutable_heads()" = '''
+  present(trunk()) |
+  tags() |
+  (
+      untracked_remote_bookmarks() ~
+      untracked_remote_bookmarks(remote='rad') ~
+      untracked_remote_bookmarks(regex:'^patch(es)/',remote='rad')
+  )
+'''
+
+[git]
+write-change-id-header = true
+subprocess = true
