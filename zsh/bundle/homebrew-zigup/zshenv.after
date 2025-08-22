@@ -1,0 +1,6 @@
+if has_command zigup; then
+  for dir in /opt/homebrew/Cellar/zigup/*; do
+    export path=($dir/bin $path)
+  done
+fi
+
