@@ -1,0 +1,6 @@
+if [ -d /opt/homebrew/Cellar/anyzig ]; then
+  for dir in /opt/homebrew/Cellar/anyzig/*; do
+    export path=($dir/bin $path)
+  done
+fi
+
