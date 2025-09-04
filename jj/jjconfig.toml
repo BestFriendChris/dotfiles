@@ -2,10 +2,7 @@
 default-command = "log"
 movement.edit = true
 merge-editor = "nvim"
-
-[ui.diff]
-format = "git"
-tool = ["difft", "--color=always", "$left", "$right"]
+diff-formatter = ["difft", "--color=always", "$left", "$right"]
 
 [merge-tools.nvim]
 program = "nvim"

@@ -1,0 +1,5 @@
+[user]
+name = "Chris Turner"
+email = "chris@mechanical-orchard.com"
+
+# vim:ft=toml

@@ -198,7 +198,7 @@ jj log -r@ --limit 1 --ignore-working-copy --no-graph --color always  -T '
 jj log -r@ --limit 1 --no-graph -T "" --stat --color always | tail -n1 | sd '(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)' '\033[1;36m(${1}m)\033[0m' | sd '\(0m\)' '' | sd "\n" " "
 jj log -r@ --limit 1 --ignore-working-copy --no-graph --color always  -T '
   separate(" ",
-    branches.map(|x| if(
+    bookmarks.map(|x| if(
         x.name().substr(0, 10).starts_with(x.name()),
         x.name().substr(0, 10),
         x.name().substr(0, 9) ++ "…")

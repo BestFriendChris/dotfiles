@@ -28,7 +28,10 @@
     ~/.gitconfig: git/_gitconfig
     ~/.zshenv: zsh/HOME_zshenv
     ~/.vscodevimrc: vscode/HOME_vscodevimrc
-    ~/.jjconfig.toml: jj/jjconfig.toml
+    ~/.config/jj/config.toml: jj/jjconfig.toml
+    ~/.config/jj/conf.d/:
+      path: jj/conf.d/*
+      glob: true
     ~/.ctags: ctags/HOME_ctags
     ~/.vsnip: nvim/vsnip
 
