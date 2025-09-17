@@ -25,7 +25,12 @@ if has_command zellij; then
       echo "Unable to attach while already in a zellij session"
       return 1
     fi
-    local zj_sessions=$(zellij list-sessions --no-formatting | grep -v "^[^ ]*-" | fzf | sed 's/ .*//')
+    local zj_sessions
+    if [[ "$1" = "-a" ]]; then
+      zj_sessions=$(zellij list-sessions --no-formatting --reverse | fzf | sed 's/ .*//')
+    else
+      zj_sessions=$(zellij list-sessions --no-formatting --reverse | grep -v "^[^ ]*-" | fzf | sed 's/ .*//')
+    fi
     if [ -n "$zj_sessions" ]; then
       zellij attach $zj_sessions
     fi
