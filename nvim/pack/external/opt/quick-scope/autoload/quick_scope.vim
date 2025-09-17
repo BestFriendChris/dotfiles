@@ -1,5 +1,41 @@
 " Autoload interface functions -------------------------------------------------
 
+function! quick_scope#Wallhacks(...) abort
+  let l:motion = a:0 > 0 ? a:1 : 2
+  call quick_scope#Ready()
+  if (l:motion ==? 'f')
+    let direction = 1
+  elseif (l:motion ==? 't')
+    let direction = 0
+  else
+    let direction = l:motion
+  endif
+
+  augroup quick_scope_wallhacks
+    for useraucmd in g:qs_augrp_clean
+      execute printf('autocmd User ' .  useraucmd . 'call quick_scope#UnhighlightLine()')
+    endfor
+    autocmd CursorMoved,ColorScheme,FocusGained,InsertEnter,BufLeave,TabLeave,WinLeave,FocusLost * ++once call quick_scope#UnhighlightLine()
+    if g:qs_lazy_highlight
+      autocmd InsertEnter,BufLeave,TabLeave,WinLeave,FocusLost * ++once call quick_scope#StopTimer()
+    endif
+  augroup END
+
+  if g:qs_lazy_highlight
+    call quick_scope#HighlightLineDelay(direction, g:qs_accepted_chars)
+  else
+    call quick_scope#HighlightLine(direction, g:qs_accepted_chars)
+    redraw
+  endif
+  return ''
+endfunction
+
+function! quick_scope#SetMode(mode) abort
+  if !exists('s:qs_mode')
+    let s:qs_mode = a:mode
+  endif
+endfunction
+
 function! quick_scope#Toggle() abort
   if g:qs_enable
     let g:qs_enable = 0
@@ -101,11 +137,13 @@ function! quick_scope#Aim(motion) abort
   " the command line.
   let s:cursor = matchadd(g:qs_hi_group_cursor, '\%#', g:qs_hi_priority + 1)
 
+  let s:normal_mode = 'n'
+  let s:dont_use_abbr = 0
   " Silence 'Type :quit<Enter> to exit Vim' message on <c-c> during a
   " character search.
   "
   " This line also causes getchar() to cleanly cancel on a <c-c>.
-  let b:qs_prev_ctrl_c_map = maparg('<c-c>', 'n', 0, 1)
+  let b:qs_prev_ctrl_c_map = maparg('<c-c>', s:normal_mode, s:dont_use_abbr, 1)
   if empty(b:qs_prev_ctrl_c_map)
     unlet b:qs_prev_ctrl_c_map
   endif
@@ -129,7 +167,7 @@ function! quick_scope#Reload() abort
 
   " Restore previous or default <c-c> functionality
   if exists('b:qs_prev_ctrl_c_map')
-    call quick_scope#mapping#Restore(b:qs_prev_ctrl_c_map)
+    call mapset(s:normal_mode, s:dont_use_abbr, b:qs_prev_ctrl_c_map)
     unlet b:qs_prev_ctrl_c_map
   else
     execute 'nunmap <c-c>'
@@ -230,7 +268,7 @@ function! s:get_highlight_patterns(line, cursor, end, targets) abort
 
   " Use 'count_proxy' to account for [count]f when highlight on keys mode is
   " used, otherwise just use assume 1
-  if !exists('g:qs_highlight_on_keys')
+  if s:qs_mode ==# 'vanilla'
     let count_proxy = 1
   else
     let count_proxy = v:count1
@@ -353,7 +391,7 @@ function! s:get_highlight_patterns(line, cursor, end, targets) abort
 
   let [patt_p, patt_s] = s:add_to_highlight_patterns([patt_p, patt_s], [hi_p, hi_s])
 
-  if exists('g:qs_highlight_on_keys')
+  if s:qs_mode ==# 'keys'
     call s:save_chars_with_secondary_highlights([char_p, char_s])
   endif
 
