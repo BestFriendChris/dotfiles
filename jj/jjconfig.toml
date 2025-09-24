@@ -3,6 +3,7 @@ default-command = "log"
 movement.edit = true
 merge-editor = "nvim"
 diff-formatter = ["difft", "--color=always", "$left", "$right"]
+pager = "delta"
 
 [merge-tools.nvim]
 program = "nvim"
@@ -11,6 +12,13 @@ merge-args = ["-f", "-d", "$output", "-M",
     "-c", "wincmd J", "-c", "set modifiable",
     "-c", "set write"]
 merge-tool-edits-conflict-markers = true
+
+[merge-tools.delta]
+program = "delta"
+diff-args = ["--line-numbers", "--navigate", "$left", "$right"]
+# Add $width when next version of jj drops
+# diff-args = ["--line-numbers", "--side-by-side", "--navigate", "--width", "$width", "$left", "$right"]
+diff-expected-exit-codes = [0, 1]
 
 
 [template-aliases]

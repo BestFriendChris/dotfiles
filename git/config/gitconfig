@@ -84,4 +84,17 @@
 	process = git-lfs filter-process
 	required = true
 
+[core]
+  pager = delta --line-numbers --side-by-side
+
+[interactive]
+  diffFilter = delta --color-only --line-numbers
+
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  dark = true      # or light = true, or omit for auto-detection
+
+[merge]
+  conflictStyle = zdiff3
+
 # vim:ft=gitconfig

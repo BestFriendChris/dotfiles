@@ -1,0 +1,3 @@
+if has_command delta; then
+  eval "$(delta --generate-completion zsh)"
+fi
