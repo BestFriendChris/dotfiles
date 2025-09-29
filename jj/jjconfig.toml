@@ -20,10 +20,29 @@ diff-args = ["--line-numbers", "--navigate", "$left", "$right"]
 # diff-args = ["--line-numbers", "--side-by-side", "--navigate", "--width", "$width", "$left", "$right"]
 diff-expected-exit-codes = [0, 1]
 
+[merge-tools.meld]
+program = "meld"
 
 [template-aliases]
 # Username part of the email address
 'format_short_signature(signature)' = 'signature.email().local()'
+
+log_compact_and_status = '''
+  concat(
+    builtin_log_compact(self),
+    if(current_working_copy && !empty, diff.summary()),
+  )
+'''
+
+log_compact_and_files = '''
+  concat(
+    builtin_log_compact(self),
+    if(!immutable && !empty, diff.summary()),
+  )
+'''
+
+"in_branch(commit)" = 'commit.contained_in("immutable_heads()..bookmarks()")'
+
 
 [revset-aliases]
 'thisofftrunk()' = 'trunk()..@ | (..trunk() ~ ..@) | latest(..trunk() & ..@)'
@@ -50,6 +69,8 @@ l = ["log", "-r", 'thisofftrunk()']
 lh = ["log", "-r", "@-"]
 r = ["log", "-r", "::@", "--limit", "10"]
 lf = ["log", "-T" , "builtin_log_compact_full_description"]
+ll = ["log", "--template=log_compact_and_status"]
+llf = ["log", "--template=log_compact_and_files"]
 tug = ["bookmark", "move", "--from", "closest_bookmark(@)", "--to", "closest_pushable(@)"]
 tugmain= ["bookmark", "move", "--from", "trunk()", "--to", "closest_pushable(@)"]
 
@@ -57,6 +78,13 @@ tugmain= ["bookmark", "move", "--from", "trunk()", "--to", "closest_pushable(@)"
 private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*') | description(glob:'wip:*')"
 
 [templates]
+log_node = '''
+if(self && !current_working_copy && !immutable && !conflict && in_branch(self),
+  "◇",
+  builtin_log_node
+)
+'''
+
 draft_commit_description = '''
 concat(
   description,
@@ -64,10 +92,7 @@ concat(
     "\nJJ: This commit contains the following changes:\n", "",
     indent("JJ:     ", diff.summary()),
   ),
-  surround(
-    "\nJJ: ╭───────────────────────────────────────────────────────────────────────────────\n",
-    "JJ: ╰───────────────────────────────────────────────────────────────────────────────\n",
-    indent("JJ: │ ", diff.git()),
-  )
+  "\nJJ: ignore-rest\n\n",
+  diff.git()
 )
 '''
