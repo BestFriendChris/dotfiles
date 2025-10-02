@@ -5,7 +5,7 @@ if has_command jj; then
   source <(COMPLETE=zsh jj)
 
   alias j='jj log -T log_compact_and_status'
-  alias jjj='jj log -T log_compact_and_files'
+  alias jjj='jj log -T log_compact_and_files -r "roots(::@ ~ immutable())- | ::@ ~ immutable()"'
 
   function jj.fetch() {
     local cur_main=$(jj log -r 'trunk()' --limit 1 -T 'change_id' --no-graph --color never --quiet --ignore-working-copy)

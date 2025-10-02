@@ -15,9 +15,7 @@ merge-tool-edits-conflict-markers = true
 
 [merge-tools.delta]
 program = "delta"
-diff-args = ["--line-numbers", "--navigate", "$left", "$right"]
-# Add $width when next version of jj drops
-# diff-args = ["--line-numbers", "--side-by-side", "--navigate", "--width", "$width", "$left", "$right"]
+diff-args = ["--line-numbers", "--side-by-side", "--navigate", "--width", "$width", "$left", "$right"]
 diff-expected-exit-codes = [0, 1]
 
 [merge-tools.meld]
