@@ -2,7 +2,7 @@
 # $ git config --add include.path ~/.config/git/rad_gitconfig
 
 [alias]
-  patch = push rad HEAD:refs/patches
-  patch-draft = push rad -o patch.draft HEAD:refs/patches
+  patch = push rad -o patch.branch HEAD:refs/patches
+  patch-draft = push rad -o patch.branch -o patch.draft HEAD:refs/patches
 
 # vim:ft=gitconfig
