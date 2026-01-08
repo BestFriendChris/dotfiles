@@ -27,6 +27,7 @@ function! s:EnsureTreeSitter() abort
         \  "luadoc",
         \  "make",
         \  "nix",
+        \  "nu",
         \  "python",
         \  "regex",
         \  "ruby",
