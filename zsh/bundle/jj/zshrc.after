@@ -60,7 +60,8 @@ if has_command jj; then
     )
     if [[ -n "$bookmark" ]]; then
       echo "Tracking $bookmark"
-      jj bookmark track $bookmark
+      echo $bookmark | IFS=@ read -r bookmark remote
+      jj bookmark track "$bookmark" --remote "$remote"
     fi
   }
 
@@ -81,7 +82,7 @@ if has_command jj; then
       jj log -r "immutable_heads()..${bookmark}" --quiet --ignore-working-copy
 
       echo "Untracking ${bookmark}@${remote}"
-      jj bookmark untrack "${bookmark}@${remote}"
+      jj bookmark untrack "$bookmark" --remote "$remote"
 
 
       echo "Deleting ${bookmark}"

@@ -74,7 +74,7 @@ tugmain= ["bookmark", "move", "--from", "trunk()", "--to", "closest_pushable(@)"
 pushnew = ["git", "push", "--allow-new"]
 
 [git]
-private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*') | description(glob:'wip:*')"
+private-commits = "description(glob:'private:*') | description(glob:'local:*') | description(glob:'stash:*')"
 
 [templates]
 log_node = '''
