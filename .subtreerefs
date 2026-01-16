@@ -60,3 +60,4 @@ vim/vim-vinegar,nvim/pack/external/opt/vim-vinegar,https://github.com/tpope/vim-
 vim/vim-vsnip,nvim/pack/external/opt/vim-vsnip,https://github.com/hrsh7th/vim-vsnip.git,master
 vim/vim-wheel,nvim/pack/external/opt/vim-wheel,https://github.com/preservim/vim-wheel.git,master
 vim/zig,nvim/pack/external/opt/zig.vim,https://github.com/ziglang/zig.vim,master
+vin/nushell-syntax-vim,nvim/pack/external/opt/nushell-syntax-vim,https://github.com/elkasztano/nushell-syntax-vim.git,main
