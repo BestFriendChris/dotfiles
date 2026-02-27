@@ -43,6 +43,7 @@ vim/surround,nvim/pack/external/opt/vim-surround,https://github.com/tpope/vim-su
 vim/telescope-file-browser-lspconfig,nvim/pack/external/opt/telescope-file-browser,https://github.com/nvim-telescope/telescope-file-browser.nvim.git,master
 vim/telescope-fzy-native,nvim/pack/external/opt/telescope-fzy-native,https://github.com/nvim-telescope/telescope-fzy-native.nvim.git,master
 vim/telescope,nvim/pack/external/opt/telescope,https://github.com/nvim-telescope/telescope.nvim.git,master
+vim/trouble,nvim/pack/external/opt/trouble,https://github.com/folke/trouble.nvim.git,main
 vim/unimpaired,nvim/pack/external/opt/vim-unimpaired,https://github.com/tpope/vim-unimpaired.git,master
 vim/vim-argumentative,nvim/pack/external/opt/vim-argumentative,https://github.com/PeterRincker/vim-argumentative.git,master
 vim/vim-dispatch,nvim/pack/external/opt/vim-dispatch,https://github.com/tpope/vim-dispatch.git,master
