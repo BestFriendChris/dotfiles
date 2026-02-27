@@ -18,6 +18,7 @@ vim/firenvim,nvim/pack/external/opt/firenvim,https://github.com/glacambre/firenv
 vim/friendly-snippets,nvim/pack/external/opt/friendly-snippets,https://github.com/rafamadriz/friendly-snippets.git,main
 vim/fzf,nvim/pack/external/opt/fzf,https://github.com/junegunn/fzf.git,master
 vim/gitlinker,nvim/pack/external/opt/gitlinker,https://github.com/ruifm/gitlinker.nvim.git,master
+vim/gitsigns,nvim/pack/external/opt/gitsigns,https://github.com/lewis6991/gitsigns.nvim.git,main
 vim/highlighter,nvim/pack/external/opt/vim-highlighter,https://github.com/azabiong/vim-highlighter.git,main
 vim/lightspeed,nvim/pack/external/opt/lightspeed,https://github.com/ggandor/lightspeed.nvim.git,main
 vim/lion,nvim/pack/external/opt/vim-lion,https://github.com/tommcdo/vim-lion.git,master
