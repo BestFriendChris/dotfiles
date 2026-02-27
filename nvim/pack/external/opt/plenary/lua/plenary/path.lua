@@ -78,7 +78,7 @@ end
 
 local is_absolute = function(filename, sep)
   if sep == "\\" then
-    return string.match(filename, "^[%a]:\\.*$") ~= nil
+    return string.match(filename, "^[%a]:[\\/].*$") ~= nil
   end
   return string.sub(filename, 1, 1) == sep
 end
@@ -696,7 +696,11 @@ end
 local _get_parent = (function()
   local formatted = string.format("^(.+)%s[^%s]+", path.sep, path.sep)
   return function(abs_path)
-    return abs_path:match(formatted)
+    local parent = abs_path:match(formatted)
+    if parent ~= nil and not parent:find(path.sep) then
+      return parent .. path.sep
+    end
+    return parent
   end
 end)()
 
@@ -925,14 +929,19 @@ end
 
 function Path:find_upwards(filename)
   local folder = Path:new(self)
-  while self:absolute() ~= path.root do
+  local root = path.root(folder:absolute())
+
+  while true do
     local p = folder:joinpath(filename)
     if p:exists() then
       return p
     end
+    if folder:absolute() == root then
+      break
+    end
     folder = folder:parent()
   end
-  return ""
+  return nil
 end
 
 return Path

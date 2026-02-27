@@ -1,5 +1,6 @@
 local Path = require "plenary.path"
 local path = Path.path
+local compat = require "plenary.compat"
 
 describe("Path", function()
   it("should find valid files", function()
@@ -592,7 +593,7 @@ describe("Path", function()
     it("should extract the ancestors of the path", function()
       local p = Path:new(vim.loop.cwd())
       local parents = p:parents()
-      assert(vim.tbl_islist(parents))
+      assert(compat.islist(parents))
       for _, parent in pairs(parents) do
         assert.are.same(type(parent), "string")
       end
@@ -718,6 +719,34 @@ SOFTWARE.]]
       local data = p:readbyterange(-10, 10)
       local should = "SOFTWARE.\n"
       assert.are.same(should, data)
+    end)
+  end)
+
+  describe(":find_upwards", function()
+    it("finds files that exist", function()
+      local p = Path:new(debug.getinfo(1, "S").source:sub(2))
+      local found = p:find_upwards "README.md"
+      assert.are.same(found:absolute(), Path:new("README.md"):absolute())
+    end)
+
+    it("finds files that exist at the root", function()
+      local p = Path:new(debug.getinfo(1, "S").source:sub(2))
+
+      -- Temporarily set path.root to the root of this repository
+      local root = p.path.root
+      p.path.root = function(_)
+        return p:parent():parent():parent().filename
+      end
+
+      local found = p:find_upwards "README.md"
+      assert.are.same(found:absolute(), Path:new("README.md"):absolute())
+      p.path.root = root
+    end)
+
+    it("returns nil if no file is found", function()
+      local p = Path:new(debug.getinfo(1, "S").source:sub(2))
+      local found = p:find_upwards "MISSINGNO.md"
+      assert.are.same(found, nil)
     end)
   end)
 end)

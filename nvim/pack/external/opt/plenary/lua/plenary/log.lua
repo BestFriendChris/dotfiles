@@ -27,7 +27,7 @@ local default_config = {
   highlights = true,
 
   -- Should write to a file.
-  -- Default output for logging file is `stdpath("cache")/plugin`.
+  -- Default output for logging file is `stdpath("log")/plugin.log`.
   use_file = true,
 
   -- Output file has precedence over plugin, if not nil.
@@ -79,8 +79,10 @@ local unpack = unpack or table.unpack
 log.new = function(config, standalone)
   config = vim.tbl_deep_extend("force", default_config, config)
 
-  local outfile =
-    vim.F.if_nil(config.outfile, Path:new(vim.api.nvim_call_function("stdpath", { "cache" }), config.plugin).filename)
+  local outfile = vim.F.if_nil(
+    config.outfile,
+    Path:new(vim.api.nvim_call_function("stdpath", { "log" }), config.plugin .. ".log").filename
+  )
 
   local obj
   if standalone then
@@ -95,6 +97,9 @@ log.new = function(config, standalone)
   end
 
   local round = function(x, increment)
+    if x == 0 then
+      return x
+    end
     increment = increment or 1
     x = x / increment
     return (x > 0 and math.floor(x + 0.5) or math.ceil(x - 0.5)) * increment

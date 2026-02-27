@@ -123,6 +123,7 @@ function popup.create(what, vim_options)
     assert(bufnr, "Failed to create buffer")
 
     vim.api.nvim_buf_set_option(bufnr, "bufhidden", "wipe")
+    vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
 
     -- TODO: Handle list of lines
     if type(what) == "string" then
@@ -190,6 +191,7 @@ function popup.create(what, vim_options)
   local win_opts = {}
   win_opts.relative = "editor"
   win_opts.style = "minimal"
+  win_opts.border = "none"
 
   -- Add positional and sizing config to win_opts
   add_position_config(win_opts, vim_options, { width = 1, height = 1 })
