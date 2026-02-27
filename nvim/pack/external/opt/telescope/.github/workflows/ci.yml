@@ -1,6 +1,13 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+  workflow_dispatch:
 
 jobs:
   unit_tests:
@@ -9,48 +16,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        rev: [nightly, stable, v0.10.4]
         include:
-          - os: ubuntu-22.04
-            rev: nightly/nvim-linux64.tar.gz
-            manager: sudo apt-get
-            packages: -y ripgrep
-          - os: ubuntu-22.04
-            rev: v0.9.0/nvim-linux64.tar.gz
-            manager: sudo apt-get
-            packages: -y ripgrep
-          - os: macos-12
-            rev: nightly/nvim-macos.tar.gz
-            manager: brew
-            packages: ripgrep
-          - os: macos-12
-            rev: v0.9.0/nvim-macos.tar.gz
-            manager: brew
-            packages: ripgrep
+          - os: ubuntu-latest
+            install-rg: sudo apt-get update && sudo apt-get install -y ripgrep
+          - os: macos-latest
+            install-rg: brew update && brew install ripgrep
+          - os: windows-latest
+            install-rg: choco install ripgrep
+
     steps:
-      - uses: actions/checkout@v3
-      - run: date +%F > todays-date
-      - name: Restore from todays cache
-        uses: actions/cache@v3
+      - uses: actions/checkout@v6
+
+      - uses: rhysd/action-setup-vim@v1
         with:
-          path: _neovim
-          key: ${{ runner.os }}-${{ matrix.rev }}-${{ hashFiles('todays-date') }}
+          neovim: true
+          version: ${{ matrix.rev }}
 
       - name: Prepare
         run: |
-          ${{ matrix.manager }} update
-          ${{ matrix.manager }} install ${{ matrix.packages }}
-          test -d _neovim || {
-            mkdir -p _neovim
-            curl -sL "https://github.com/neovim/neovim/releases/download/${{ matrix.rev }}" | tar xzf - --strip-components=1 -C "${PWD}/_neovim"
-          }
-          mkdir -p ~/.local/share/nvim/site/pack/vendor/start
-          git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
-          git clone --depth 1 https://github.com/nvim-tree/nvim-web-devicons ~/.local/share/nvim/site/pack/vendor/start/nvim-web-devicons
-          ln -s $(pwd) ~/.local/share/nvim/site/pack/vendor/start
+          ${{ matrix.install-rg }}
+          rg --version
+
+          git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ../plenary.nvim
+          git clone --depth 1 https://github.com/nvim-tree/nvim-web-devicons ../nvim-web-devicons
 
       - name: Run tests
         run: |
-          export PATH="${PWD}/_neovim/bin:${PATH}"
-          export VIM="${PWD}/_neovim/share/nvim/runtime"
           nvim --version
           make test

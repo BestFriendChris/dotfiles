@@ -5,6 +5,8 @@
 --- Utilities for writing telescope pickers
 ---@brief ]]
 
+local api = vim.api
+
 local Path = require "plenary.path"
 local Job = require "plenary.job"
 
@@ -14,6 +16,78 @@ local truncate = require("plenary.strings").truncate
 local get_status = require("telescope.state").get_status
 
 local utils = {}
+
+utils.iswin = vim.uv.os_uname().sysname == "Windows_NT"
+utils.nvim011 = vim.fn.has "nvim-0.11" == 1
+
+---TODO(clason): remove when dropping support for Nvim 0.10
+utils.hl_range = utils.nvim011 and vim.hl.range or vim.highlight.range
+
+---TODO(clason): remove when dropping support for Nvim 0.10
+utils.str_byteindex = utils.nvim011 and vim.str_byteindex or vim.lsp.util._str_byteindex_enc
+
+---TODO(clason): remove when dropping support for Nvim 0.10
+---@param k string
+---@param v any
+---@param ty type
+utils.validate = utils.nvim011 and vim.validate or function(k, v, ty)
+  vim.validate { [k] = { v, ty } }
+end
+
+---@param t table
+---@return table
+utils.flatten = function(t)
+  return vim.iter(t):flatten():totable()
+end
+
+--- Hybrid of `vim.fn.expand()` and custom `vim.fs.normalize()`
+---
+--- Paths starting with '%', '#' or '<' are expanded with `vim.fn.expand()`.
+--- Otherwise avoids using `vim.fn.expand()` due to its overly aggressive
+--- expansion behavior which can sometimes lead to errors or the creation of
+--- non-existent paths when dealing with valid absolute paths.
+---
+--- Other paths will have '~' and environment variables expanded.
+--- Unlike `vim.fs.normalize()`, backslashes are preserved. This has better
+--- compatibility with `plenary.path` and also avoids mangling valid Unix paths
+--- with literal backslashes.
+---
+--- Trailing slashes are trimmed. With the exception of root paths.
+--- eg. `/` on Unix or `C:\` on Windows
+---
+---@param path string
+---@return string
+utils.path_expand = function(path)
+  utils.validate("path", path, "string")
+
+  if utils.is_uri(path) then
+    return path
+  end
+
+  if path:match "^[%%#<]" then
+    path = vim.fn.expand(path)
+  end
+
+  if path:sub(1, 1) == "~" then
+    local home = vim.uv.os_homedir() or "~"
+    if home:sub(-1) == "\\" or home:sub(-1) == "/" then
+      home = home:sub(1, -2)
+    end
+    path = home .. path:sub(2)
+  end
+
+  path = path:gsub("%$([%w_]+)", vim.uv.os_getenv)
+  path = path:gsub("/+", "/")
+  if utils.iswin then
+    path = path:gsub("\\+", "\\")
+    if path:match "^%w:\\$" then
+      return path
+    else
+      return (path:gsub("(.)\\$", "%1"))
+    end
+  end
+  return (path:gsub("(.)/$", "%1"))
+end
 
 utils.get_separator = function()
   return Path.path.sep
@@ -49,7 +123,7 @@ utils.filter_symbols = function(results, opts, post_filter)
       msg = "Either opts.symbols or opts.ignore_symbols, can't process opposing options at the same time!",
       level = "ERROR",
     })
-    return
+    return {}
   elseif not (has_ignore or has_symbols) then
     return results
   elseif has_ignore then
@@ -61,7 +135,7 @@ utils.filter_symbols = function(results, opts, post_filter)
         msg = "Please pass ignore_symbols as either a string or a list of strings",
         level = "ERROR",
       })
-      return
+      return {}
     end
 
     opts.ignore_symbols = vim.tbl_map(string.lower, opts.ignore_symbols)
@@ -77,7 +151,7 @@ utils.filter_symbols = function(results, opts, post_filter)
         msg = "Please pass filtering symbols as either a string or a list of strings",
         level = "ERROR",
       })
-      return
+      return {}
     end
 
     opts.symbols = vim.tbl_map(string.lower, opts.symbols)
@@ -108,18 +182,79 @@ utils.filter_symbols = function(results, opts, post_filter)
       level = "WARN",
     })
   end
+  return {}
 end
 
+local path_filename_first = function(path, reverse_directories)
+  local dirs = vim.split(path, utils.get_separator())
+  local filename
+
+  if reverse_directories then
+    dirs = utils.reverse_table(dirs)
+    filename = table.remove(dirs, 1)
+  else
+    filename = table.remove(dirs, #dirs)
+  end
+
+  local tail = table.concat(dirs, utils.get_separator())
+  -- Trim prevents a top-level filename to have a trailing white space
+  local transformed_path = vim.trim(filename .. " " .. tail)
+  local path_style = { { { #filename, #transformed_path }, "TelescopeResultsComment" } }
+
+  return transformed_path, path_style
+end
+
+local calc_result_length = function(truncate_len)
+  local status = get_status(api.nvim_get_current_buf())
+  local len = api.nvim_win_get_width(status.layout.results.winid) - status.picker.selection_caret:len() - 2
+  return type(truncate_len) == "number" and len - truncate_len or len
+end
+
+local path_truncate = function(path, truncate_len, opts)
+  if opts.__length == nil then
+    opts.__length = calc_result_length(truncate_len)
+  end
+  if opts.__prefix == nil then
+    opts.__prefix = 0
+  end
+  return truncate(path, opts.__length - opts.__prefix, nil, -1)
+end
+
+local path_shorten = function(path, length, exclude)
+  if exclude ~= nil then
+    return Path:new(path):shorten(length, exclude)
+  else
+    return Path:new(path):shorten(length)
+  end
+end
+
+local path_abs = function(path, opts)
+  local cwd
+  if opts.cwd then
+    cwd = opts.cwd
+    if not vim.in_fast_event() then
+      cwd = utils.path_expand(opts.cwd)
+    end
+  else
+    cwd = vim.uv.cwd()
+  end
+  return Path:new(path):make_relative(cwd)
+end
+
+-- IMPORTANT: This function should have been a local function as it's only used
+-- in this file, but the code was already exported a long time ago. By making it
+-- local we would potential break consumers of this method.
 utils.path_smart = (function()
   local paths = {}
+  local os_sep = utils.get_separator()
   return function(filepath)
     local final = filepath
     if #paths ~= 0 then
-      local dirs = vim.split(filepath, "/")
+      local dirs = vim.split(filepath, os_sep)
       local max = 1
       for _, p in pairs(paths) do
         if #p > 0 and p ~= filepath then
-          local _dirs = vim.split(p, "/")
+          local _dirs = vim.split(p, os_sep)
           for i = 1, math.min(#dirs, #_dirs) do
             if (dirs[i] ~= _dirs[i]) and i > max then
               max = i
@@ -135,7 +270,7 @@ utils.path_smart = (function()
         final = ""
         for k, v in pairs(dirs) do
           if k >= max - 1 then
-            final = final .. (#final > 0 and "/" or "") .. v
+            final = final .. (#final > 0 and os_sep or "") .. v
           end
         end
       end
@@ -145,7 +280,7 @@ utils.path_smart = (function()
       table.insert(paths, filepath)
     end
     if final and final ~= filepath then
-      return "../" .. final
+      return ".." .. os_sep .. final
     else
       return filepath
     end
@@ -155,13 +290,25 @@ end)()
 utils.path_tail = (function()
   local os_sep = utils.get_separator()
 
-  return function(path)
-    for i = #path, 1, -1 do
-      if path:sub(i, i) == os_sep then
-        return path:sub(i + 1, -1)
+  if os_sep == "/" then
+    return function(path)
+      for i = #path, 1, -1 do
+        if path:sub(i, i) == os_sep then
+          return path:sub(i + 1, -1)
+        end
       end
+      return path
     end
-    return path
+  else
+    return function(path)
+      for i = #path, 1, -1 do
+        local c = path:sub(i, i)
+        if c == os_sep or c == "/" then
+          return path:sub(i + 1, -1)
+        end
+      end
+      return path
+    end
   end
 end)()
 
@@ -201,12 +348,6 @@ utils.is_uri = function(filename)
   return false
 end
 
-local calc_result_length = function(truncate_len)
-  local status = get_status(vim.api.nvim_get_current_buf())
-  local len = vim.api.nvim_win_get_width(status.layout.results.winid) - status.picker.selection_caret:len() - 2
-  return type(truncate_len) == "number" and len - truncate_len or len
-end
-
 --- Transform path is a util function that formats a path based on path_display
 --- found in `opts` or the default value from config.
 --- It is meant to be used in make_entry to have a uniform interface for
@@ -215,66 +356,80 @@ end
 --- this function outside of telescope might yield to undefined behavior and will
 --- not be addressed by us
 ---@param opts table: The opts the users passed into the picker. Might contains a path_display key
----@param path string: The path that should be formatted
----@return string: The transformed path ready to be displayed
+---@param path string|nil: The path that should be formatted
+---@return string: path to be displayed
+---@return table: The transformed path ready to be displayed with the styling
 utils.transform_path = function(opts, path)
   if path == nil then
-    return
+    return "", {}
   end
   if utils.is_uri(path) then
-    return path
+    return path, {}
   end
 
+  ---@type fun(opts:table, path: string): string, table?
   local path_display = vim.F.if_nil(opts.path_display, require("telescope.config").values.path_display)
 
   local transformed_path = path
+  local path_style = {}
 
   if type(path_display) == "function" then
-    return path_display(opts, transformed_path)
+    local custom_transformed_path, custom_path_style = path_display(opts, transformed_path)
+    return custom_transformed_path, custom_path_style or path_style
   elseif utils.is_path_hidden(nil, path_display) then
-    return ""
+    return "", path_style
   elseif type(path_display) == "table" then
     if vim.tbl_contains(path_display, "tail") or path_display.tail then
-      transformed_path = utils.path_tail(transformed_path)
-    elseif vim.tbl_contains(path_display, "smart") or path_display.smart then
-      transformed_path = utils.path_smart(transformed_path)
-    else
-      if not vim.tbl_contains(path_display, "absolute") or path_display.absolute == false then
-        local cwd
-        if opts.cwd then
-          cwd = opts.cwd
-          if not vim.in_fast_event() then
-            cwd = vim.fn.expand(opts.cwd)
-          end
-        else
-          cwd = vim.loop.cwd()
-        end
-        transformed_path = Path:new(transformed_path):make_relative(cwd)
-      end
-
-      if vim.tbl_contains(path_display, "shorten") or path_display["shorten"] ~= nil then
-        if type(path_display["shorten"]) == "table" then
-          local shorten = path_display["shorten"]
-          transformed_path = Path:new(transformed_path):shorten(shorten.len, shorten.exclude)
-        else
-          transformed_path = Path:new(transformed_path):shorten(path_display["shorten"])
-        end
-      end
-      if vim.tbl_contains(path_display, "truncate") or path_display.truncate then
-        if opts.__length == nil then
-          opts.__length = calc_result_length(path_display.truncate)
-        end
-        if opts.__prefix == nil then
-          opts.__prefix = 0
-        end
-        transformed_path = truncate(transformed_path, opts.__length - opts.__prefix, nil, -1)
-      end
+      return utils.path_tail(transformed_path), path_style
     end
 
-    return transformed_path
+    if not vim.tbl_contains(path_display, "absolute") and not path_display.absolute then
+      transformed_path = path_abs(transformed_path, opts)
+    end
+
+    if vim.tbl_contains(path_display, "smart") or path_display.smart then
+      transformed_path = utils.path_smart(transformed_path)
+    end
+
+    if vim.tbl_contains(path_display, "shorten") or path_display["shorten"] ~= nil then
+      local length
+      local exclude = nil
+
+      if type(path_display["shorten"]) == "table" then
+        local shorten = path_display["shorten"]
+        length = shorten.len
+        exclude = shorten.exclude
+      else
+        length = type(path_display["shorten"]) == "number" and path_display["shorten"]
+      end
+
+      transformed_path = path_shorten(transformed_path, length, exclude)
+    end
+
+    if vim.tbl_contains(path_display, "truncate") or path_display.truncate then
+      transformed_path = path_truncate(transformed_path, path_display.truncate, opts)
+    end
+
+    if vim.tbl_contains(path_display, "filename_first") or path_display["filename_first"] ~= nil then
+      local reverse_directories = false
+
+      if type(path_display["filename_first"]) == "table" then
+        local filename_first_opts = path_display["filename_first"]
+
+        if filename_first_opts.reverse_directories == nil or filename_first_opts.reverse_directories == false then
+          reverse_directories = false
+        else
+          reverse_directories = filename_first_opts.reverse_directories
+        end
+      end
+
+      transformed_path, path_style = path_filename_first(transformed_path, reverse_directories)
+    end
+
+    return transformed_path, path_style
   else
     log.warn("`path_display` must be either a function or a table.", "See `:help telescope.defaults.path_display.")
-    return transformed_path
+    return transformed_path, path_style
   end
 end
 
@@ -322,8 +477,8 @@ function utils.buf_delete(bufnr)
     vim.o.report = 2
   end
 
-  if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr) then
-    vim.api.nvim_buf_delete(bufnr, { force = true })
+  if api.nvim_buf_is_valid(bufnr) and api.nvim_buf_is_loaded(bufnr) then
+    api.nvim_buf_delete(bufnr, { force = true })
   end
 
   if start_report < 2 then
@@ -332,20 +487,20 @@ function utils.buf_delete(bufnr)
 end
 
 function utils.win_delete(name, win_id, force, bdelete)
-  if win_id == nil or not vim.api.nvim_win_is_valid(win_id) then
+  if win_id == nil or not api.nvim_win_is_valid(win_id) then
     return
   end
 
-  local bufnr = vim.api.nvim_win_get_buf(win_id)
+  local bufnr = api.nvim_win_get_buf(win_id)
   if bdelete then
     utils.buf_delete(bufnr)
   end
 
-  if not vim.api.nvim_win_is_valid(win_id) then
+  if not api.nvim_win_is_valid(win_id) then
     return
   end
 
-  if not pcall(vim.api.nvim_win_close, win_id, force) then
+  if not pcall(api.nvim_win_close, win_id, force) then
     log.trace("Unable to close window: ", name, "/", win_id)
   end
 end
@@ -382,6 +537,9 @@ function utils.max_split(s, pattern, maxsplit)
   return t
 end
 
+-- IMPORTANT: This function should have been a local function as it's only used
+-- in this file, but the code was already exported a long time ago. By making it
+-- local we would potential break consumers of this method.
 function utils.data_directory()
   local sourced_file = require("plenary.debug_utils").sourced_filepath()
   local base_directory = vim.fn.fnamemodify(sourced_file, ":h:h:h")
@@ -421,7 +579,7 @@ end
 function utils.win_set_buf_noautocmd(win, buf)
   local save_ei = vim.o.eventignore
   vim.o.eventignore = "all"
-  vim.api.nvim_win_set_buf(win, buf)
+  api.nvim_win_set_buf(win, buf)
   vim.o.eventignore = save_ei
 end
 
@@ -436,6 +594,9 @@ local load_once = function(f)
   end
 end
 
+-- IMPORTANT: This function should have been a local function as it's only used
+-- in this file, but the code was already exported a long time ago. By making it
+-- local we would potential break consumers of this method.
 utils.file_extension = function(filename)
   local parts = vim.split(filename, "%.")
   -- this check enables us to get multi-part extensions, like *.test.js for example
@@ -513,11 +674,12 @@ utils.get_devicons = load_once(function()
   end
 end)
 
+--- TODO(clason): remove when dropping support for Nvim 0.10
 --- Checks if treesitter parser for language is installed
----@param lang string
-utils.has_ts_parser = function(lang)
-  return pcall(vim.treesitter.language.add, lang)
-end
+utils.has_ts_parser = utils.nvim011 and vim.treesitter.language.add
+  or function(lang)
+    return pcall(vim.treesitter.language.add, lang)
+  end
 
 --- Telescope Wrapper around vim.notify
 ---@param funname string: name of the function that will be
@@ -566,5 +728,80 @@ utils.list_find = function(func, list)
     end
   end
 end
+
+--- Takes the path and parses optional cursor location `$file:$line:$column`
+--- If line or column not present `0` returned.
+---@param path string
+---@return string path
+---@return integer? lnum
+---@return integer? col
+utils.__separate_file_path_location = function(path)
+  local location_numbers = {}
+  for i = #path, 1, -1 do
+    if path:sub(i, i) == ":" then
+      if i == #path then
+        path = path:sub(1, i - 1)
+      else
+        local location_value = tonumber(path:sub(i + 1))
+        if location_value then
+          table.insert(location_numbers, location_value)
+          path = path:sub(1, i - 1)
+
+          if #location_numbers == 2 then
+            -- There couldn't be more than 2 : separated number
+            break
+          end
+        end
+      end
+    end
+  end
+
+  if #location_numbers == 2 then
+    -- because of the reverse the line number will be second
+    return path, location_numbers[2], location_numbers[1]
+  end
+
+  if #location_numbers == 1 then
+    return path, location_numbers[1], 0
+  end
+
+  return path, nil, nil
+end
+
+local function add_offset(offset, obj)
+  return { obj[1] + offset, obj[2] + offset }
+end
+
+utils.merge_styles = function(style1, style2, offset)
+  for _, item in ipairs(style2) do
+    item[1] = add_offset(offset, item[1])
+    table.insert(style1, item)
+  end
+
+  return style1
+end
+
+-- IMPORTANT: This function should have been a local function as it's only used
+-- in this file, but the code was already exported a long time ago. By making it
+-- local we would potential break consumers of this method.
+utils.reverse_table = function(input_table)
+  local temp_table = {}
+  for index = 0, #input_table do
+    temp_table[#input_table - index] = input_table[index + 1] -- Reverses the order
+  end
+  return temp_table
+end
+
+utils.split_lines = (function()
+  if utils.iswin then
+    return function(s, opts)
+      return vim.split(s, "\r?\n", opts)
+    end
+  else
+    return function(s, opts)
+      return vim.split(s, "\n", opts)
+    end
+  end
+end)()
 
 return utils

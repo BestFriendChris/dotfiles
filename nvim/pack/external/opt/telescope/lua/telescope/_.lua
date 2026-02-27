@@ -1,10 +1,11 @@
-local uv = vim.loop
+local uv = vim.uv
 
 local Object = require "plenary.class"
 local log = require "plenary.log"
 
 local async = require "plenary.async"
 local channel = require("plenary.async").control.channel
+local utils = require "telescope.utils"
 
 local M = {}
 
@@ -21,7 +22,7 @@ function AsyncJob.new(opts)
   self.stderr = opts.stderr or M.NullPipe()
 
   if opts.cwd and opts.cwd ~= "" then
-    self.uv_opts.cwd = vim.fn.expand(vim.fn.escape(opts.cwd, "$"))
+    self.uv_opts.cwd = utils.path_expand(opts.cwd)
     -- this is a "illegal" hack for windows. E.g. If the git command returns `/` rather than `\` as delimiter,
     -- vim.fn.expand might just end up returning an empty string. Weird
     -- Because empty string is not allowed in libuv the job will not spawn. Solution is we just set it to opts.cwd
@@ -54,7 +55,7 @@ function AsyncJob:close(force)
     p:close(force)
   end)
 
-  uv.process_kill(self.handle, "SIGTERM")
+  uv.process_kill(self.handle, "sigterm")
 
   log.debug "[async_job] closed"
 end
@@ -146,10 +147,9 @@ function LinesPipe:read()
   return read_rx()
 end
 
-function LinesPipe:iter(schedule)
-  if schedule == nil then
-    schedule = true
-  end
+function LinesPipe:iter(schedule, opts)
+  schedule = vim.F.if_nil(schedule, true)
+  local split_char = vim.F.if_nil(opts and opts.split_char, "\n")
 
   local text = nil
   local index = nil
@@ -166,8 +166,7 @@ function LinesPipe:iter(schedule)
     return (previous or "") .. read
   end
 
-  local next_value = nil
-  next_value = function()
+  local function next_value()
     if schedule then
       async.util.scheduler()
     end
@@ -177,7 +176,7 @@ function LinesPipe:iter(schedule)
     end
 
     local start = index
-    index = string.find(text, "\n", index, true)
+    index = string.find(text, split_char, index, true)
 
     if index == nil then
       text = get_next_text(string.sub(text, start or 1))

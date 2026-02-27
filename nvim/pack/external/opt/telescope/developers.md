@@ -217,7 +217,7 @@ more interesting. We will end up with the following new code for `finders.new_ta
 ```
 
 With the new snippet, we no longer have an array of strings but an array of
-tables. Each table has a color, name, and the color's hex value.
+tables. Each table has a color name and the color's hex value.
 
 `entry_maker` is a function that will receive each table and then we can set the
 values we need. It's best practice to have a `value` reference to the
@@ -274,10 +274,8 @@ directory which contains all of the builtin pickers. Another way to find more ex
 is to take a look at the [extension wiki page](https://github.com/nvim-telescope/telescope.nvim/wiki/Extensions)
 as this provides many extensions people have already written which use these concepts.
 
-If you still have any questions after reading this guide please feel free to ask us for
-more information on [gitter](https://gitter.im/nvim-telescope/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-and we will happily answer your questions and hopefully allow us to improve this guide. You can also
-help us to improve this guide by sending a PR.
+If you still have any questions after reading this guide please open a
+[Discussion](https://github.com/nvim-telescope/telescope.nvim/discussions).
 
 ### Bundling as extension
 
@@ -334,9 +332,9 @@ This section is an overview of how custom pickers can be created and configured.
 -- lua/telescope/pickers.lua
 Picker:new{
   prompt_title            = "",
-  finder                  = FUNCTION, -- see lua/telescope/finder.lua
-  sorter                  = FUNCTION, -- see lua/telescope/sorter.lua
-  previewer               = FUNCTION, -- see lua/telescope/previewer.lua
+  finder                  = FUNCTION, -- see lua/telescope/finders.lua
+  sorter                  = FUNCTION, -- see lua/telescope/sorters.lua
+  previewer               = FUNCTION, -- see lua/telescope/previewers/previewer.lua
   selection_strategy      = "reset", -- follow, reset, row
   border                  = {},
   borderchars             = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},

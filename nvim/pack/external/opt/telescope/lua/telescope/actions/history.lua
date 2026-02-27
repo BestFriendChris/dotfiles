@@ -2,7 +2,7 @@ local conf = require("telescope.config").values
 local Path = require "plenary.path"
 local utils = require "telescope.utils"
 
-local uv = vim.loop
+local uv = vim.uv
 
 ---@tag telescope.actions.history
 ---@config { ["module"] = "telescope.actions.history" }
@@ -73,7 +73,7 @@ function histories.History:new(opts)
   if conf.history.limit then
     obj.limit = conf.history.limit
   end
-  obj.path = vim.fn.expand(conf.history.path)
+  obj.path = utils.path_expand(conf.history.path)
   obj.content = {}
   obj.index = 1
   obj.cycle_wrap = conf.history.cycle_wrap

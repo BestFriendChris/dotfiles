@@ -1,5 +1,5 @@
-if 1 ~= vim.fn.has "nvim-0.9.0" then
-  vim.api.nvim_err_writeln "Telescope.nvim requires at least nvim-0.9.0. See `:h telescope.changelog-2499`"
+if 1 ~= vim.fn.has "nvim-0.10.4" then
+  error "Telescope.nvim requires at least nvim-0.10.4."
   return
 end
 
@@ -116,7 +116,8 @@ end, {
     local n = #l - 2
 
     if n == 0 then
-      local commands = vim.tbl_flatten { builtin_list, extensions_list }
+      local commands = { builtin_list, extensions_list }
+      commands = vim.iter(commands):flatten():totable()
       table.sort(commands)
 
       return vim.tbl_filter(function(val)

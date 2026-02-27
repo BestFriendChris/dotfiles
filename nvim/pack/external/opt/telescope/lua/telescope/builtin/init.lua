@@ -77,7 +77,7 @@ builtin.grep_string = require_on_exported_call("telescope.builtin.__files").grep
 ---@field cwd string: root dir to search from (default: cwd, use utils.buffer_dir() to search relative to open buffer)
 ---@field find_command function|table: cmd to use for the search. Can be a fn(opts) -> tbl (default: autodetect)
 ---@field file_entry_encoding string: encoding of output of `find_command`
----@field follow boolean: if true, follows symlinks (i.e. uses `-L` flag for the `find` command)
+---@field follow boolean: if true, follows symlinks (i.e. uses `-L` flag for the `find` command) (default: false)
 ---@field hidden boolean: determines whether to show hidden files or not (default: false)
 ---@field no_ignore boolean: show files ignored by .gitignore, .ignore, etc. (default: false)
 ---@field no_ignore_parent boolean: show files ignored by .gitignore, .ignore, etc. in parent dirs. (default: false)
@@ -94,6 +94,7 @@ builtin.fd = builtin.find_files
 ---   - `<C-l>`: show autocompletion menu to prefilter your query by kind of ts node you want to see (i.e. `:var:`)
 ---@field show_line boolean: if true, shows the row:column that the result is found at (default: true)
 ---@field bufnr number: specify the buffer number where treesitter should run. (default: current buffer)
+---@field symbol_width number: defines the width of the symbol section (default: 25)
 ---@field symbols string|table: filter results by symbol kind(s)
 ---@field ignore_symbols string|table: list of symbols to ignore
 ---@field symbol_highlights table: string -> string. Matches symbol with hl_group
@@ -113,6 +114,7 @@ builtin.current_buffer_fuzzy_find = require_on_exported_call("telescope.builtin.
 ---@field cwd string: root dir to search from (default: cwd, use utils.buffer_dir() to search relative to open buffer)
 ---@field ctags_file string: specify a particular ctags file to use
 ---@field show_line boolean: if true, shows the content of the line the tag is found on in the picker (default: true)
+---@field show_kind boolean: if true and kind info is available, show the kind of the tag (default: true)
 ---@field only_sort_tags boolean: if true we will only sort tags (default: false)
 ---@field fname_width number: defines the width of the filename section (default: 30)
 builtin.tags = require_on_exported_call("telescope.builtin.__files").tags
@@ -122,6 +124,7 @@ builtin.tags = require_on_exported_call("telescope.builtin.__files").tags
 ---@field cwd string: root dir to search from (default: cwd, use utils.buffer_dir() to search relative to open buffer)
 ---@field ctags_file string: specify a particular ctags file to use
 ---@field show_line boolean: if true, shows the content of the line the tag is found on in the picker (default: true)
+---@field show_kind boolean: if true and kind info is available, show the kind of the tag (default: true)
 ---@field only_sort_tags boolean: if true we will only sort tags (default: false)
 ---@field fname_width number: defines the width of the filename section (default: 30)
 builtin.current_buffer_tags = require_on_exported_call("telescope.builtin.__files").current_buffer_tags
@@ -216,6 +219,7 @@ builtin.git_branches = require_on_exported_call("telescope.builtin.__git").branc
 ---@field use_file_path boolean: if we should use the current buffer git root (default: false)
 ---@field use_git_root boolean: if we should use git root as cwd or the cwd (important for submodule) (default: true)
 ---@field git_icons table: string -> string. Matches name with icon (see source code, make_entry.lua git_icon_defaults)
+---@field expand_dir boolean: pass flag `-uall` to show files in untracked directories (default: true)
 builtin.git_status = require_on_exported_call("telescope.builtin.__git").status
 
 --- Lists stash items in current repository
@@ -280,7 +284,6 @@ builtin.commands = require_on_exported_call("telescope.builtin.__internal").comm
 ---@param opts table: options to pass to the picker
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field nr number: specify the quickfix list number
 builtin.quickfix = require_on_exported_call("telescope.builtin.__internal").quickfix
 
@@ -293,7 +296,6 @@ builtin.quickfixhistory = require_on_exported_call("telescope.builtin.__internal
 ---@param opts table: options to pass to the picker
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
----@field fname_width number: defines the width of the filename section (default: 30)
 builtin.loclist = require_on_exported_call("telescope.builtin.__internal").loclist
 
 --- Lists previously open files, opens on `<cr>`
@@ -339,6 +341,8 @@ builtin.man_pages = require_on_exported_call("telescope.builtin.__internal").man
 builtin.reloader = require_on_exported_call("telescope.builtin.__internal").reloader
 
 --- Lists open buffers in current neovim instance, opens selected buffer on `<cr>`
+--- - Default keymaps:
+---   - `<M-d>`: delete the currently selected buffer
 ---@param opts table: options to pass to the picker
 ---@field cwd string: specify a working directory to filter buffers list by
 ---@field show_all_buffers boolean: if true, show all buffers, including unloaded buffers (default: true)
@@ -349,16 +353,21 @@ builtin.reloader = require_on_exported_call("telescope.builtin.__internal").relo
 ---@field sort_mru boolean: Sorts all buffers after most recent used. Not just the current and last one (default: false)
 ---@field bufnr_width number: Defines the width of the buffer numbers in front of the filenames  (default: dynamic)
 ---@field file_encoding string: file encoding for the previewer
+---@field sort_buffers function: sort fn(bufnr_a, bufnr_b). true if bufnr_a should go first. Runs after sorting by most recent (if specified)
+---@field select_current boolean: select current buffer (default: false)
 builtin.buffers = require_on_exported_call("telescope.builtin.__internal").buffers
 
 --- Lists available colorschemes and applies them on `<cr>`
 ---@param opts table: options to pass to the picker
+---@field colors table: a list of additional colorschemes to explicitly make available to telescope (default: {})
 ---@field enable_preview boolean: if true, will preview the selected color
+---@field ignore_builtins boolean: if true, builtin colorschemes are not listed
 builtin.colorscheme = require_on_exported_call("telescope.builtin.__internal").colorscheme
 
 --- Lists vim marks and their value, jumps to the mark on `<cr>`
 ---@param opts table: options to pass to the picker
 ---@field file_encoding string: file encoding for the previewer
+---@field mark_type string: filter marks by type (default: "all", options: "all"|"global"|"local")
 builtin.marks = require_on_exported_call("telescope.builtin.__internal").marks
 
 --- Lists vim registers, pastes the contents of the register on `<cr>`
@@ -396,14 +405,12 @@ builtin.spell_suggest = require_on_exported_call("telescope.builtin.__internal")
 ---@param opts table: options to pass to the picker
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
----@field fname_width number: defines the width of the filename section (default: 30)
 builtin.tagstack = require_on_exported_call("telescope.builtin.__internal").tagstack
 
 --- Lists items from Vim's jumplist, jumps to location on `<cr>`
 ---@param opts table: options to pass to the picker
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
----@field fname_width number: defines the width of the filename section (default: 30)
 builtin.jumplist = require_on_exported_call("telescope.builtin.__internal").jumplist
 
 --
@@ -417,15 +424,14 @@ builtin.jumplist = require_on_exported_call("telescope.builtin.__internal").jump
 ---@field include_declaration boolean: include symbol declaration in the lsp references (default: true)
 ---@field include_current_line boolean: include current line (default: false)
 ---@field jump_type string: how to goto reference if there is only one and the definition file is different from the current file, values: "tab", "tab drop", "split", "vsplit", "never"
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
+---@field reuse_win boolean: jump to existing window if buffer is already opened (default: false)
 ---@field file_encoding string: file encoding for the previewer
 builtin.lsp_references = require_on_exported_call("telescope.builtin.__lsp").references
 
 --- Lists LSP incoming calls for word under the cursor, jumps to reference on `<cr>`
 ---@param opts table: options to pass to the picker
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
 ---@field file_encoding string: file encoding for the previewer
@@ -433,7 +439,6 @@ builtin.lsp_incoming_calls = require_on_exported_call("telescope.builtin.__lsp")
 
 --- Lists LSP outgoing calls for word under the cursor, jumps to reference on `<cr>`
 ---@param opts table: options to pass to the picker
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
 ---@field file_encoding string: file encoding for the previewer
@@ -442,7 +447,6 @@ builtin.lsp_outgoing_calls = require_on_exported_call("telescope.builtin.__lsp")
 --- Goto the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope
 ---@param opts table: options to pass to the picker
 ---@field jump_type string: how to goto definition if there is only one and the definition file is different from the current file, values: "tab", "tab drop", "split", "vsplit", "never"
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
 ---@field reuse_win boolean: jump to existing window if buffer is already opened (default: false)
@@ -453,7 +457,6 @@ builtin.lsp_definitions = require_on_exported_call("telescope.builtin.__lsp").de
 --- otherwise show all options in Telescope
 ---@param opts table: options to pass to the picker
 ---@field jump_type string: how to goto definition if there is only one and the definition file is different from the current file, values: "tab", "tab drop", "split", "vsplit", "never"
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
 ---@field reuse_win boolean: jump to existing window if buffer is already opened (default: false)
@@ -463,7 +466,6 @@ builtin.lsp_type_definitions = require_on_exported_call("telescope.builtin.__lsp
 --- Goto the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope
 ---@param opts table: options to pass to the picker
 ---@field jump_type string: how to goto implementation if there is only one and the definition file is different from the current file, values: "tab", "tab drop", "split", "vsplit", "never"
----@field fname_width number: defines the width of the filename section (default: 30)
 ---@field show_line boolean: show results text (default: true)
 ---@field trim_text boolean: trim results text (default: false)
 ---@field reuse_win boolean: jump to existing window if buffer is already opened (default: false)

@@ -1,3 +1,5 @@
+local api = vim.api
+
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local finders = require "telescope.finders"
@@ -41,20 +43,24 @@ git.files = function(opts)
   -- By creating the entry maker after the cwd options,
   -- we ensure the maker uses the cwd options when being created.
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_file(opts))
-  opts.git_command = vim.F.if_nil(opts.git_command, git_command({ "ls-files", "--exclude-standard", "--cached" }, opts))
+  opts.git_command = vim.F.if_nil(
+    opts.git_command,
+    git_command({ "-c", "core.quotepath=false", "ls-files", "--exclude-standard", "--cached" }, opts)
+  )
 
   pickers
     .new(opts, {
       prompt_title = "Git Files",
+      __locations_input = true,
       finder = finders.new_oneshot_job(
-        vim.tbl_flatten {
+        utils.flatten {
           opts.git_command,
           show_untracked and "--others" or nil,
           recurse_submodules and "--recurse-submodules" or nil,
         },
         opts
       ),
-      previewer = conf.file_previewer(opts),
+      previewer = conf.grep_previewer(opts),
       sorter = conf.file_sorter(opts),
     })
     :find()
@@ -107,8 +113,8 @@ git.stash = function(opts)
 end
 
 local get_current_buf_line = function(winnr)
-  local lnum = vim.api.nvim_win_get_cursor(winnr)[1]
-  return vim.trim(vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1])
+  local lnum = api.nvim_win_get_cursor(winnr)[1]
+  return vim.trim(api.nvim_buf_get_lines(api.nvim_win_get_buf(winnr), lnum - 1, lnum, false)[1])
 end
 
 local bcommits_picker = function(opts, title, finder)
@@ -132,9 +138,9 @@ local bcommits_picker = function(opts, title, finder)
         local value = selection.value .. ":" .. transfrom_file()
         local content = utils.get_os_command_output({ "git", "--no-pager", "show", value }, opts.cwd)
 
-        local bufnr = vim.api.nvim_create_buf(false, true)
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, content)
-        vim.api.nvim_buf_set_name(bufnr, "Original")
+        local bufnr = api.nvim_create_buf(false, true)
+        api.nvim_buf_set_lines(bufnr, 0, -1, false, content)
+        api.nvim_buf_set_name(bufnr, "Original")
         return bufnr
       end
 
@@ -147,12 +153,12 @@ local bcommits_picker = function(opts, title, finder)
         vim.bo.filetype = ft
         vim.cmd "diffthis"
 
-        vim.api.nvim_create_autocmd("WinClosed", {
+        api.nvim_create_autocmd("WinClosed", {
           buffer = bufnr,
           nested = true,
           once = true,
           callback = function()
-            vim.api.nvim_buf_delete(bufnr, { force = true })
+            api.nvim_buf_delete(bufnr, { force = true })
           end,
         })
       end
@@ -182,14 +188,14 @@ end
 
 git.bcommits = function(opts)
   opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
-  opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
+  opts.current_file = vim.F.if_nil(opts.current_file, api.nvim_buf_get_name(opts.bufnr))
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
   opts.git_command =
     vim.F.if_nil(opts.git_command, git_command({ "log", "--pretty=oneline", "--abbrev-commit", "--follow" }, opts))
 
   local title = "Git BCommits"
   local finder = finders.new_oneshot_job(
-    vim.tbl_flatten {
+    utils.flatten {
       opts.git_command,
       opts.current_file,
     },
@@ -200,7 +206,7 @@ end
 
 git.bcommits_range = function(opts)
   opts.current_line = (opts.current_file == nil) and get_current_buf_line(opts.winnr) or nil
-  opts.current_file = vim.F.if_nil(opts.current_file, vim.api.nvim_buf_get_name(opts.bufnr))
+  opts.current_file = vim.F.if_nil(opts.current_file, api.nvim_buf_get_name(opts.bufnr))
   opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_commits(opts))
   opts.git_command = vim.F.if_nil(
     opts.git_command,
@@ -230,7 +236,7 @@ git.bcommits_range = function(opts)
 
   local title = "Git BCommits in range"
   local finder = finders.new_oneshot_job(
-    vim.tbl_flatten {
+    utils.flatten {
       opts.git_command,
       line_range,
     },
@@ -365,28 +371,16 @@ git.status = function(opts)
     return
   end
 
+  local args = { "status", "-z", "--", "." }
+
   local gen_new_finder = function()
-    local expand_dir = vim.F.if_nil(opts.expand_dir, true)
-    local git_cmd = git_command({ "status", "-z", "--", "." }, opts)
-
-    if expand_dir then
-      table.insert(git_cmd, #git_cmd - 1, "-u")
+    if vim.F.if_nil(opts.expand_dir, true) then
+      table.insert(args, #args - 1, "-uall")
     end
-
-    local output = utils.get_os_command_output(git_cmd, opts.cwd)
-
-    if #output == 0 then
-      utils.notify("builtin.git_status", {
-        msg = "No changes found",
-        level = "WARN",
-      })
-      return
-    end
-
-    return finders.new_table {
-      results = vim.split(output[1], " ", { trimempty = true }),
-      entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_status(opts)),
-    }
+    local git_cmd = git_command(args, opts)
+    opts.entry_maker = vim.F.if_nil(opts.entry_maker, make_entry.gen_from_git_status(opts))
+    opts.split_char = "\0"
+    return finders.new_oneshot_job(git_cmd, opts)
   end
 
   local initial_finder = gen_new_finder()
@@ -400,6 +394,27 @@ git.status = function(opts)
       finder = initial_finder,
       previewer = previewers.git_file_diff.new(opts),
       sorter = conf.file_sorter(opts),
+      on_complete = {
+        function(self)
+          local prompt = action_state.get_current_line()
+
+          -- HACK: self.manager:num_results() can return 0 despite having results
+          -- due to some async/event loop shenanigans (#3316)
+          local count = 0
+          for _, entry in pairs(self.finder.results) do
+            if entry and entry.valid ~= false then
+              count = count + 1
+            end
+          end
+
+          if count == 0 and prompt == "" then
+            utils.notify("builtin.git_status", {
+              msg = "No changes found",
+              level = "INFO",
+            })
+          end
+        end,
+      },
       attach_mappings = function(prompt_bufnr, map)
         actions.git_staging_toggle:enhance {
           post = function()
@@ -428,7 +443,7 @@ end
 local try_worktrees = function(opts)
   local worktrees = conf.git_worktrees
 
-  if vim.tbl_islist(worktrees) then
+  if vim.islist(worktrees) then
     for _, wt in ipairs(worktrees) do
       if vim.startswith(opts.cwd, wt.toplevel) then
         opts.toplevel = wt.toplevel
@@ -455,7 +470,7 @@ end
 local set_opts_cwd = function(opts)
   opts.use_git_root = vim.F.if_nil(opts.use_git_root, true)
   if opts.cwd then
-    opts.cwd = vim.fn.expand(opts.cwd)
+    opts.cwd = utils.path_expand(opts.cwd)
   elseif opts.use_file_path then
     opts.cwd = current_path_toplevel()
     if not opts.cwd then
@@ -464,7 +479,7 @@ local set_opts_cwd = function(opts)
       return
     end
   else
-    opts.cwd = vim.loop.cwd()
+    opts.cwd = vim.uv.cwd()
   end
 
   local toplevel, ret = utils.get_os_command_output({ "git", "rev-parse", "--show-toplevel" }, opts.cwd)
