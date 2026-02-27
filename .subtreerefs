@@ -25,6 +25,7 @@ vim/nvim-lspconfig,nvim/pack/external/opt/nvim-lspconfig,https://github.com/neov
 vim/nvim-neoclip,nvim/pack/external/opt/nvim-neoclip,https://github.com/AckslD/nvim-neoclip.lua.git,main
 vim/nvim-treesitter,nvim/pack/external/opt/nvim-treesitter,https://github.com/nvim-treesitter/nvim-treesitter.git,master
 vim/obsession,nvim/pack/external/opt/vim-obsession,https://github.com/tpope/vim-obsession.git,master
+vim/octo,nvim/pack/external/opt/octo,https://github.com/pwntester/octo.nvim.git,master
 vim/oil.nvim,nvim/pack/external/opt/oil,https://github.com/stevearc/oil.nvim.git,master
 vim/peekaboo,nvim/pack/external/opt/vim-peekaboo,https://github.com/junegunn/vim-peekaboo.git,master
 vim/plenary,nvim/pack/external/opt/plenary,https://github.com/nvim-lua/plenary.nvim.git,master
