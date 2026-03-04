@@ -3,3 +3,8 @@ Session*.vim
 .elixir-tools
 .jj/
 tags
+.worktrees/
+.workspaces/
+.jj-*
+.jot/
+**/.claude/settings.local.json
