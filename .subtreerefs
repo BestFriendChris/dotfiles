@@ -22,6 +22,7 @@ vim/gitsigns,nvim/pack/external/opt/gitsigns,https://github.com/lewis6991/gitsig
 vim/highlighter,nvim/pack/external/opt/vim-highlighter,https://github.com/azabiong/vim-highlighter.git,main
 vim/lightspeed,nvim/pack/external/opt/lightspeed,https://github.com/ggandor/lightspeed.nvim.git,main
 vim/lion,nvim/pack/external/opt/vim-lion,https://github.com/tommcdo/vim-lion.git,master
+vim/nui,nvim/pack/external/opt/nui,https://github.com/MunifTanjim/nui.nvim.git,main
 vim/nvim-cmp,nvim/pack/external/opt/nvim-cmp,https://github.com/hrsh7th/nvim-cmp.git,main
 vim/nvim-lspconfig,nvim/pack/external/opt/nvim-lspconfig,https://github.com/neovim/nvim-lspconfig.git,master
 vim/nvim-neoclip,nvim/pack/external/opt/nvim-neoclip,https://github.com/AckslD/nvim-neoclip.lua.git,main
