@@ -49,6 +49,8 @@ call bfc#plugins#load('vim-textobj-user')
 call bfc#plugins#load('vim-unimpaired')
 call bfc#plugins#load('vim-wheel')
 
+call bfc#plugins#load('hunk')
+
 " Netrw replacements
 call bfc#plugins#load('oil')
 "call bfc#plugins#load('vim-vinegar')
