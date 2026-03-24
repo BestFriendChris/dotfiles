@@ -219,3 +219,5 @@ keybind = super+physical:two=goto_tab:2
 keybind = super+physical:six=goto_tab:6
 keybind = super+v=paste_from_clipboard
 
+# https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/terminal-setup.md#ghostty
+keybind = alt+backspace=text:\x1b\x7f
