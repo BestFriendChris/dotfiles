@@ -1,6 +1,7 @@
 dotbot,.dotbot,https://github.com/anishathalye/dotbot,master
 dotbot/brewfile,.dotbot-plugins/brewfile,https://github.com/sobolevn/dotbot-brewfile.git,master
 vim-go,nvim/pack/external/opt/vim-go,https://github.com/fatih/vim-go.git,master
+vim/amp,nvim/pack/external/opt/amp,https://github.com/sourcegraph/amp.nvim.git,main
 vim/bqf,nvim/pack/external/opt/bqf,https://github.com/kevinhwang91/nvim-bqf.git,main
 vim/cmp-buffer,nvim/pack/external/opt/cmp-buffer,https://github.com/hrsh7th/cmp-buffer.git,main
 vim/cmp-cmdline,nvim/pack/external/opt/cmp-cmdline,https://github.com/hrsh7th/cmp-cmdline.git,main
