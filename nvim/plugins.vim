@@ -7,6 +7,7 @@ call bfc#plugins#load('plenary')
 
 call bfc#plugins#load('vim-grepper')
 
+call bfc#plugins#load('amp')
 call bfc#plugins#load('bfc-buffers')
 call bfc#plugins#load('bfc-copy-path')
 call bfc#plugins#load('bqf')
