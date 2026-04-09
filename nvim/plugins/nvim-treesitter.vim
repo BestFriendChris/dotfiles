@@ -26,6 +26,8 @@ function! s:EnsureTreeSitter() abort
         \  "lua",
         \  "luadoc",
         \  "make",
+        \  "markdown",
+        \  "markdown_inline",
         \  "nix",
         \  "nu",
         \  "python",
