@@ -37,6 +37,7 @@ vim/plenary,nvim/pack/external/opt/plenary,https://github.com/nvim-lua/plenary.n
 vim/polyglot,nvim/pack/external/opt/vim-polyglot,https://github.com/sheerun/vim-polyglot.git,master
 vim/pqf,nvim/pack/external/opt/pqf,https://github.com/yorickpeterse/nvim-pqf.git,main
 vim/quick-scope,nvim/pack/external/opt/quick-scope,https://github.com/unblevable/quick-scope.git,master
+vim/render-markdown,nvim/pack/external/opt/render-markdown,https://github.com/MeanderingProgrammer/render-markdown.nvim.git,main
 vim/repeat,nvim/pack/external/opt/vim-repeat,https://github.com/tpope/vim-repeat.git,master
 vim/rustaceanvim,nvim/pack/external/opt/rustaceanvim,https://github.com/mrcjkb/rustaceanvim.git,master
 vim/scriptease,nvim/pack/external/opt/vim-scriptease,https://github.com/tpope/vim-scriptease.git,master
