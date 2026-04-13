@@ -9,3 +9,4 @@ tags
 .jj-*
 .jot/
 **/.claude/settings.local.json
+.memsearch/
