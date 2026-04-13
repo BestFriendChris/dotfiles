@@ -33,3 +33,16 @@ require('render-markdown').setup({
     },
 })
 EOF
+
+function! s:MarkdownSetup()
+  nmap <buffer> <LocalLeader>d <CMD>s/\* \[.\]/* [x]/<CR>
+  nmap <buffer> <LocalLeader>u <CMD>s/\* \[.\]/* [ ]/<CR>
+  nmap <buffer> <LocalLeader>i <CMD>s/\* \[.\]/* [-]/<CR>
+  nmap <buffer> <C-Enter> o* [ ]<Space>
+  imap <buffer> <C-Enter> <CR>[ ]<Space>
+endfunction
+
+augroup bfcMarkdown
+  autocmd!
+  autocmd FileType markdown call s:MarkdownSetup()
+augroup end
