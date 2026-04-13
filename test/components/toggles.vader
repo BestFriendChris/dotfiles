@@ -1,0 +1,161 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (space separated inline text mapping):
+  C-S-J C+M+a
+
+Do (<prefix>k):
+   k
+
+Expect (First mapping converted to kbd):
+  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> C+M+a
+
+Do (vfa<prefix>k):
+  vfa k
+
+Expect (Both mappings converted to kbd, separated by space):
+  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> <kbd>ctrl</kbd>+<kbd>meta</kbd>+<kbd>a</kbd>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (Inline text mapping):
+  C-S-M-C-S-M
+
+Do (<prefix>k):
+   k
+
+Expect (No modifier appears twice):
+  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>meta</kbd>+<kbd>c</kbd>+<kbd>s</kbd>+<kbd>m</kbd>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (space separated kbd mappings):
+  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> <kbd>ctrl</kbd>+<kbd>meta</kbd>+<kbd>a</kbd>
+
+Do (<prefix>k):
+   k
+
+Expect (Stripped kbd tags from first mapping):
+  ctrl+shift+j <kbd>ctrl</kbd>+<kbd>meta</kbd>+<kbd>a</kbd>
+
+Do (vf 6f><prefix>k):
+  vf 6f> k
+
+Expect (Stripped kbd tags from every mapping in selection):
+  ctrl+shift+j ctrl+meta+a
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A header):
+  ## Hello world
+
+Do (<prefix>] (demote header)):
+   ]
+
+Expect (Header to be demoted):
+  ### Hello world
+
+Do (<prefix>[ (promote header)):
+   [
+
+Expect (Header to be promoted):
+  # Hello world
+
+Do (<prefix>[<prefix>[ (promote to normal line)):
+   [ [
+
+Expect (A regular line):
+  Hello world
+
+Do (<prefix>]<prefix>]<prefix>]<prefix>]<prefix>] (promote to normal line)):
+   ] ] ] ] ]
+
+Expect (A regular line):
+  Hello world
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A regular line):
+  hello world
+
+Do (<prefix>'):
+   '
+
+Expect (The line to be a quote):
+  > hello world
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A regular line):
+  hello world
+
+Do (<prefix>'<prefix>'):
+   ' '
+
+Expect (The line to be unchanged):
+  hello world
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (multiple paragraphs of unquoted text):
+  hello world
+
+  another paragraph
+
+Do (<prefix>' in Visual Mode):
+   \<S-v>3j '
+
+Expect (The selection to be quoted):
+  > hello world
+  > 
+  > another paragraph
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A regular line):
+  hello world
+
+Do (<prefix>t):
+   t
+
+Expect (The line to become a checkbox line):
+  [ ] hello world
+
+Do (<prefix>t<prefix>t):
+   t t
+
+Expect (The line to be unchanged):
+  hello world
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A regular line):
+  hello world
+
+Do (<prefix>lt):
+   lt
+
+Expect (The line to become a checklist line):
+  - [ ] hello world
+
+Do (<prefix>lt<prefix>lt):
+   lt lt
+
+Expect (The line to be unchanged):
+  hello world
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A regular line):
+  hello world
+
+Do (<prefix>ll):
+   ll
+
+Expect (The line to become a list item):
+  - hello world
+
+Do (<prefix>ll<prefix>ll):
+   ll ll
+
+Expect (The line to be unchanged):
+  hello world

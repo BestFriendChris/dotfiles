@@ -1,0 +1,2757 @@
+*mkdx.txt*                                          Mappings for markdown syntax
+*mkdx*
+
+`Author:  Sidney Liebrand <sidneyliebrand@gmail.com>`
+`Version: 1.10.0`
+
+`               888b     d888 888    d8P  8888888b. Y88b   d88P`
+`       , - /|  8888b   d8888 888   d8P   888  "Y88b Y88b d88P   |\ - ,`
+`      / = / |  88888b.d88888 888  d8P    888    888  Y88o88P    | \ = \`
+`     / = /  |  888Y88888P888 888d88K     888    888   Y888P     |  \ = \`
+`     \ = \  |  888 Y888P 888 8888888b    888    888   d888b     |  / = /`
+      `\ = \ |  888  Y8P  888 888  Y88b   888    888  d88888b    | / = /`
+      ` ' - \|  888   "   888 888   Y88b  888  .d88P d88P Y88b   |/ - '`
+      `         888       888 888    Y88b 8888888P" d88P   Y88b`
+
+==============================================================================
+CONTENTS                                                *mkdx-toc* *mkdx-contents*
+                                             *mkdx-tags* *mkdx-help* *mkdx-helptags*
+
+To jump to this table of contents, use |go| or |gg|.
+
+- |mkdx.txt|, |mkdx|
+- |mkdx-contents|, |mkdx-toc|, |mkdx-helptags|, |mkdx-tags|, |mkdx-help|
+- |mkdx-menu|
+- |mkdx-introduction|
+- |mkdx-development|
+                                                             *mkdx-toc-settings*
+Settings `.......................................................` |mkdx-settings|
+    insert_indent_mappings `...............` |mkdx-setting-insert-indent-mappings|
+    gf_on_steroids `...............................` |mkdx-setting-gf-on-steroids|
+    links.external.enable `.................` |mkdx-setting-links-external-enable|
+    links.external.timeout `...............` |mkdx-setting-links-external-timeout|
+    links.external.host `.....................` |mkdx-setting-links-external-host|
+    links.external.user_agent `.................` |mkdx-setting-links-external-ua|
+    links.external.relative `..................` |mkdx-setting-links-external-rel|
+    links.fragment.jumplist `.............` |mkdx-setting-links-fragment-jumplist|
+    links.fragment.complete `.............` |mkdx-setting-links-fragment-complete|
+    links.fragment.pumheight `...........` |mkdx-setting-links-fragment-pumheight|
+    links.fragment.completeopt `.......` |mkdx-setting-links-fragment-completeopt|
+    links.conceal `.................................` |mkdx-setting-links-conceal|
+    image_extension_pattern `..............` |mkdx-setting-links-fragment-pattern|
+    restore_visual `...............................` |mkdx-setting-restore-visual|
+    map.prefix `.......................................` |mkdx-setting-map-prefix|
+    map.enable `.......................................` |mkdx-setting-map-enable|
+    checkbox.toggles `...........................` |mkdx-setting-checkbox-toggles|
+    checkbox.update_tree `...................` |mkdx-setting-checkbox-update-tree|
+    checkbox.initial_state `...............` |mkdx-setting-checkbox-initial-state|
+    tokens.header `.................................` |mkdx-setting-tokens-header|
+    tokens.enter `...................................` |mkdx-setting-tokens-enter|
+    tokens.fence `...................................` |mkdx-setting-tokens-fence|
+    tokens.italic `.................................` |mkdx-setting-tokens-italic|
+    tokens.bold `.....................................` |mkdx-setting-tokens-bold|
+    tokens.strike `.................................` |mkdx-setting-tokens-strike|
+    tokens.list `.....................................` |mkdx-setting-tokens-list|
+    table.header_divider `...................` |mkdx-setting-table-header-divider|
+    table.divider `.................................` |mkdx-setting-table-divider|
+    tab.enable `.......................................` |mkdx-setting-tab-enable|
+    enter.increment `.............................` |mkdx-setting-enter-increment|
+    enter.enable `...................................` |mkdx-setting-enter-enable|
+    enter.close_pum `.............................` |mkdx-setting-enter-close-pum|
+    enter.shift `.....................................` |mkdx-setting-enter-shift|
+    enter.o `.............................................` |mkdx-setting-enter-o|
+    enter.shifto `...................................` |mkdx-setting-enter-shifto|
+    enter.malformed `.............................` |mkdx-setting-enter-malformed|
+    toc.text `...........................................` |mkdx-setting-toc-text|
+    toc.list_token `...............................` |mkdx-setting-toc-list-token|
+    toc.position `...................................` |mkdx-setting-toc-position|
+    toc.update_on_write `.....................` |mkdx-setting-toc-update-on-write|
+    toc.details.enable `.......................` |mkdx-setting-toc-details-enable|
+    toc.details.summary `.....................` |mkdx-setting-toc-details-summary|
+    toc.details.nesting_level `.........` |mkdx-setting-toc-details-nesting-level|
+    toc.details.child_count `.............` |mkdx-setting-toc-details-child-count|
+    toc.details.child_summary `.........` |mkdx-setting-toc-details-child-summary|
+    highlight.enable `...........................` |mkdx-setting-highlight-enable|
+    highlight.frontmatter.yaml `.......` |mkdx-setting-highlight-frontmatter-yaml|
+    highlight.frontmatter.toml `.......` |mkdx-setting-highlight-frontmatter-toml|
+    highlight.frontmatter.json `.......` |mkdx-setting-highlight-frontmatter-json|
+    auto_update.enable `.......................` |mkdx-setting-auto-update-enable|
+    fold.enable `.....................................` |mkdx-setting-fold-enable|
+    fold.components `.............................` |mkdx-setting-fold-components|
+
+                                                         *mkdx-toc-highlighting*
+Highlighting `...............................................` |mkdx-highlighting|
+    mkdxTag `...............................................` |mkdx-highlight-tag|
+    mkdxYAMLHeader `...........................` |mkdx-highlight-yaml-frontmatter|
+    mkdxTOMLHeader `...........................` |mkdx-highlight-TOML-frontmatter|
+    mkdxJSONHeader `...........................` |mkdx-highlight-JSON-frontmatter|
+    mkdxListItem `....................................` |mkdx-highlight-list-item|
+    mkdxCheckboxEmpty `..........................` |mkdx-highlight-checkbox-empty|
+    mkdxCheckboxPending `......................` |mkdx-highlight-checkbox-pending|
+    mkdxCheckboxComplete `....................` |mkdx-highlight-checkbox-complete|
+    mkdxTable `...........................................` |mkdx-highlight-table|
+    mkdxTableDelimiter `........................` |mkdx-highlight-table-delimiter|
+    mkdxTableAlign `................................` |mkdx-highlight-table-align|
+    mkdxTableHeader `..............................` |mkdx-highlight-table-header|
+    mkdxTableHeadDelimiter `...............` |mkdx-highlight-table-head-delimiter|
+    mkdxTableCaption `............................` |mkdx-highlight-table-caption|
+    mkdxTableCaptionDelimiter `.........` |mkdx-highlight-table-caption-delimiter|
+    mkdxKbdText `......................................` |mkdx-highlight-kbd-text|
+    mkdxKbdOpening `................................` |mkdx-highlight-kbd-opening|
+    mkdxKbdEnding `..................................` |mkdx-highlight-kbd-ending|
+    mkdxBoldItalic `................................` |mkdx-highlight-bold-italic|
+    mkdxBoldItalicDelimiter `.............` |mkdx-highlight-bold-italic-delimiter|
+    mkdxInlineCode `................................` |mkdx-highlight-inline-code|
+    mkdxInlineCodeDelimiter `.............` |mkdx-highlight-inline-code-delimiter|
+    mkdxTildeFence `................................` |mkdx-highlight-tilde-fence|
+    mkdxCriticAddition `........................` |mkdx-highlight-critic-addition|
+    mkdxCriticAddStartMark `..............` |mkdx-highlight-critic-add-start-mark|
+    mkdxCriticAddEndMark `..................` |mkdx-highlight-critic-add-end-mark|
+    mkdxCriticDeletion `........................` |mkdx-highlight-critic-deletion|
+    mkdxCriticDelStartMark `..............` |mkdx-highlight-critic-del-start-mark|
+    mkdxCriticDelEndMark `..................` |mkdx-highlight-critic-del-end-mark|
+    mkdxCriticSubRemove `.....................` |mkdx-highlight-critic-sub-remove|
+    mkdxCriticSubStartMark `..............` |mkdx-highlight-critic-sub-start-mark|
+    mkdxCriticSubstitute `....................` |mkdx-highlight-critic-substitute|
+    mkdxCriticSubTransMark `..............` |mkdx-highlight-critic-sub-trans-mark|
+    mkdxCriticSubEndMark `..................` |mkdx-highlight-critic-sub-end-mark|
+    mkdxCriticComment `..........................` |mkdx-highlight-critic-comment|
+    mkdxCriticHighlight `......................` |mkdx-highlight-critic-highlight|
+    mkdxCriticExtra `..............................` |mkdx-highlight-critic-extra|
+
+                                                                *mkdx-toc-plugs*
+Plugs `.............................................................` |mkdx-plugs|
+    <Plug>(mkdx-ctrl-n-compl) `.........................` |mkdx-plug-ctrl-n-compl|
+    <Plug>(mkdx-ctrl-p-compl) `.........................` |mkdx-plug-ctrl-p-compl|
+    <Plug>(mkdx-link-compl) `.............................` |mkdx-plug-link-compl|
+    <Plug>(mkdx-checkbox-next-n) `...................` |mkdx-plug-checkbox-next-n|
+    <Plug>(mkdx-checkbox-next-v) `...................` |mkdx-plug-checkbox-next-v|
+    <Plug>(mkdx-checkbox-prev-n) `...................` |mkdx-plug-checkbox-prev-n|
+    <Plug>(mkdx-checkbox-prev-v) `...................` |mkdx-plug-checkbox-prev-v|
+    <Plug>(mkdx-promote-header) `.....................` |mkdx-plug-promote-header|
+    <Plug>(mkdx-demote-header) `.......................` |mkdx-plug-demote-header|
+    <Plug>(mkdx-wrap-link-n) `...........................` |mkdx-plug-wrap-link-n|
+    <Plug>(mkdx-wrap-link-v) `...........................` |mkdx-plug-wrap-link-v|
+    <Plug>(mkdx-jump-to-header) `.....................` |mkdx-plug-jump-to-header|
+    <Plug>(mkdx-tableize) `.................................` |mkdx-plug-tableize|
+    <Plug>(mkdx-generate-toc) `.........................` |mkdx-plug-generate-toc|
+    <Plug>(mkdx-update-toc) `.............................` |mkdx-plug-update-toc|
+    <Plug>(mkdx-gen-or-upd-toc) `..................` |mkdx-plug-gen-or-update-toc|
+    <Plug>(mkdx-quickfix-toc) `.........................` |mkdx-plug-quickfix-toc|
+    <Plug>(mkdx-quickfix-links) `.....................` |mkdx-plug-quickfix-links|
+    <Plug>(mkdx-text-bold-n) `...................` |mkdx-plug-wrap-text-in-bold-n|
+    <Plug>(mkdx-text-bold-v) `...................` |mkdx-plug-wrap-text-in-bold-v|
+    <Plug>(mkdx-text-italic-n) `...............` |mkdx-plug-wrap-text-in-italic-n|
+    <Plug>(mkdx-text-italic-v) `...............` |mkdx-plug-wrap-text-in-italic-v|
+    <Plug>(mkdx-text-strike-n) `...........` |mkdx-plug-wrap-text-in-strike-tag-n|
+    <Plug>(mkdx-text-strike-v) `...........` |mkdx-plug-wrap-text-in-strike-tag-v|
+    <Plug>(mkdx-text-inline-code-n) `.......` |mkdx-plug-wrap-text-in-backticks-n|
+    <Plug>(mkdx-text-inline-code-v) `.......` |mkdx-plug-wrap-text-in-backticks-v|
+    <Plug>(mkdx-toggle-checkbox-n) `.................` |mkdx-plug-toggle-checkbox|
+    <Plug>(mkdx-toggle-checkbox-v) `...............` |mkdx-plug-toggle-checkbox-v|
+    <Plug>(mkdx-toggle-checklist-n) `...............` |mkdx-plug-toggle-checklist|
+    <Plug>(mkdx-toggle-checklist-v) `.............` |mkdx-plug-toggle-checklist-v|
+    <Plug>(mkdx-toggle-list-n) `.........................` |mkdx-plug-toggle-list|
+    <Plug>(mkdx-toggle-list-v) `.......................` |mkdx-plug-toggle-list-v|
+    <Plug>(mkdx-toggle-to-kbd-n) `...................` |mkdx-plug-toggle-to-kbd-n|
+    <Plug>(mkdx-toggle-to-kbd-v) `...................` |mkdx-plug-toggle-to-kbd-v|
+    <Plug>(mkdx-toggle-quote-n) `....................` |mkdx-plug-toggle-to-quote|
+    <Plug>(mkdx-toggle-quote-v) `..................` |mkdx-plug-toggle-to-quote-v|
+    <Plug>(mkdx-enter) `.......................................` |mkdx-plug-enter|
+    <Plug>(mkdx-shift-enter) `...........................` |mkdx-plug-shift-enter|
+    <Plug>(mkdx-o) `...............................................` |mkdx-plug-o|
+    <Plug>(mkdx-shift-o) `...................................` |mkdx-plug-shift-o|
+    <Plug>(mkdx-insert-kbd) `.............................` |mkdx-plug-insert-kbd|
+    <Plug>(mkdx-fence-tilde) `...........................` |mkdx-plug-fence-tilde|
+    <Plug>(mkdx-fence-backtick) `.....................` |mkdx-plug-fence-backtick|
+    <Plug>(mkdx-gf) `.............................................` |mkdx-plug-gf|
+    <Plug>(mkdx-gx) `.............................................` |mkdx-plug-gx|
+    <Plug>(mkdx-gf-visual) `............................... `|mkdx-plug-gf-visual|
+    <Plug>(mkdx-gx-visual) `...............................` |mkdx-plug-gx-visual|
+    <Plug>(mkdx-indent) `.....................................` |mkdx-plug-indent|
+    <Plug>(mkdx-unindent) `.................................` |mkdx-plug-unindent|
+    <Plug>(mkdx-indent-insert) `.......................` |mkdx-plug-indent-insert|
+    <Plug>(mkdx-unindent-insert) `...................` |mkdx-plug-unindent-insert|
+    <Plug>(mkdx-next-section) `.........................` |mkdx-plug-next-section|
+    <Plug>(mkdx-prev-section) `.........................` |mkdx-plug-prev-section|
+
+                                                             *mkdx-toc-mappings*
+Mappings `.......................................................` |mkdx-mappings|
+    Insert link completion `...............` |mkdx-mapping-insert-link-completion|
+    Insert fenced code block `...........` |mkdx-mapping-insert-fenced-code-block|
+    Insert `<kbd />` shortcut `.................` |mkdx-mapping-insert-kbd-shortcut|
+    Toggle checkbox forward `.............` |mkdx-mapping-toggle-checkbox-forward|
+    Toggle checkbox backward `...........` |mkdx-mapping-toggle-checkbox-backward|
+    Wrap text in link `.........................` |mkdx-mapping-wrap-text-in-link|
+    Wrap text in bold `.........................` |mkdx-mapping-wrap-text-in-bold|
+    Wrap text in italic `.....................` |mkdx-mapping-wrap-text-in-italic|
+    Wrap text in `<strike />` tag `.........` |mkdx-mapping-wrap-text-in-strike-tag|
+    Wrap text in backticks `...............` |mkdx-mapping-wrap-text-in-backticks|
+    Increment header level `...............` |mkdx-mapping-increment-header-level|
+    Decrement header level `...............` |mkdx-mapping-decrement-header-level|
+    CSV to markdown table `.................` |mkdx-mapping-csv-to-markdown-table|
+    Toggle quote `...................................` |mkdx-mapping-toggle-quote|
+    List items `.......................................` |mkdx-mapping-list-items|
+    Generate or update table of contents `.` |mkdx-mapping-generate-or-update-toc|
+    Quickfix table of contents `.......` |mkdx-mapping-quickfix-table-of-contents|
+    Quickfix dead links `.....................` |mkdx-mapping-quickfix-dead-links|
+    Jump to header `...............................` |mkdx-mapping-jump-to-header|
+    Toggle checkbox `.............................` |mkdx-mapping-toggle-checkbox|
+    Toggle checklist `...........................` |mkdx-mapping-toggle-checklist|
+    Toggle list `.....................................` |mkdx-mapping-toggle-list|
+    Toggle kbd shortcut `.....................` |mkdx-mapping-toggle-kbd-shortcut|
+    Jump to file `...................................` |mkdx-mapping-jump-to-file|
+    Open external file `.......................` |mkdx-mapping-open-external-file|
+    Jump to next section `...................` |mkdx-mapping-jump-to-next-section|
+    Jump to prev section `...................` |mkdx-mapping-jump-to-prev-section|
+
+                                                            *mkdx-toc-functions*
+Functions `.....................................................` |mkdx-functions|
+    mkdx#ToggleCheckboxState() `.................` |mkdx-function-toggle-checkbox|
+    mkdx#WrapLink() `..................................` |mkdx-function-wrap-link|
+    mkdx#ToggleQuote() `............................` |mkdx-function-toggle-quote|
+    mkdx#ToggleQuoteSelection() `.........` |mkdx-function-toggle-quote-selection|
+    mkdx#ToggleHeader() `..........................` |mkdx-function-toggle-header|
+    mkdx#JumpToHeader() `.........................` |mkdx-function-jump-to-header|
+    mkdx#Tableize() `...................................` |mkdx-function-tableize|
+    mkdx#EnterHandler() `..........................` |mkdx-function-enter-handler|
+    mkdx#ShiftEnterHandler() `...............` |mkdx-function-shift-enter-handler|
+    mkdx#OHandler() `..................................` |mkdx-function-o-handler|
+    mkdx#ShiftOHandler() `.......................` |mkdx-function-shift-o-handler|
+    mkdx#GenerateTOC() `............................` |mkdx-function-generate-toc|
+    mkdx#UpdateTOC() `................................` |mkdx-function-update-toc|
+    mkdx#GenerateOrUpdateTOC() `..........` |mkdx-function-generate-or-update-toc|
+    mkdx#QuickfixHeaders() `....................` |mkdx-function-quickfix-headers|
+    mkdx#QuickfixDeadLinks() `...............` |mkdx-function-quickfix-dead-links|
+    mkdx#ToggleCheckboxTask() `.............` |mkdx-function-toggle-checkbox-task|
+    mkdx#ToggleChecklist() `....................` |mkdx-function-toggle-checklist|
+    mkdx#ToggleList() `..............................` |mkdx-function-toggle-list|
+    mkdx#ToggleToKbd() `...........................` |mkdx-function-toggle-to-kbd|
+    mkdx#Complete() `...................................` |mkdx-function-complete|
+    mkdx#CompleteLink() `..........................` |mkdx-function-complete-link|
+    mkdx#InsertCtrlNHandler() `............` |mkdx-function-insert-ctrl-n-handler|
+    mkdx#InsertCtrlPHandler() `............` |mkdx-function-insert-ctrl-p-handler|
+    mkdx#fold() `...........................................` |mkdx-function-fold|
+    mkdx#WrapText() `..................................` |mkdx-function-wrap-text|
+    mkdx#WrapStrike() `..............................` |mkdx-function-wrap-strike|
+    mkdx#gf() `...............................................` |mkdx-function-gf|
+    mkdx#gf_visual() `.................................` |mkdx-function-gf-visual|
+    mkdx#MaybeRestoreVisual() `.............` |mkdx-function-maybe-restore-visual|
+    mkdx#IndentHandler() `........................` |mkdx-function-indent-handler|
+    mkdx#InsertIndentHandler() `...........` |mkdx-function-insert-indent-handler|
+    mkdx#JumpToSection() `.......................` |mkdx-function-jump-to-section|
+
+                                                               *mkdx-toc-errors*
+Errors `...........................................................` |mkdx-errors|
+   Type `......................................................` |mkdx-error-type|
+   Minimum length `......................................` |mkdx-error-min-length|
+   Between `................................................` |mkdx-error-between|
+   Only valid `..........................................` |mkdx-error-only-valid|
+   Only list `............................................` |mkdx-error-only-list|
+
+                                                           *mkdx-toc-deprecated*
+Deprecated `...................................................` |mkdx-deprecated|
+   V1.8.0 `.............................................` |mkdx-deprecated-v1.8.0|
+
+==============================================================================
+INTRODUCTION                                                 *mkdx-introduction*
+
+mkdx.vim is a `markdown` plugin that aims to reduce the time you spend
+formatting your markdown documents. It does this by adding some configurable
+mappings for files with a markdown {filetype}. Functions are included to
+handle lists, checkboxes, fenced code blocks, shortcuts, headers and links.
+In addition to that, this plugin provides a mapping to convert a selection of
+CSV data to a markdown table. See the the {README.md} for gifs :)
+
+This plugin is also compatible with
+{repeat.vim}(https://github.com/tpope/vim-repeat) by Tim Pope.
+Every _normal_ mode mapping can be repeated with the `.` command.
+
+Bug reports and discussions are welcome at
+https://github.com/sidofc/mkdx/issues and PR's are welcome at
+https://github.com/sidofc/mkdx/pulls.
+
+==============================================================================
+|MENU|                                                                 *mkdx-menu*
+
+|mkdx| also has |menu| support. The menu will become available under
+`:menu Plugin.mkdx` -- from there, the mappings and their respective commands
+can be found.
+
+NOTE: If you haven't opened a file with |filetype|=`markdown` before, the menu
+entries will not yet exist. Open a markdown file first before attempting to
+view the menu.
+
+==============================================================================
+SETTINGS                                                         *mkdx-settings*
+
+|mkdx| has some configurable settings that you can define. Defaults are shown
+at the bottom of every setting section. The default settings hash:
+
+    `let g:mkdx#settings = {`
+    `      \ 'image_extension_pattern': 'a\?png\|jpe\?g\|gif',`
+     `     \ 'insert_indent_mappings':  0,`
+     `     \ 'gf_on_steroids':          0,`
+    `      \ 'restore_visual':          1,`
+    `      \ 'enter':                   { 'enable': 1, 'shift': 0, 'o': 1,`
+    `      \                              'shifto': 1, 'malformed': 1 },`
+    `      \ 'map':                     { 'prefix': '<leader>', 'enable': 1 },`
+    `      \ 'tokens':                  { 'enter':  ['-', '*', '>'],`
+     `     \                              'bold':   '**', 'italic': '*',`
+     `     \                              'strike': '',`
+    `      \                              'list':   '-',  'fence':  '',`
+        `  \                              'header': '#' },`
+    `      \ 'checkbox':                { 'toggles': [' ', '-', 'x'],`
+        `  \                              'update_tree': 2,`
+        `  \                              'initial_state': ' ',`
+        `  \                              'match_attrs': {`
+          `\                                 'mkdxCheckboxEmpty': '',`
+          `\                                 'mkdxCheckboxPending': '',`
+          `\                                 'mkdxCheckboxComplete': '',`
+          `\                               }, },`
+    `      \ 'toc':                     { 'text':       "TOC",`
+    `      \                              'list_token': '-',`
+    `      \                              'position':   0,`
+    `      \                              'update_on_write':   0,`
+    `      \                              'details':    {`
+    `      \                                 'enable':  0,`
+    `      \                                 'summary': '{{toc.text}}'`
+          `\                                 'nesting_level': -1,`
+          `\                                 'child_count': 5,`
+          `\                                 'child_summary': 'show {{count}} items'`
+    `      \                              }`
+    `      \                            },`
+    `      \ 'table':                   { 'divider': '|',`
+         ` \                              'header_divider': '-',`
+        `  \                              'align': {`
+          `\                                 'left':    [],`
+          `\                                 'right':   [],`
+          `\                                 'center':  [],`
+          `\                                 'default': 'center'`
+          `\                              }`
+          `\                            },`
+          `\ 'links':                   { 'external': {`
+          `\                                 'enable':     0,`
+          `\                                 'timeout':    3,`
+          `\                                 'host':       '',`
+          `\                                 'relative':   1,`
+          `\                                 'user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/9001.0.0000.000 vim-mkdx/1.10.0'`
+          `\                              },`
+          `\                              'fragment': {`
+          `\                                 'jumplist': 1,`
+          `\                                 'complete': 1`
+          `\                              },`
+          `\                              'conceal': 1`
+          `\                            },`
+          `\ 'highlight':               {`
+          `\                              'enable': 0,`
+          `\                              'frontmatter': {`
+          `\                                'yaml': 1,`
+          `\                                'toml': 0,`
+          `\                                'json': 0`
+          `\                              }`
+          `\                            },`
+         ` \ 'auto_update':             { 'enable': 1 },`
+          `\ 'fold':                    { 'enable': 0, 'components': ['toc', 'fence'] }`
+    `    \ }`
+
+To overwrite a setting, simply write it as seen above:
+
+    `let g:mkdx#settings = { 'enter': { 'enable': 0 } }`
+
+**NOTE:** the form shown above MUST be used in your .vimrc,
+the short form: `let g:mkdx#settings.some.setting` can NOT be used during
+initialization. This results in an error "g:mkdx#settings is undefined"!
+
+To overwrite a setting AFTER initialization (e.g. after loading .vimrc):
+
+    `:let g:mkdx#settings.enter.enable = 0`
+
+Don't worry about overwriting `g:mkdx#settings` during initialization,
+it will be merged with the defaults to fill in any missing keys.
+
+To maintain backwards compatibility with all of the `g:` settings, mkdx first
+checks if a `g:` setting exists and overwrites the defaults with them, so
+setting `g:mkdx#settings.enter.enable = 0` will have the same effect.
+
+If both a `g:` setting and a `g:mkdx#settings = { ... }` value are found, the
+value defined in the settings hash will end up being used, e.g. the
+`g:mkdx#settings` variable takes precedence.
+
+Below a mapping of settings to global variables:
+
+g:mkdx#defaults.insert_indent_mappings     `=>`
+g:mkdx#defaults.gf_on_steroids             `=>`
+g:mkdx#defaults.links.external.enable      `=>`
+g:mkdx#defaults.links.external.host        `=>`
+g:mkdx#defaults.links.external.timeout     `=>`
+g:mkdx#defaults.links.external.relative    `=>`
+g:mkdx#defaults.links.external.user_agent  `=>`
+g:mkdx#defaults.links.fragment.jumplist    `=>`
+g:mkdx#defaults.links.fragment.complete    `=>`
+g:mkdx#defaults.links.conceal              `=>`
+g:mkdx#defaults.image_extension_pattern    `=>` g:mkdx#link_as_img_pat
+g:mkdx#defaults.restore_visual             `=>` g:mkdx#restore_visual
+g:mkdx#defaults.map.prefix                 `=>` g:mkdx#map_prefix
+g:mkdx#defaults.map.enable                 `=>` g:mkdx#map_keys
+g:mkdx#defaults.checkbox.toggles           `=>` g:mkdx#checkbox_toggles
+g:mkdx#defaults.checkbox.update_tree       `=>` g:mkdx#checklist_update_tree
+g:mkdx#defaults.checkbox.initial_state     `=>` g:mkdx#checkbox_initial_state
+g:mkdx#defaults.table.header_divider       `=>` g:mkdx#table_header_divider
+g:mkdx#defaults.table.divider              `=>` g:mkdx#table_divider
+g:mkdx#defaults.tokens.header              `=>` g:mkdx#header_style
+g:mkdx#defaults.tokens.enter               `=>` g:mkdx#list_tokens
+g:mkdx#defaults.tokens.fence               `=>` g:mkdx#fence_style
+g:mkdx#defaults.tokens.bold                `=>` g:mkdx#bold_token
+g:mkdx#defaults.tokens.strike              `=>`
+g:mkdx#defaults.tokens.italic              `=>` g:mkdx#italic_token
+g:mkdx#defaults.tokens.list                `=>` g:mkdx#list_token
+g:mkdx#defaults.enter.enable               `=>` g:mkdx#enhance_enter
+g:mkdx#defaults.enter.malformed            `=>` g:mkdx#handle_malformed_indent
+g:mkdx#defaults.enter.o                    `=>`
+g:mkdx#defaults.enter.shifto               `=>`
+g:mkdx#defaults.enter.shift                `=>`
+g:mkdx#defaults.toc.list_token             `=>` g:mkdx#toc_list_token
+g:mkdx#defaults.toc.text                   `=>` g:mkdx#toc_text
+g:mkdx#defaults.toc.position               `=>`
+g:mkdx#defaults.toc.update_on_write        `=>`
+g:mkdx#defaults.toc.details.enable         `=>`
+g:mkdx#defaults.toc.details.summary        `=>`
+g:mkdx#defaults.toc.details.nesting_level  `=>`
+g:mkdx#defaults.toc.details.child_count    `=>`
+g:mkdx#defaults.toc.details.child_summary  `=>`
+g:mkdx#defaults.highlight.enable           `=>`
+g:mkdx#defaults.highlight.frontmatter.yaml `=>`
+g:mkdx#defaults.highlight.frontmatter.toml `=>`
+g:mkdx#defaults.highlight.frontmatter.json `=>`
+
+==============================================================================
+`g:mkdx#settings.insert_indent_mappings = 0` *mkdx-setting-insert-indent-mappings*
+
+When set to `1`, mkdx overwrites |i_CTRL-T| and |i_CTRL-D| to enable support
+for |insertmode| indentation in lists.
+
+This is done by exiting insert mode, calling
+|mkdx-function-insert-indent-handler|, moving the cursor depending on
+indent/deindent and reentering insert mode.
+
+==============================================================================
+`g:mkdx#settings.gf_on_steroids = 0`                 *mkdx-setting-gf-on-steroids*
+
+mkdx provides enhanced versions of both <gf> and <gx> while editing markdown
+files. They aren't too special aside from the fact that you can open local
+files (<gf>) and urls / images (<gx>) with your cursor placed anywhere in a
+link. Aside from that, they function as you would expect from either mapping.
+
+This setting allows the features of <gf> (opening local files) and <gx>
+(opening urls / images externally) to be usable in each mapping. This means
+that enabling it will allow you to open urls / images externally using <gf> as
+well as opening files locally using <gx>.
+
+==============================================================================
+`g:mkdx#settings.links.external.enable = 0`   *mkdx-setting-links-external-enable*
+
+Check external links as well as absolute and relative paths aside from
+fragment links. Requires Neovim |job-control| or Regular vim |job|.
+
+The following CURL command will be executed in the background:
+
+`curl -L -I -s --no-keepalive -o /dev/null \`
+     `-m [g:mkdx#settings.links.external.timeout] -w "%{http_code}"' \`
+     `-A [g:mkdx#settings.links.external.user_agent] [URL];`
+
+See |mkdx-setting-links-external-timeout| for the value of `-m` and
+|mkdx-setting-links-external-ua| for `-A`.
+
+When a relative URL is encountered, mkdx attempts to convert it to an absolute
+path. This only works inside a `git` repository at the moment. `git ls-remote`
+output will be used to construct an absolute URL. This behaviour can
+overridden by setting |mkdx-setting-links-external-host|. Relative link
+checking can be disabled all together by setting
+|mkdx-setting-links-external-rel| to `0`.
+
+==============================================================================
+`g:mkdx#settings.links.external.timeout = 3` *mkdx-setting-links-external-timeout*
+
+This is the maximum time in seconds a request may take.
+By default it is set to `3`. After this time, the request is cancelled and
+added to the quickfix list.
+
+==============================================================================
+`g:mkdx#settings.links.external.host = ''`      *mkdx-setting-links-external-host*
+
+When a host is supplied, mkdx will not attempt to do `git ls-remote` detection
+and instead, simply prepends host string provided.  Since these links can
+either be {relative} (url) or {absolute} (/url) some additional checks are
+executed to prevent double slashes e.g: `localhost:3000//url`. Therefore you can
+safely append or remove a trailing `/` from your host.
+
+==============================================================================
+`g:mkdx#settings.links.external.user_agent =`     *mkdx-setting-links-external-ua*
+` \ 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1)' .`
+` \ 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/9001 vim-mkdx/1.10.0'`
+
+Specify an actual user agent to prevent being blocked from a website.
+If you don't like being `Chrome/9001` then feel free to change it
+into anything you like :)
+
+==============================================================================
+`g:mkdx#settings.links.external.relative = 0`    *mkdx-setting-links-external-rel*
+
+When set to `0`, relative links will be ignored while checking the document for
+dead links. Relative URL's are defined as link paths that do not start with
+a `#` (fragment URL) or `http` (protocol). Therefore both {relative} (url) and
+{absolute} (/url) URL's are "relative" in this context, as no host is
+provided. When |mkdx-setting-links-external-host| is empty, mkdx attempts to
+construct an absolute path using `git ls-remote` output.
+
+==============================================================================
+`g:mkdx#settings.links.fragment.jumplist =` *mkdx-setting-links-fragment-jumplist*
+`    \ 1`
+
+Specify wether or not to add the cursor position to the |jumplist| before
+jumping to a header in the document with |mkdx-function-jump-to-header|.
+
+The current cursor position will only be added to the |jumplist| when a valid
+link is found, otherwise nothing will happen and the |jumplist| remains
+untouched.
+
+==============================================================================
+`g:mkdx#settings.links.fragment.complete = `*mkdx-setting-links-fragment-complete*
+`    \ 1`
+
+Autocomplete fragment links in |Insert-mode|. Set to `0` to disable,
+|mkdx-setting-map-enable| must be enabled for <C-n> and <C-p> to be mapped.
+
+Fragment links are completed by scanning the document for headers and
+converting them to their respective hashes.
+
+This setting modifies some functionality using `setlocal`.
+The overrides include:
+
+    `setlocal completefunc=mkdx#Complete`
+    `setlocal iskeyword+=\-`
+    `setlocal pumheight=`|mkdx-settings-links-fragment-pumheight|
+    `setlocal completeopt=`|mkdx-settings-links-fragment-completeopt|
+
+==============================================================================
+`g:mkdx#settings.links.fragment`           *mkdx-setting-links-fragment-pumheight*
+  `.pumheight = 1`
+
+Configure the `pumheight` used in markdown files.
+Set to `0` to prevent `pumheight` from being modified.
+
+==============================================================================
+`g:mkdx#settings.links.fragment`           *mkdx-setting-links-fragment-completeopt*
+  `.completeopt = 'noinsert,menuone'`
+
+Configure the `completeopt` used for fragment completion.
+Set to `0` to prevent `completeopt` from being modified.
+
+==============================================================================
+`g:mkdx#settings.links.conceal = 1 `        *mkdx-setting-links-fragment-complete*
+
+By default, if |conceallevel| is set to `2`, mkdx will also conceal
+markdown link URLs. Setting the value of this setting to `0` will disable URL
+concealing.
+
+==============================================================================
+`g:mkdx#settings.image_extension_pattern =` *mkdx-setting-image-extension-pattern*
+    `\ 'a\?png\|jpe\?g\|gif'`
+
+Defines the extensions to search for when identifying the type of link that
+|mkdx-function-wrap-link| will generate. Setting it to an empty string
+disables image wrapping and a regular empty markdown link will be generated
+instead.
+
+This setting is also used in |mkdx-function-gf| to define known image
+extensions that may be opened by an external program.
+
+==============================================================================
+`g:mkdx#settings.restore_visual = 1`                 *mkdx-setting-restore-visual*
+
+This setting controls wether or not a visual mode mapping returns to visual
+mode after running the command. Setting it to 0 means you will not go back
+into visual mode.
+
+==============================================================================
+`g:mkdx#settings.map.prefix = '<leader>'`                *mkdx-setting-map-prefix*
+
+Set the prefix used by all mappings. It is not recommended to clear the prefix
+because some of the keys are already mapped to other operations.
+
+==============================================================================
+`g:mkdx#settings.map.enable = 1`                         *mkdx-setting-map-enable*
+
+This option allows you to control wether the plugin should map keys or not.
+See the |mkdx-mappings| section to see how each mapping works.
+
+==============================================================================
+`g:mkdx#settings.checkbox.toggles =              ` *mkdx-setting-checkbox-toggles*
+    `\ [' ', '-', 'x']`
+
+(minimum list length: `2`)
+
+This option allows you to specify different states to use for toggling
+checkboxes. Special characters must be escaped! The default list contains:
+
+    - `[ ]` unstarted
+    - `[-]` incomplete
+    - `[x]` completed
+
+Note:
+
+There must be at least a minimum of 2 checkbox states. These are used by the
+checklist toggler which updates the state of parent tasks automatically.
+The first of the provided states (`g:mkdx#settings.checkbox.toggles[0]`) will
+be used as `unstarted` value. The last of the provided states
+(`g:mkdx#settings.checkbox.toggles[-1]`) will be used as `completed` value.
+
+If the list contains more than 2 states, the second-to-last element
+(`g:mkdx#settings.checkbox.toggles[-2]`) will be used as `incomplete` value.
+
+==============================================================================
+`g:mkdx#settings.checkbox.update_tree = 2`     *mkdx-setting-checkbox-update-tree*
+
+(valid values: `0`, `1`, `2`)
+
+With this setting on, checkboxes that are toggled within checklists (lists of
+checkboxes) cause parent and child list items to be updated automatically.
+The states from |mkdx-setting-checkbox-toggles| are used to check and update the
+statusses of any parents. Children are force updated to the same token of
+their parent.
+
+To disable this behaviour entirely, set this value to 0. If you do not want
+children to be updated, set this value to 1 instead.
+
+==============================================================================
+`g:mkdx#settings.checkbox.initial_state =`   *mkdx-setting-checkbox-initial-state*
+    `\ ' '`
+
+When toggling between checkbox/checklist lines, using
+|mkdx-mapping-toggle-checkbox| or |mkdx-mapping-toggle-checklist| this defines
+what the default value of each inserted checkbox should be.
+
+==============================================================================
+`g:mkdx#settings.checkbox.match_attrs = {`     *mkdx-setting-checkbox-match-attrs*
+  `\ 'mkdxCheckboxEmpty': 'conceal cchar=1',`
+  `\ 'mkdxCheckboxPending': 'conceal cchar=2',`
+  `\ 'mkdxCheckboxComplete': 'conceal cchar=3',`
+  `\ }`
+
+To allow concealing of checkbox markers some properties can be set on the
+"syn match" part of the highlight groups. This is a bit tricky however since
+mkdx's syntax file loads when editing a markdown file which is after your
+local "after" overwrites have been processed.
+
+To remedy this, you can set the values you need here:
+
+    `let g:mkdx#settings = { 'checkbox': {`
+        `\ 'match_attrs': {`
+        `\   'mkdxCheckboxEmpty': 'conceal cchar=1',`
+        `\   'mkdxCheckboxPending': 'conceal cchar=2',`
+        `\   'mkdxCheckboxComplete': 'conceal cchar=3',`
+        `\  } } }`
+
+Then, when |conceallevel| is set to `2` you should see `1` for an empty
+checkbox, `2` for a pending one, and `3` for a completed one.
+
+==============================================================================
+`g:mkdx#settings.tokens.header = '#'`                 *mkdx-setting-tokens-header*
+
+Header style to use when incrementing or decrementing header level.
+Any character is allowed here, it will also be used when matching header lines
+e.g. setting it to `@` matches `@@ Header` instead of `## Header`
+
+==============================================================================
+`g:mkdx#settings.tokens.enter = ['-', '*', '>']`       *mkdx-setting-tokens-enter*
+
+This list identifies which tokens at the start of a string are identified as a
+"list token". See |mkdx-function-enter-handler| for examples.
+
+==============================================================================
+`g:mkdx#settings.tokens.fence = ''`                    *mkdx-setting-tokens-fence*
+
+(valid values: `'```'`, `'~'`)
+
+This setting allows you to override the fence style that is used when typing
+three backticks or tilde characters. By default it is empty which means that
+the typed key defines the fence style (so tildes are used when typing tildes,
+ditto for backticks).
+
+The fence style can be set to `'~'` or `'```'`. This will cause both tildes and
+backticks to use the same style.
+
+==============================================================================
+`g:mkdx#settings.tokens.italic = '*'`                 *mkdx-setting-tokens-italic*
+
+Token used by |mkdx-plug-text-italic-n| and |mkdx-plug-text-italic-v| to wrap
+text in italic style.
+
+==============================================================================
+`g:mkdx#settings.tokens.bold = '**'`                    *mkdx-setting-tokens-bold*
+
+Token used by |mkdx-plug-text-bold-n| and |mkdx-plug-text-bold-v| to wrap
+text in bold style.
+
+==============================================================================
+`g:mkdx#settings.tokens.strike = ''`                  *mkdx-setting-tokens-strike*
+
+Token used by |mkdx-function-wrap-strike| to wrap text with strike tags.
+When empty, `<strike></strike>` will be used to wrap the selected content.
+
+==============================================================================
+`g:mkdx#settings.tokens.list = '-'`                     *mkdx-setting-tokens-list*
+
+This token defines what list markers should be inserted when toggling list /
+checklist items. It is also used by default in |mkdx-setting-toc-list-token|.
+
+==============================================================================
+`g:mkdx#settings.table.header_divider = '-'`   *mkdx-setting-table-header-divider*
+
+Change the default header divider used in |mkdx-function-tableize|.
+
+==============================================================================
+`g:mkdx#settings.table.divider = '|'`                 *mkdx-setting-table-divider*
+
+Change the default divider used in |mkdx-function-tableize|.
+
+==============================================================================
+`g:mkdx#settings.table.align = {`                       *mkdx-setting-table-align*
+` \ 'left':    [],`
+` \ 'right':   [],`
+` \ 'center':  [],`
+` \ 'default': 'center' }`
+
+Control the alignment of content within table columns. Its value is a
+dictionary with keys `center`, `left`, `right` and `default`. The `default` value is
+used when a column name is not found in any of the `center`, `left` or `right` lists.
+
+If you were to add `name` to the `left` list, e.g. `{ 'left': ['name'] }` and the
+first row of your CSV has a column with the content `name`, that column will
+be _left aligned_ (`|:----|`). Any other column would be _centered_ (`|:---:|`)
+because they don't appear in any list so the `default` value `'center'` is used.
+
+All comparisons will be made after applying |toLower()| to the two strings
+being compared. This means column names are case-insensitive.
+
+==============================================================================
+`g:mkdx#settings.enter.enable = 1`                     *mkdx-setting-enter-enable*
+
+When pressing <Cr> in insert mode, this handles appending of new list items
+in lists. See |mkdx-setting-tokens-list| for a list of supported list tokens.
+Examples can be found at |mkdx-function-enter-handler|.
+
+This setting modifies some functionality using `setlocal`.
+The overrides include:
+
+    `setlocal formatoptions-=r`
+    `setlocal autoindent`
+
+==============================================================================
+`g:mkdx#settings.enter.close_pum = 0`               *mkdx-setting-enter-close-pum*
+
+By default |mkdx-plug-enter| does not handle closing popup menus. Setting this
+to `1` will cause |mkdx-plug-enter| to first close any popup menu if
+|pumvisible| returns a non-zero value.
+
+==============================================================================
+`g:mkdx#settings.tab.enable = 1`                         *mkdx-setting-tab-enable*
+
+When enabled, pressing <Tab> and <S-Tab> will indent / unindent lines and
+additionally renumber numbered list items.
+
+==============================================================================
+`g:mkdx#settings.enter.increment = 1`               *mkdx-setting-enter-increment*
+
+This setting defines increment done for each new item in numbered list,
+Default value is `1` setting `0` will keep current index on new item.
+
+    `let g:mkdx#settings = { 'enter': { 'increment': 0 } }`
+
+==============================================================================
+`g:mkdx#settings.enter.shift = 0`                       *mkdx-setting-enter-shift*
+
+Disabled by default, set to `1` to enable.
+When <s-enter> is pressed in a list item, everything after the cursor position
+is added to a new line below the current line. This line will not be a list
+item and instead, the cursor is indented to the start of the text on the
+previous line, e.g:
+
+    `- a list item`
+    `- a list item<s-enter>`
+    `- a list item`
+
+Will produce:
+
+    `- a list item`
+    `- a list item`
+      `<cursor>`
+    `- a list item`
+
+Instead of what would happen on a normal <enter>:
+
+    `- a list item`
+    `- a list item`
+    `- <cursor>`
+    `- a list item`
+
+Note the missing `-` list marker when <s-enter> is used. Other list styles
+defined in |mkdx-setting-tokens-list| and checkboxes are also recognized.
+See |mkdx-function-shift-enter-handler| for more information.
+
+You can continue adding inline content using <s-enter>. When you are ready to
+create a new list item, use regular <enter>.
+
+==============================================================================
+`g:mkdx#settings.enter.o`                                   *mkdx-setting-enter-o*
+
+This setting also enables `o` to act like `<enter>` in the middle of lists /
+checklists / tasks.
+
+==============================================================================
+`g:mkdx#settings.enter.shifto`                         *mkdx-setting-enter-shifto*
+
+This setting also enables `O` to prepend a list item above the current line
+and place your cursor on it.
+
+==============================================================================
+`g:mkdx#settings.enter.malformed = 1`               *mkdx-setting-enter-malformed*
+
+This setting defines behaviour to use when working with improperly indented
+markdown files. At the moment it works for checklist items that do not have an
+|indent()| which is divisible by 'shiftwidth'. In which case the indent will
+be rounded up to the next indent if it is greater than `s:sw() / 2` otherwise it
+will be rounded down to the previous indent.
+
+In the following example, the second item belongs under "hello" but the
+indentation is incorrect (imagine we're using a 'shiftwidth' of 4).
+
+If the third line is toggled without `g:mkdx#settings.enter.malformed` set to
+1, the malformed item will be incremented instead of the "hello" item.
+
+
+    - [ ] hello
+       - [-] hai     `<= should not have been updated`
+         - [-] again `<= toggled`
+
+With this setting on, the correct item will actually be checked:
+
+    - [-] hello      `<= updated correctly`
+       - [ ] hai
+         - [-] again `<= toggled`
+
+==============================================================================
+`g:mkdx#settings.toc.text = 'TOC'`                         *mkdx-setting-toc-text*
+
+Define the heading text to use in the table of contents.
+
+==============================================================================
+`g:mkdx#settings.toc.list_token = '-'`               *mkdx-setting-toc-list-token*
+
+Define the list style to use when generating a table of contents.
+
+==============================================================================
+`g:mkdx#settings.toc.position = 0`                     *mkdx-setting-toc-position*
+
+The position at which to place the TOC, `0` is used for cursor line (default).
+If a number `> 0` is supplied, the TOC will be generated ABOVE that header.
+e.g. setting it to `1` will cause it to be the first heading of your document.
+
+==============================================================================
+`g:mkdx#settings.toc.update_on_write = 0`       *mkdx-setting-toc-update-on-write*
+
+This setting is disabled by default, set it to `1` to enable.
+Since this feature requires |autocmd|, your vim needs `has('autocmd')`
+for this to work.
+
+Using the |BufWritePre| |autocmd|, mkdx has the ability to update the table of
+contents automatically. The toc can be updated automatically when it is
+already present somewhere on the page (e.g. generated using <leader-i>).
+
+When the toc hasn't been generated and `g:mkdx#settings.toc.position > 0` then
+the toc will be generated at that position (as nth header in document).
+
+When `g:mkdx#settings.toc.position == 0` then the toc must first be generated
+at the desired position using <leader-i>. As soon as the toc is present it
+will be updated.
+
+==============================================================================
+`g:mkdx#settings.toc.details.enable = 0`         *mkdx-setting-toc-details-enable*
+
+This setting controls wether the generated TOC will be output as a regular
+markdown list or inside a `<details>` tag. When this setting is enabled, the
+generated output will be a nested html structure instead of markdown since
+markdown within a `<details>` tag isn't supported on github.
+
+This setting tries to keep formatting of inline code (between "`") by
+replacing them with `<code>` tags.
+
+If any HTML tag is found inside a `<code>` block, it is escaped by replacing
+`<` with `&lt;` and `>` with `&gt;`.
+
+==============================================================================
+`g:mkdx#settings.toc.details.summary =`         *mkdx-setting-toc-details-summary*
+` \ 'Click to expand {{toc.text}}'`
+
+When |mkdx-setting-toc-details-enable| is set to `1`, an additional `<summary>` tag
+will be generated inside the `<details>` tag. The summary tag contains the
+text to be displayed next to the expand/collapse arrow.
+
+The placeholder `{{toc.text}}` is there to insert the contents of
+|mkdx-setting-toc-text| during generation, it is completely optional and can
+be omitted. If it is set to an empty string, |mkdx-setting-toc-text| will be used
+by default.
+
+==============================================================================
+                                        *mkdx-setting-toc-details-nesting-level*
+`g:mkdx#settings.toc.details.nesting_level = -1`
+
+Disabled by default, set to a value greater than `-1` to enable.
+This setting allows additional `<details>` to be generated from specified
+nesting level. It uses |mkdx-setting-toc-details-child-count| to determine the
+amount of children to wrap and |mkdx-settings-toc-details-child-summary| to
+specify the `<summary>` content inside the nested details tag.
+
+This value always gets `1` added to it so setting it to `5` will cause H6
+headers to be collapsed if the amount of children is atleast the specified
+child count.
+
+Setting this to any value greater than `5` prevents any wrapping from
+happening since headings only go up to H6.
+
+Note: This only works if the TOC is already present and a `<details>` TOC or
+when |mkdx-setting-toc-details-enable| is set to `1`.
+
+==============================================================================
+                                          *mkdx-setting-toc-details-child-count*
+`g:mkdx#settings.toc.details.child_count = 5`
+
+When |mkdx-setting-toc-details-nesting-level| is enabled, this setting defines
+when to wrap. e.g. if there are 4 children in a list item no wrapping will
+occur with the default value since it requires at least `5` list items to be
+present. Reducing it to `3` would cause the children to be wrapped in a nested
+details tag.
+
+Setting this to `0` means that after specified
+|mkdx-setting-toc-details-nesting-level| every list item that contains 1 or
+more nested list items will be wrapped inside a details tag.
+
+==============================================================================
+                                        *mkdx-setting-toc-details-child-summary*
+`g:mkdx#settings.toc.details.child_summary = 'show {{count}} items'`
+
+Controls the text to show inside nested details summary. The special
+placeholder `{{count}}` is replaced with the amount of items hidden in the
+details tag.
+
+==============================================================================
+`g:mkdx#settings.highlight.enable = 0`             *mkdx-setting-highlight-enable*
+
+Enables state-specific highlighting for checkboxes and generic highlighting
+for tables, kbd tags, bold-italics and inline-code. Setting this will override
+the syntax highlighting for list item markers (`-`, `*` or `1.1.` for example) in
+addition to providing highlighting for checkboxes and tables.
+
+The scheme goes as follows:
+
+- Empty / unstarted checkboxes are colored red
+- In progress checkboxes are colored orange
+- Completed checkboxes are colored green
+
+See the section |mkdx-highlighting| for details about how to customize the
+colors.
+
+==============================================================================
+                                       *mkdx-setting-highlight-frontmatter-yaml*
+`g:mkdx#settings.highlight.frontmatter.yaml = 1`
+
+By default mkdx enables YAML frontmatter syntax if YAML syntax highlighting is
+available. When this setting is enabled when YAML syntax does not exist it
+will be ignored.
+
+==============================================================================
+                                       *mkdx-setting-highlight-frontmatter-toml*
+`g:mkdx#settings.highlight.frontmatter.toml = 0`
+
+By default mkdx does not enable TOML frontmatter since it is less common than
+YAML. This allows markdown files to load a little bit faster, if you use TOML
+frontmatter set this to `1`.
+
+==============================================================================
+                                       *mkdx-setting-highlight-frontmatter-json*
+`g:mkdx#settings.highlight.frontmatter.json = 0`
+
+By default mkdx does not enable JSON frontmatter since it is less common than
+YAML. This allows markdown files to load a little bit faster, if you use JSON
+frontmatter set this to `1`.
+
+==============================================================================
+`g:mkdx#settings.auto_update.enable = 1`         *mkdx-setting-auto-update-enable*
+
+When enabled, changing certain settings in `g:mkdx#settings` will cause the
+document to be updated instantly. This is done using |dictwatcheradd| by
+checking if `has('*dictwatcheradd')` is true.
+
+When you change the position of the table of contents for example:
+
+`:let g:mkdx#settings.toc.position = 3`
+
+Will automatically move the TOC to the third header position in the document.
+Likewise, updating the header token instantly updates all headers:
+
+`:let g:mkdx#settings.tokens.header = '@'`
+
+Will automatically change all the headers to start with an `@` symbol.
+
+Full list of instant-updated settings:
+
+- `g:mkdx#settings.toc`
+- `g:mkdx#settings.toc.text`
+- `g:mkdx#settings.toc.details.enable`
+- `g:mkdx#settings.toc.details.summary`
+- `g:mkdx#settings.toc.details.nesting_level`
+- `g:mkdx#settings.toc.details.child_count`
+- `g:mkdx#settings.toc.details.child_summary`
+- `g:mkdx#settings.toc.position`
+- `g:mkdx#settings.tokens.header`
+- `g:mkdx#settings.tokens.fence`
+- `g:mkdx#settings.fold.components`
+
+==============================================================================
+`g:mkdx#settings.fold.enable = 0`                       *mkdx-setting-fold-enable*
+
+Defined wether or not to enable folding. See |mkdx-function-fold| for examples.
+
+This setting modifies some functionality using `setlocal`.
+The overrides include:
+
+    `setlocal foldmethod=expr`
+    `setlocal foldexpr=mkdx#fold(v:lnum)`
+
+NOTE: when `g:markdown_folding` is enabled, this functionality will no-op
+because they do not work together nicely!
+
+==============================================================================
+`g:mkdx#settings.fold.coponents = ['toc', 'fence'] `*mkdx-setting-fold-components*
+
+(valid list entries: `'toc'`, `'fence'`)
+
+Defines what to fold, it must be a {list} consisting of the components you
+want to enable. At the moment, the list can have two values:
+
+`'toc'`   => Fold the table of contents (when generated or recognized by mkdx).
+`'fence'` => Fold fenced (``` or ~~~ blocks) code-blocks.
+
+|mkdx-setting-fold-enable| must be set to `1` for this setting to work.
+
+==============================================================================
+HIGHLIGHTING                                                 *mkdx-highlighting*
+
+mkdx provides opt-in highlighting for list items, checkboxes, tables,
+fenced code-blocks, inline-code blocks and bold+italic (ex: `**_text_**`).
+To do this, mkdx defines its own |syntax| groups specifically for these types.
+Below you can find the defaults for each individual highlighting group. To
+override the colors for a highlight group, see: |highlight|.
+
+Also, when |conceallevel| is set to `2`, mkdx will also fold some components:
+
+- `**_text_**`   => `text`
+- ``code``       => `code`
+- `[link](url)`  => `[link]`
+
+==============================================================================
+mkdxTag                                                     *mkdx-highlight-tag*
+
+    `highlight default link mkdxTag markdownUrl`
+
+==============================================================================
+mkdxYAMLHeader                                 *mkdx-highlight-yaml-frontmatter*
+
+This syntax group does not apply its own highlighting, but rather allows
+|yaml| highlighting to be active in a markdown frontmatter block.
+
+This will only be activated if `syntax/yaml.vim` is found in 'rtp' and
+|mkdx-setting-highlight-frontmatter-yaml| is enabled. If `syntax/yaml.vim`
+is found but including it fails for some other reason this group
+will still be created, but highlighting will not be applied.
+
+==============================================================================
+mkdxTOMLHeader                                 *mkdx-highlight-toml-frontmatter*
+
+Like |mkdx-highlight-yaml-frontmatter| but for TOML frontmatter.
+
+==============================================================================
+mkdxJSONHeader                                 *mkdx-highlight-json-frontmatter*
+
+Like |mkdx-highlight-yaml-frontmatter| but for JSON frontmatter.
+
+==============================================================================
+mkdxListItem                                          *mkdx-highlight-list-item*
+
+    `highlight default link mkdxListItem Comment`
+
+==============================================================================
+mkdxCheckboxPending                            *mkdx-highlight-checkbox-pending*
+mkdxCheckboxComplete                          *mkdx-highlight-checkbox-complete*
+mkdxCheckboxEmpty                                *mkdx-highlight-checkbox-empty*
+
+    `highlight default link mkdxCheckboxPending  gitcommitBranch`
+    `highlight default link mkdxCheckboxComplete gitcommitSelectedFile`
+    `highlight default link mkdxCheckboxEmpty    gitcommitUnmergedFile`
+
+==============================================================================
+mkdxTable                                                 *mkdx-highlight-table*
+mkdxTableDelimiter                              *mkdx-highlight-table-delimiter*
+
+    `highlight default link mkdxTable`
+    `highlight default link mkdxTableDelimiter Delimiter`
+
+==============================================================================
+mkdxTableAlign                                      *mkdx-highlight-table-align*
+
+    `highlight default link mkdxTableAlign Identifier`
+
+==============================================================================
+mkdxTableHeader                                    *mkdx-highlight-table-header*
+mkdxTableHeadDelimiter                     *mkdx-highlight-table-head-delimiter*
+
+    `highlight default link mkdxTableHeader        Constant`
+    `highlight default link mkdxTableHeadDelimiter Delimiter`
+
+==============================================================================
+mkdxTableCaption                                  *mkdx-highlight-table-caption*
+mkdxTableCaptionDelimiter               *mkdx-highlight-table-caption-delimiter*
+
+    `highlight default link mkdxTableCaption          Comment`
+    `highlight default link mkdxTableCaptionDelimiter Delimiter`
+
+==============================================================================
+mkdxKbdText                                            *mkdx-highlight-kbd-text*
+
+    `highlight default link mkdxKbdText Constant`
+
+==============================================================================
+mkdxKbdOpening                                      *mkdx-highlight-kbd-opening*
+mkdxKbdEnding                                        *mkdx-highlight-kbd-ending*
+
+    `highlight default link mkdxKbdOpening Delimiter`
+    `highlight default link mkdxKbdEnding  mkdxKbdOpening`
+
+==============================================================================
+mkdxBoldItalic                                      *mkdx-highlight-bold-italic*
+mkdxBoldItalicDelimiter                   *mkdx-highlight-bold-italic-delimiter*
+
+    `highlight default link mkdxBoldItalic          Delimiter`
+    `highlight default link mkdxBoldItalicDelimiter Delimiter`
+
+==============================================================================
+mkdxInlineCode                                      *mkdx-highlight-inline-code*
+mkdxInlineCodeDelimiter                   *mkdx-highlight-inline-code-delimiter*
+
+    `highlight default link mkdxInlineCode          markdownCode`
+    `highlight default link mkdxInlineCodeDelimiter Delimiter`
+
+==============================================================================
+mkdxTildeFence                                      *mkdx-highlight-tilde-fence*
+
+    `highlight default link mkdxTildeFence markdownCodeDelimiter`
+
+==============================================================================
+mkdxCriticAdd                                        *mkdx-highlight-critic-add*
+mkdxCriticAddition                              *mkdx-highlight-critic-addition*
+mkdxCriticDel                                        *mkdx-highlight-critic-del*
+mkdxCriticDeletion                              *mkdx-highlight-critic-deletion*
+mkdxCriticSubRemove                           *mkdx-highlight-sub-critic-remove*
+mkdxCriticSubstitute                          *mkdx-highlight-critic-substitute*
+mkdxCriticSubStartMark                    *mkdx-highlight-critic-sub-start-mark*
+mkdxCriticSubTransMark                    *mkdx-highlight-critic-sub-trans-mark*
+mkdxCriticSubEndMark                        *mkdx-highlight-critic-sub-end-mark*
+mkdxCriticComment                                *mkdx-highlight-critic-comment*
+mkdxCriticHighlight                            *mkdx-highlight-critic-highlight*
+mkdxCriticExtra                                    *mkdx-highlight-critic-extra*
+
+    `hi default link mkdxCriticAdd          DiffText`
+    `hi default link mkdxCriticAddition     DiffAdd`
+    `hi default link mkdxCriticDel          DiffText`
+    `hi default link mkdxCriticDeletion     DiffDelete`
+    `hi default link mkdxCriticSubRemove    DiffDelete`
+    `hi default link mkdxCriticSubstitute   DiffAdd`
+    `hi default link mkdxCriticSubStartMark DiffText`
+    `hi default link mkdxCriticSubTransMark DiffText`
+    `hi default link mkdxCriticSubEndMark   DiffText`
+    `hi default link mkdxCriticComment      Comment`
+    `hi default link mkdxCriticHighlight    Todo`
+    `hi default link mkdxCriticExtra        DiffText`
+
+==============================================================================
+PLUGS                                                               *mkdx-plugs*
+
+When `g:mkdx#settings.map.enable` is set to 0, the user can bind individual
+functions through <Plug> mappings. Every normal mode <Plug> is repeatable
+using {repeat.vim} by Tim Pope (https://github.com/tpope/vim-repeat).
+
+==============================================================================
+<Plug>(mkdx-ctrl-n-compl)                               *mkdx-plug-ctrl-n-compl*
+
+    `<C-R>=mkdx#InsertCtrlNHandler()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-ctrl-p-compl)                               *mkdx-plug-ctrl-p-compl*
+
+    `<C-R>=mkdx#InsertCtrlPHandler()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-link-compl)                                   *mkdx-plug-link-compl*
+
+    `mkdx#CompleteLink()`
+
+==============================================================================
+<Plug>(mkdx-checkbox-next-n)                         *mkdx-plug-checkbox-next-n*
+
+    `:call mkdx#ToggleCheckboxState()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-checkbox-next-v)                         *mkdx-plug-checkbox-next-v*
+
+    `:call mkdx#ToggleCheckboxState()<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-checkbox-prev-n)                         *mkdx-plug-checkbox-prev-n*
+
+    `:call mkdx#ToggleCheckboxState(1)<Cr>`
+
+==============================================================================
+<Plug>(mkdx-checkbox-prev-v)                         *mkdx-plug-checkbox-prev-v*
+
+    `:call mkdx#ToggleCheckboxState(1)<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-promote-header)                           *mkdx-plug-promote-header*
+
+    `:<C-U>call mkdx#ToggleHeader(1)<Cr>`
+
+==============================================================================
+<Plug>(mkdx-demote-header)                             *mkdx-plug-demote-header*
+
+    `:<C-U>call mkdx#ToggleHeader()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-quote-n)                           *mkdx-plug-toggle-quote-n*
+
+    `:call mkdx#ToggleQuote()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-quote-v)                           *mkdx-plug-toggle-quote-v*
+
+    `:call mkdx#ToggleQuoteSelection()<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-wrap-link-n)                                 *mkdx-plug-wrap-link-n*
+
+    `:call mkdx#WrapLink()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-wrap-link-v)                                 *mkdx-plug-wrap-link-v*
+
+    `:call mkdx#WrapLink('v')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-jump-to-header)                           *mkdx-plug-jump-to-header*
+
+`    :call mkdx#JumpToHeader()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-tableize)                                       *mkdx-plug-tableize*
+
+    `:call mkdx#Tableize()<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-generate-toc)                               *mkdx-plug-generate-toc*
+
+    `:call mkdx#GenerateTOC()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-update-toc)                                   *mkdx-plug-update-toc*
+
+    `:call mkdx#UpdateTOC()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-gen-or-upd-toc)                           *mkdx-plug-gen-or-upd-toc*
+
+    `:call mkdx#GenerateOrUpdateTOC()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-quickfix-toc)                               *mkdx-plug-quickfix-toc*
+
+    `:call mkdx#QuickfixHeaders()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-quickfix-links)                           *mkdx-plug-quickfix-links*
+
+    `:call mkdx#QuickfixDeadLinks()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-bold-n)                                 *mkdx-plug-text-bold-n*
+
+    `:<C-U>call mkdx#WrapText('n', g:mkdx#settings.tokens.bold,`
+                           `\ g:mkdx#settings.tokens.bold,`
+                           `\ 'mkdx-text-bold-n')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-bold-v)                                 *mkdx-plug-text-bold-v*
+
+    `:<C-U>call mkdx#WrapText('n', g:mkdx#settings.tokens.bold,`
+                           `\ g:mkdx#settings.tokens.bold,`
+                           `\ 'mkdx-text-bold-v')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-italic-n)                             *mkdx-plug-text-italic-n*
+
+    `:<C-U>call mkdx#WrapText('n', g:mkdx#settings.tokens.italic,`
+                           `\ g:mkdx#settings.tokens.italic,`
+                           `\ 'mkdx-text-italic-n')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-italic-v)                             *mkdx-plug-text-italic-v*
+
+    `:<C-U>call mkdx#WrapText('n', g:mkdx#settings.tokens.italic,`
+                           `\ g:mkdx#settings.tokens.italic,`
+                           `\ 'mkdx-text-italic-v')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-strike-n)                             *mkdx-plug-text-strike-n*
+
+    `:<C-U>call mkdx#WrapText('n', '<strike>', '</strike>',`
+                            `\ 'mkdx-text-strike-n')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-strike-v)                             *mkdx-plug-text-strike-v*
+
+    `:<C-U>call mkdx#WrapText('v', '<strike>', '</strike>')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-text-inline-code-n)                   *mkdx-plug-text-inline-code-n*
+
+    :<C-U>call mkdx#WrapText('n', '`', '`', 'mkdx-text-inline-code-n')<Cr>
+
+==============================================================================
+<Plug>(mkdx-text-inline-code-v)                   *mkdx-plug-text-inline-code-v*
+
+    :<C-U>call mkdx#WrapText('v', '`', '`')<Cr>
+
+==============================================================================
+<Plug>(mkdx-toggle-checkbox-n)                     *mkdx-plug-toggle-checkbox-n*
+
+    `:call mkdx#ToggleCheckboxTask()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-checkbox-v)                     *mkdx-plug-toggle-checkbox-v*
+
+    `:call mkdx#ToggleCheckboxTask()<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-checklist-n)                   *mkdx-plug-toggle-checklist-n*
+
+    `:call mkdx#ToggleChecklist()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-checklist-v)                   *mkdx-plug-toggle-checklist-v*
+
+    `:call mkdx#ToggleChecklist()<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-list-n)                             *mkdx-plug-toggle-list-n*
+
+    `:call mkdx#ToggleList()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-list-v)                             *mkdx-plug-toggle-list-v*
+
+    `:call mkdx#ToggleList()<Cr>:call mkdx#MaybeRestoreVisual()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-to-kbd-n)                         *mkdx-plug-toggle-to-kbd-n*
+
+    `:call mkdx#ToggleToKbd()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-toggle-to-kbd-v)                         *mkdx-plug-toggle-to-kbd-v*
+
+    `:<C-U>call mkdx#ToggleToKbd('v')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-o)                                                     *mkdx-plug-o*
+
+    `:<C-U>call mkdx#OHandler()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-shift-o)                                         *mkdx-plug-shift-o*
+
+    `:<C-U>call mkdx#ShiftOHandler<Cr>`
+
+==============================================================================
+<Plug>(mkdx-enter)                                             *mkdx-plug-enter*
+
+    `<C-R>=mkdx#EnterHandler()<Cr>:setlocal autoindent<Cr>`
+
+    When |mkdx-setting-enter-close-pum| is enabled, this plug is instead
+    defined like this:
+
+    `<C-R>=<SID>cr_close_pop()<Cr><C-R>=mkdx#EnterHandler()<Cr>\`
+        `:setlocal autoindent<Cr>`
+
+==============================================================================
+<Plug>(mkdx-shift-enter)                                 *mkdx-plug-shift-enter*
+
+    `<C-R>=mkdx#ShiftEnterHandler()<Cr>`
+
+==============================================================================
+<Plug>(mkdx-insert-kbd)                                   *mkdx-plug-insert-kbd*
+
+    `<kbd></kbd>2hcit`
+
+==============================================================================
+<Plug>(mkdx-fence-tilde)                                 *mkdx-plug-fence-tilde*
+
+    `<C-R>=mkdx#InsertFencedCodeBlock('~')<Cr>kA`
+
+==============================================================================
+<Plug>(mkdx-fence-backtick)                           *mkdx-plug-fence-backtick*
+
+    `<C-R>=mkdx#InsertFencedCodeBlock('```')<Cr>kA`
+
+==============================================================================
+<Plug>(mkdx-gf)                                                   *mkdx-plug-gf*
+
+    `:<C-U>call mkdx#gf('f')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-gx)                                                   *mkdx-plug-gx*
+
+    `:<C-U>call mkdx#gf('x')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-gf-visual)                                     *mkdx-plug-gf-visual*
+
+    `:<C-U>call mkdx#gf_visual('f')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-gx-visual)                                     *mkdx-plug-gx-visual*
+
+    `:<C-U>call mkdx#gf_visual('x')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-indent)                                           *mkdx-plug-indent*
+
+    `:call mkdx#IndentHandler(1)<Cr>`
+
+==============================================================================
+<Plug>(mkdx-unindent)                                       *mkdx-plug-unindent*
+
+    `:call mkdx#IndentHandler(0)<Cr>`
+
+==============================================================================
+<Plug>(mkdx-indent-insert)                             *mkdx-plug-indent-insert*
+
+    `:call mkdx#InsertIndentHandler(1)<Cr>`
+
+==============================================================================
+<Plug>(mkdx-unindent-insert)                         *mkdx-plug-unindent-insert*
+
+    `:call mkdx#InsertIndentHandler(0)<Cr>`
+
+==============================================================================
+<Plug>(mkdx-next-section)                               *mkdx-plug-next-section*
+
+    `:call mkdx#JumpToSection('next')<Cr>`
+
+==============================================================================
+<Plug>(mkdx-prev-section)                               *mkdx-plug-prev-section*
+
+    `:call mkdx#JumpToSection('prev')<Cr>`
+
+==============================================================================
+MAPPINGS                                                         *mkdx-mappings*
+
+These are the default mappings set by this plugin. Both
+|mkdx-setting-map-enable| and |mkdx-setting-map-prefix| control how they work.
+You can always find what a key maps to directly below the help tag.
+All mappings are {<buffer>} local.
+
+The convention `<MAP_PREFIX>` will be used in examples below to indicate the
+value of `g:mkdx#settings.map.prefix` (default: `"<leader>"`)
+
+Before mkdx creates a specific mapping, it first checks wether any mapping
+already exists. If it does, it will not map the functionality.
+
+If you want to unmap a key entirely, you can simply map it to `<Nop>` after
+which it won't do anything anymore:
+
+    `nmap <leader>= <Nop>`
+    `vmap <leader>= <Nop>`
+
+Will disable |mkdx-plug-checkbox-next-n| and |mkdx-plug-checkbox-next-v|.
+A better way in general, to prevent mkdx from setting an option is by
+remapping it's <Plug>, this will take care of both scenario's with one mapping
+and it is easier to understand "what" you unmapped, e.g:
+
+    `map <Plug> <Plug>(mkdx-checkbox-next-n)`
+
+will result in the same as using regular `nmap` and `vmap`. For an overview of
+available <Plug> mappings that can be disabled, visit: |mkdx-plugs|.
+
+==============================================================================
+Insert link completion                     *mkdx-mapping-insert-link-completion*
+                                              #, #<C-x><C-u>, #<C-p> or #<C-n>
+
+This feature uses Vim's builtin |complete()| and |completefunc| commands.
+When inside a markdown (`[link](|)`) or HTML (`<a href="|"></a>`) link (where
+the "`|`" denotes cursor position), typing a `#` will show a list of
+autocompletions based on the headers in the current buffer.
+
+When not inside a link, fragment autocompletions will not be triggered and
+default autocompletion is used instead. To complete a fragment outside of a
+link, type a `#` followed by <C-n> or <C-p>.
+
+Insert mode autocompletions can be disabled by setting
+|mkdx-setting-links-fragment-complete| to `0`.
+
+NOTE: |mkdx-setting-map-enable| must be enabled for the <C-n> and <C-p>
+mappings to be bound.
+
+==============================================================================
+Insert fenced code block                 *mkdx-mapping-insert-fenced-code-block*
+                                                                    ~~~ or ```
+
+This mapping works in insert mode by typing ``` or ~~~. The block will be
+autocompleted and the cursor will be put at the end of the opening fence to
+specify the language.
+
+    `inoremap <buffer><silent><unique> ~~~ ~~~<Enter>~~~<C-o>k<C-o>A`
+
+==============================================================================
+Insert <kbd> shortcut                         *mkdx-mapping-insert-kbd-shortcut*
+                                                                        <<Tab>
+
+This mapping works in insert mode by inserting `<` and pressing <Tab>
+afterwards. A <kbd> tag will be inserted and the cursor will be moved inside
+the tag while staying in insert mode.
+
+    `imap <buffer><silent><unique> <<Tab> <kbd></kbd><C-o>2h<C-o>cit`
+
+==============================================================================
+Toggle checkbox forward                   *mkdx-mapping-toggle-checkbox-forward*
+                                                                 <MAP_PREFIX>-
+
+Toggles the next item in the |mkdx-setting-checkbox-toggles| list. Wraps
+around to the start if the end is reached. Works in both visual and
+normal mode. This function restores visual selection if
+|mkdx-setting-restore-visual| is set.
+
+When toggling an item which is nested in a list, the parent and child list
+items will be updated as well. Automatic updating of checkboxes
+can be disabled setting |mkdx-setting-checkbox-update-tree|.
+
+    `nmap <MAP_PREFIX>- <Plug>(mkdx-checkbox-next-n)`
+    `vmap <MAP_PREFIX>- <Plug>(mkdx-checkbox-next-v)`
+
+==============================================================================
+Toggle checkbox backward                 *mkdx-mapping-toggle-checkbox-backward*
+                                                                 <MAP_PREFIX>=
+
+Toggles the previous item in the |mkdx-setting-checkbox-toggles| list. Wraps
+around to the end if the start is reached. Works in both visual and
+normal mode. This function restores visual selection if
+|mkdx-setting-restore-visual| is set.
+
+When toggling an item which is nested in a list, the parent and child list
+items will be updated as well. Automatic updating of checkboxes
+can be disabled setting |mkdx-setting-checkbox-update-tree|.
+
+    `nmap <MAP_PREFIX>= <Plug>(mkdx-checkbox-prev-n)`
+    `vmap <MAP_PREFIX>= <Plug>(mkdx-checkbox-prev-v)`
+
+==============================================================================
+Wrap text in link                               *mkdx-mapping-wrap-text-in-link*
+                                                                <MAP_PREFIX>ln
+
+Wrap the word under the cursor or a visual selection in an empty markdown link.
+Select the word "world" in "hello world" and run the mapping, it
+results in "hello [world]()". Likewise in normal mode, if you put the cursor
+on the word "world" and run the mapping, it will produce the same result.
+The cursor will be placed between the parentheses in |Insert-mode|.
+
+    `nmap <MAP_PREFIX>ln <Plug>(mkdx-wrap-link-n)`
+    `vmap <MAP_PREFIX>ln <Plug>(mkdx-wrap-link-v)`
+
+==============================================================================
+Wrap text in bold                               *mkdx-mapping-wrap-text-in-bold*
+
+Wrap the word under the cursor or a visual selection in bold. By default
+`**` is used for bolding text, this can be changed with |mkdx-setting-tokens-bold|.
+
+    `nmap <MAP_PREFIX>b <Plug>(mkdx-text-bold-n)`
+    `vmap <MAP_PREFIX>b <Plug>(mkdx-text-bold-v)`
+
+This mapping may be prefixed with a [count] to mark [count] words starting
+at cursor position, moving to right.
+
+==============================================================================
+Wrap text in italic                           *mkdx-mapping-wrap-text-in-italic*
+
+Wrap the word under the cursor or a visual selection in italic. By default
+`*` is used for italicizing text, this can be changed with
+|mkdx-setting-tokens-italic|.
+
+    `nmap <MAP_PREFIX>/ <Plug>(mkdx-text-italic-n)`
+    `vmap <MAP_PREFIX>/ <Plug>(mkdx-text-italic-v)`
+
+This mapping may be prefixed with a [count] to mark [count] words starting
+at cursor position, moving to right.
+
+==============================================================================
+Wrap text in strike-tag                   *mkdx-mapping-wrap-text-in-strike-tag*
+
+Wrap the word under the cursor or a visual selection in a `<strike></strike>`
+tag.
+
+    `nmap <MAP_PREFIX>s <Plug>(mkdx-text-strike-tag-n)`
+    `vmap <MAP_PREFIX>s <Plug>(mkdx-text-strike-tag-v)`
+
+This mapping may be prefixed with a [count] to mark [count] words starting
+at cursor position, moving to right.
+
+==============================================================================
+Wrap text in backticks                     *mkdx-mapping-wrap-text-in-backticks*
+
+Wrap the word under the cursor or a visual selection in backticks (e.g. as
+inline code block).
+
+    nmap <MAP_PREFIX>` <Plug>(mkdx-text-italic-n)
+    vmap <MAP_PREFIX>` <Plug>(mkdx-text-italic-v)
+
+This mapping may be prefixed with a [count] to mark [count] words starting
+at cursor position, moving to right.
+
+==============================================================================
+Increment header level                     *mkdx-mapping-increment-header-level*
+                                                                 <MAP_PREFIX>[
+
+Increments the header level by 1. Wraps around to h6 when promoting beyond h1.
+
+    `nmap <MAP_PREFIX>[ <Plug>(mkdx-promote-header)`
+
+==============================================================================
+Decrement header level                     *mkdx-mapping-decrement-header-level*
+                                                                 <MAP_PREFIX>]
+
+Decrements the header level by 1. Wraps around to h1 when demoting beyond h6.
+
+    `nmap <MAP_PREFIX>] <Plug>(mkdx-demote-header)`
+
+==============================================================================
+Convert CSV to markdown table               *mkdx-mapping-csv-to-markdown-table*
+                                                                 <MAP_PREFIX>,
+
+Converts a visual selection of CSV rows to a markdown table.
+See |mkdx-function-tableize| for more information.
+
+    `vmap <MAP_PREFIX>, <Plug>(mkdx-tableize)`
+
+==============================================================================
+Toggle quote                                         *mkdx-mapping-toggle-quote*
+                                                                 <MAP_PREFIX>'
+
+Toggles a markdown quote on the current line or on every nonblank line in a
+visual selection. This function restores visual selection if
+|mkdx-setting-restore-visual| is set.
+
+    `nmap <MAP_PREFIX>' <Plug>(mkdx-toggle-quote-n)`
+    `vmap <MAP_PREFIX>' <Plug>(mkdx-toggle-quote-v)`
+
+==============================================================================
+List items                                             *mkdx-mapping-list-items*
+                                         `o`, `O`, <Cr>, <S-Cr>, <Tab> and <S-Tab>
+
+When editing a list in markdown, pressing either <enter> in insert mode or `o`
+in normal mode will insert a new list item below the current item. When
+`O` is pressed, an item will be added above the current list item. All items
+following the newly added item are incremented accordingly. The following
+patterns are identified as list tokens:
+
+- Any number of spaces followed by dot separated numbers. (`'^ \+[0-9.]\+'`)
+- Any token present in |mkdx-setting-tokens-list|
+- All of the above, but inside a quoted block e.g: `> 1. list item`
+
+When pressing <S-Cr> with |mkdx-setting-enter-shift| enabled, a new line
+of the current list item is created. This allows creating inline list items.
+
+When pressing <Tab> or <S-Tab> on a numbered list, the list will be reindented
+accordingly.
+
+For examples, see |mkdx-function-enter-handler| and
+|mkdx-function-shift-enter-handler|.
+
+==============================================================================
+Generate or update table of contents       *mkdx-mapping-generate-or-update-toc*
+                                                                 <MAP_PREFIX>i
+
+This function does one of two things based on wether a table of contents is
+already present. If it exists, the current table of contents will be updated.
+If it doesn't exist yet, a table of contents will be inserted at current line.
+
+==============================================================================
+Quickfix table of contents             *mkdx-mapping-quickfix-table-of-contents*
+                                                                 <MAP_PREFIX>I
+
+Adds all the markdown headers in the current file to the quickfix list.
+
+==============================================================================
+Quickfix dead links                           *mkdx-mapping-quickfix-dead-links*
+                                                                 <MAP_PREFIX>L
+
+Checks every markdown link in the document for existence, if a link does not
+exist, it will be added to the quickfix list.
+
+A fragment link is dead when none of the headers in the document match it.
+An external link is dead when it returns a statuscode `< 200` and `> 299` or
+the request timed out.
+
+See |mkdx-setting-links-external-enable| for more information.
+
+==============================================================================
+Jump to header                                     *mkdx-mapping-jump-to-header*
+                                                                 <MAP_PREFIX>j
+
+Jump to a fragment link present in the document. The cursor position before
+the jump is saved in the |jumplist| to allow jumping back and forth quickly. See
+|mkdx-function-jump-to-header| for additional information.
+
+==============================================================================
+Toggle checkbox                                   *mkdx-mapping-toggle-checkbox*
+                                                                 <MAP_PREFIX>t
+
+Toggles between a regular line and a line with a checkbox in normal and visual
+mode. In normal mode, the line under the cursor will be toggled. In visual
+mode, every line in the visual selection will be toggled. A default state for
+the inserted checkboxes can be set with |mkdx-setting-checkbox-initial-state|.
+
+In normal mode, the current line will be toggled (each line below represents a
+different example):
+
+    `this is a line`     => `[ ] this is a line`
+    `[ ] this is a line` => `this is a line`
+    `[-] this is a line` => `this is a line`
+    `[x] this is a line` => `this is a line`
+
+In visual mode, the selected lines will be affected. Imagine having a visual
+selection on lines 3 and 4 in the following text:
+
+    `this is some text`
+    `this is some more text`
+    `this should be a task item`
+    `this should also be a task item`
+
+Pressing the mapping <MAP_PREFIX>t will turn it into this:
+
+    `this is some text`
+    `this is some more text`
+    `[ ] this should be a task item`
+    `[ ] this should also be a task item`
+
+==============================================================================
+Toggle checklist                                 *mkdx-mapping-toggle-checklist*
+                                                                <MAP_PREFIX>lt
+
+This one is nearly identical to |mkdx-mapping-toggle-checkbox| but instead,
+this one also prepends a list token (and a space) before the checkbox which
+can be set using: |mkdx-setting-tokens-list|.
+The |mkdx-setting-checkbox-initial-state| variable will also be respected here.
+
+The same example from above (each line is a different example):
+
+    `this is a line`       => `- [ ] this is a line`
+    `- [ ] this is a line` => `this is a line`
+    `- [-] this is a line` => `this is a line`
+    `- [x] this is a line` => `this is a line`
+
+==============================================================================
+Toggle list                                           *mkdx-mapping-toggle-list*
+                                                                <MAP_PREFIX>ll
+
+This mapping toggles between a regular line and a list item. In normal mode,
+the current line is affected. In visual mode, every line in the visual
+selection is affected.
+
+In normal mode:
+
+    `this is a line` => `- this is a line`
+
+    `- this is a line` => `this is a line`
+
+In visual mode:
+
+    `this is a line`          `- this is a line`
+    `this is another line` => `- this is another line`
+    `blah blah more lines`    `- blah blah more lines`
+
+    `- this is a line`          `this is a line`
+    `- this is another line` => `this is another line`
+    `- blah blah more lines`    `blah blah more lines`
+
+==============================================================================
+Toggle kbd shortcut                           *mkdx-mapping-toggle-kbd-shortcut*
+                                                                 <MAP_PREFIX>k
+
+This mapping works in both normal and visual mode.
+In normal mode, it will attempt to convert the current |WORD| to an expanded
+kbd expression. In visual mode, the current visual selection will be expanded.
+
+Examples can be found at |mkdx-function-toggle-to-kbd|
+
+==============================================================================
+Jump to file                                         *mkdx-mapping-jump-to-file*
+                                                                            gf
+
+This mapping works like regular |gf| unless the cursor is positioned on a
+markdown link. When on a link, mkdx will open the file inbetween the
+parentheses. The cursor can be anywhere on the link and this will work.
+
+This mapping also works in |Visual-Mode|. When used in visual mode, the
+selection is used as the destination.
+
+when |mkdx-setting-gf-on-steroids| is enabled, and link is not a file but a URL,
+mkdx will use an `open` shell command. If `open` is not available, it will
+silently fail.
+
+==============================================================================
+Open external file                             *mkdx-mapping-open-external-file*
+                                                                            gx
+
+This mapping emulates |netrw-gx| (also works without netrw enabled). It will
+open an external application using the `open` or `xdg-open` shell command.
+If neither `open` or `xdg-open` are not available, it will silently fail.
+
+Like |mkdx-mapping-jump-to-file| it will also work on markdown links, the
+cursor can be positioned anywhere on the link and this will work.
+
+This mapping also works in |Visual-Mode|. When used in visual mode, the
+selection is used as the destination.
+
+When |mkdx-setting-gf-on-steroids| is enabled, this mapping will also read
+local files just like |mkdx-mapping-jump-to-file| otherwise would.
+
+==============================================================================
+Jump to next section                         *mkdx-mapping-jump-to-next-section*
+                                                                            ]]
+
+Jumps to the next header in the document. A count can be given to jump down
+multiple headers.
+
+==============================================================================
+Jump to prev section                         *mkdx-mapping-jump-to-prev-section*
+                                                                            ]]
+
+Jumps to the previous header in the document. A count can be given to jump up
+multiple headers.
+
+==============================================================================
+FUNCTIONS                                                       *mkdx-functions*
+
+This is an overview of all the functions that |mkdx| provides.
+
+==============================================================================
+mkdx#ToggleCheckboxState([, {reverse}])          *mkdx-function-toggle-checkbox*
+
+This function works in |Normal-mode| and |Visual-mode|.
+It toggles the first checkbox (`[ ]`) on the current line or every line in a
+selection to the next state in |mkdx-setting-checkbox-toggles|. Cycling can be
+reversed by setting {increment} is 1. If {increment} is not supplied,
+|Number| 0 will be used by default.
+
+When {reverse} is 1:
+
+    [ ] `=>` [x]
+
+When {reverse} is 0:
+
+    [ ] `=>` [-]
+
+Parent and child checklist items are also updated accordingly. This is done by
+traversing up from the item under the cursor and updating every higher level
+parent depending on its children statusses. Imagine you checked the box at
+`toggled` to incomplete (`-`), the following would happen:
+
+    - [ ] item 1
+    - [-] item 2             `<= update next direct parent of parent`
+        - [ ] item 2.1
+        - [ ] item 2.2
+            - [ ] item 2.2.1
+            - [ ] item 2.2.2
+        - [-] item 2.3       `<= update direct parent`
+            - [-] item 2.3.1 `<= toggled`
+            - [ ] item 2.3.2
+    - [ ] item 3
+
+If instead, an item higher in the list was toggled:
+
+    - [ ] item 1
+    - [-] item 2                   `<= update direct parent`
+        - [ ] item 2.1
+        - [ ] item 2.2
+            - [ ] item 2.2.1
+            - [ ] item 2.2.2
+        - [x] item 2.3             `<= toggled`
+            - [x] item 2.3.1       `<= update child`
+                - [x] item 2.3.1.1 `<= update child`
+                - [x] item 2.3.1.2 `<= update child`
+            - [x] item 2.3.2       `<= update child`
+    - [ ] item 3
+
+All children are always updated to the same token of the toggled item. This
+behaviour can be changed or disabled with |mkdx-setting-checkbox-update-tree|.
+If your list isn't properly updated, see |mkdx-setting-enter-malformed|.
+
+==============================================================================
+mkdx#WrapLink([, {mode}])                              *mkdx-function-wrap-link*
+
+This function works in |Normal-mode| and |Visual-mode|.
+The optional {mode} parameter defines how the the text must be handled.
+This function stores deleted text in a register (which is restored
+afterwards), wraps it and pastes the register back at cursor position.
+To delete the correct text to wrap, a mode must be supplied for any mode other
+than normal. This will influence the `normal!` commands executed to delete
+text. e.g. for visual mode it will do a `gv` before deleting into a register.
+
+In normal mode, this function wraps the word under the cursor in a link.
+In visual mode, it will wrap the entire visual selection in a link.
+
+    Hello ` => ` [Hello]()
+
+This mapping may be prefixed with a [count] to mark [count] words starting
+at cursor position, moving to right, e.g. running `2<prefix>ln`:
+
+    Hello world `=>` [Hello world]()
+
+If a visual selection ends in an image extension (`.png` for example), an
+image link will be created instead.
+
+    nyancat.png ` =>`  ![nyancat.png](nyancat.png)
+
+In this case, the cursor is placed just after the opening `(`. This allows you
+to prepend a URL / path. To disable link wrapping, see:
+|mkdx-setting-image-extension-pattern|
+
+==============================================================================
+mkdx#ToggleQuote()                                  *mkdx-function-toggle-quote*
+
+This function works in |Normal-mode|. It toggles a markdown quote
+on a line, if a qoute mark (`>`) is present, it will be removed, otherwise it
+will be prepended.
+
+    This is an awesome quote!   ` => ` > This is an awesome quote!
+    > This is an awesome quote! ` => ` This is an awesome quote!
+
+==============================================================================
+mkdx#ToggleQuoteSelection()               *mkdx-function-toggle-quote-selection*
+
+This function works in |Visual-mode|. It toggles a markdown quote
+on a selection, if a qoute mark (`>`) is present, it will be removed,
+otherwise it will be prepended.
+
+    This is an awesome quote!   ` => ` > This is an awesome quote!
+    > This is an awesome quote! ` => ` This is an awesome quote!
+
+On multiple paragraphs of text, mkdx will preserve "inner empty lines" as part
+of the quote. Empty lines at the start and end of a selection are
+ignored:
+
+    This is a multi-paragraph        > This is a multi-line paragraph
+                                 `=>`  > 
+    Quote of text                    > Quote of text
+
+==============================================================================
+mkdx#ToggleHeader([, {increment}])                 *mkdx-function-toggle-header*
+
+This function increments or decrements the heading on the current line.
+If {increment} is not supplied, |Number| 0 will be used by default.
+This function wraps around both ways: h1 to h6 and h6 to h1.
+
+When {increment} is 1:
+
+    ## Hello    `  => ` # Hello
+    # Hello     `  => ` Hello
+    Hello       `  =>  `###### Hello
+
+When {increment} is 0 (default):
+
+    # Hello      ` => ` ## Hello
+
+    ###### Hello ` =>  `Hello
+    Hello        ` =>  `# Hello
+
+==============================================================================
+mkdx#JumpToHeader()                               *mkdx-function-jump-to-header*
+
+Jump to {fragment} identifiers within the document directly from the link at
+the cursor position. Both HTML and markdown links are supported.
+
+A valid {fragment} identifier is a link that points to a heading within the
+same file. It starts with a `#` symbol followed by the anchor text.
+
+If a markdown document contains the following heading:
+
+`    # Hello world!`
+`    Such a beautiful place to be :)`
+
+A valid {fragment} identifier could be any of:
+
+    Markdown:
+`    [go to hello world](#hello-world)`
+
+    HTML:
+    `<a href="#hello-world">go to hello world</a>`
+    `<a id="whatever" href="#hello-world">go to hello world</a>`
+    `<a id="whatever" href="#hello-world" class="nothing">go to hello world</a>`
+
+The cursor can be anywhere on a link for it to be used, `^` marks indicate
+valid cursor positions:
+
+    Markdown:
+`    more information: [go to hello world](#hello-world) or ...`
+`                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`
+
+    HTML:
+`    more information: <a href="#hello-world">go to hello world</a> or ...`
+`                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`
+
+If the cursor is not on a link, the current line will be scanned from left to
+right for links, the first fragment identifier found will be used.
+
+In case of HTML links, other attributes can be present on the link. The only
+requirement for it to be picked up is that it has a {href} attribute and its
+value starts with a `#` symbol aside from being a valid `<a>` tag of course.
+
+Whenever you jump to a specific link in the document, your cursor position as
+it was BEFORE the jump will be stored. This allows you to go back to where you
+found the link using "``" mapping. To disable this behaviour, see:
+|mkdx-setting-links-fragment-jumplist|.
+
+==============================================================================
+mkdx#Tableize()                                         *mkdx-function-tableize*
+
+Convert a visual selection of {CSV} or {TSV} data to a markdown table.
+The first nonblank line in the selection will be used as header for the table.
+The column separator can be changed with |mkdx-setting-table-divider| and the
+header separator can be changed with |mkdx-setting-table-header-divider|.
+See |mkdx-setting-table-align| for alignment options.
+
+Visually selecting the following text:
+
+`    Name,Age,Gender`
+`    John,23,Male`
+`    Catherline,44,Female`
+`    Manny,22,Male`
+
+Will produce this table:
+
+`    |    Name    | Age | Gender |`
+`    |------------|-----|--------|`
+`    |    John    | 23  |  Male  |`
+`    | Catherline | 44  | Female |`
+`    |   Manny    | 22  |  Male  |`
+
+As of version `1.4.2`, |mkdx| also supports "quoted" CSV / TSV data.
+Another more complex example:
+
+  `"Name","Age","Gender"`
+  `"Er'ic Cartman","10","Unknown"`
+  `"Kenny McCormick","10","Male"`
+  `"Stan Mar\"sh","10","Male"`
+  `"K,le Brovlofski","10","Male"`
+
+Will produce this table:
+
+  `|      Name       | Age | Gender  |`
+  `|-----------------|-----|---------|`
+  `|  Er'ic Cartman  | 10  | Unknown |`
+  `| Kenny McCormick | 10  |  Male   |`
+  `|   Stan Mar"sh   | 10  |  Male   |`
+  `| K,le Brovlofski | 10  |  Male   |`
+
+==============================================================================
+mkdx#ShiftEnterHandler()                     *mkdx-function-shift-enter-handler*
+
+When |mkdx-setting-enter-enable| is enabled,
+this function is intended to be used to continue writing text in the same list
+item on a new line. When <s-enter> is pressed within a list as defined by
+|mkdx-function-enter-handler|, instead of prepending a new list token, the
+line will be indented past the list token on the previous line to match the
+indent level of the text on that line.
+
+Given this example list (cursor represented by "`|`"):
+
+`   - list item 1`
+`   - list item 2|  <== <s-enter>`
+`   - list item 3`
+
+Will produce the following result:
+
+`   - list item 1`
+`   - list item 2`
+     `|`
+`   - list item 3`
+
+It also works for nested list items, within block quotes (`>`), inside
+numbered lists and checklists, e.g:
+
+(cursor represented by "`|`"):
+
+`   - [-] list item 1`
+    `   - [-] list item 1.1|  <== <s-enter>`
+`   - [ ] list item 2`
+
+Will produce the following result:
+
+`   - [-] list item 1`
+    `   - [-] list item 1.1`
+             `|`
+`   - [ ] list item 2`
+
+==============================================================================
+mkdx#EnterHandler()                                *mkdx-function-enter-handler*
+
+When |mkdx-setting-enter-enable| is enabled,
+this function detects when you are in a list, when pressing <enter> in insert
+mode or `o` and `O` in normal mode. It will append a new list item. The following
+are detected as list items:
+
+- Optional quote character, followed by any number of spaces followed
+  by dot separated numbers (`>\?'^ \+[0-9.]\+'`).
+- Optional quote character, followed by any number of spaces and
+  a token present in |mkdx-settings-tokens-list|
+
+Vim has builtin |formatoptions| that can -partially- take care of that job.
+Since mkdx provides a custom `<enter>` handler, we do not want the option `r`
+to interfere by prepending known |comments| when pressing `<enter>`. For this
+reason, mkdx removes the `r` option using |setlocal|. This means it will not
+overwrite your global settings.
+
+This function respects indent level when appending a new item.
+When you add a new list item and press <enter> again (e.g. pressing <enter>
+twice after an existing list item) the list item and any indentation will be
+removed.
+
+In {any} case, if a checkbox is encountered directly after a list token
+(separated by space), the newly appended list item will contain an empty
+checkbox.
+
+    `1. [ ] list item <= <enter>`
+    `2. [ ] |         <= cursor`
+    `3. [ ] list item`
+
+The requirement here is that the checkbox is properly formatted, there has to
+be atleast 1 space between the list token and opening `[`. a space or ony of
+the |mkdx-setting-checkbox-toggles| between `[` and `]`.
+
+If the list delimiter isn't a numeric sequence, all that happens is that a new
+line will be appended at the same indent level and the delimiter and a space
+appended.
+
+    `* list item`
+    `* list item <= <enter>`
+    `* |         <= cursor`
+    `* list item`
+    `* list item`
+
+Numeric list items also work as expected, all numbers will be incremented
+correctly even in nested lists (of any depth).
+
+    `1. list item`
+    `2. list item <= <enter>`
+    `3. |         <= cursor`
+    `4. list item`
+    `5. list item`
+
+Nested list:
+
+    `1. list item`
+    `2. list item <= <enter>`
+    `3. |         <= cursor`
+    `4. list item`
+        `4.1. list item`
+        `4.2. list item`
+    `5. list item`
+
+Deep nested list:
+
+    `1. list item`
+    `2. list item <= <enter>`
+    `3. |         <= cursor`
+    `4. list item`
+        `4.1. list item`
+            `4.1.1. list item`
+            `4.1.2. list item`
+        `4.2. list item`
+    `5. list item`
+
+Deep nested list with second level enter:
+
+    `1. list item`
+    `2. list item`
+    `4. list item`
+        `4.2. list item <= <enter>`
+        `4.2. |         <= cursor`
+        `4.3. list item`
+            `4.3.1. list item`
+            `4.3.2. list item`
+        `4.4. list item`
+    `5. list item`
+
+==============================================================================
+mkdx#OHandler()                                        *mkdx-function-o-handler*
+
+When |mkdx-setting-enter-enable| and |mkdx-setting-enter-o| are enabled,
+This function checks if you are in the middle of a list. If this is true,
+|mkdx-function-enter-handler| is triggered with a `normal! A<Cr>` command.
+Otherwise, execute `normal! o` as if nothing happened.
+
+==============================================================================
+mkdx#ShiftOHandler()                             *mkdx-function-shift-o-handler*
+
+When |mkdx-setting-enter-enable| and |mkdx-setting-enter-shift-o| are enabled,
+This function checks if you are in the middle of a list. If this is true,
+basically an "upward" |mkdx-function-enter-handler| will be triggered.
+Otherwise, execute `normal! O` as if nothing happened.
+
+==============================================================================
+mkdx#GenerateTOC()                                  *mkdx-function-generate-toc*
+
+Insert a table of contents under the cursor. All headings are indented
+using |sw| setting multiplied by their header level minus one. This means that h1
+tags aren't indented. The header line is customizable through
+|mkdx-setting-toc-text|.
+
+List items are generated with a dash (-) character by default. This can be
+changed with |mkdx-setting-toc-list-token|.
+
+If you always want the TOC to be the [N]th heading in your document, this can
+be specified with |mkdx-setting-toc-position|. Setting it to `1` would cause
+the TOC to be the first heading of the document, etc...
+
+As of version `1.2.0`, |mkdx| can generate the TOC inside a `<details>` tag!
+See the following settings for more information:
+
+Enabling: |mkdx-setting-toc-details-enable|
+Enabling: |mkdx-setting-toc-details-summary|
+
+==============================================================================
+mkdx#UpdateTOC()                                      *mkdx-function-update-toc*
+
+This function checks to see if a table of content exists in the document. If
+it finds it, the toc will be removed and regenerated using
+|mkdx-function-generate-toc|. If a TOC isn't found, nothing will happen.
+
+A heading is detected using the following regular expression:
+
+`    '^'. g:mkdx#settings.tokens.header .'\{1,6} \+'. g:mkdx#settings.toc.text`
+    `'^#\{1,6} \+TOC'` <= default pattern
+
+==============================================================================
+mkdx#GenerateOrUpdateTOC()                *mkdx-function-generate-or-update-toc*
+
+Like |mkdx-function-update-toc|, this function checks to see wether a table of
+content exists. Based on the result it will either call
+|mkdx-function-update-toc| if it exists, or |mkdx-function-generate-toc| if it
+doesn't exist yet.
+
+==============================================================================
+mkdx#QuickfixHeaders([{quickfix}])              *mkdx-function-quickfix-headers*
+
+Finds all the headers in the current file and opens them in a quickfix window
+to allow for easy jumping using regular quickfix commands.
+
+If {quickfix} isn't provided, it defalts to 1, which means a quickfix list
+will be opened if the file contains any headers. When set to 0, a list of
+quickfix-ready entries will be returned instead in the format of:
+
+    `{'lnum': 23, 'text': '# header', 'bufnr': 5}`
+
+==============================================================================
+mkdx#QuickfixDeadLinks([{quickfix}])         *mkdx-function-quickfix-dead-links*
+
+Find all dead links in the current file and opens them in a quickfix
+window to allow for easy jumping using regular quickfix commands.
+
+There are two types of links:
+
+FRAGMENT
+
+Dead fragment links are found by converting all the headers in the document to
+their respective `#fragment-link` urls. These are the existing links within the
+document which we can use to compare against a list of `#fragment-link`s found
+by scanning the markdown links in the document.
+
+when a fragment link is found and it exists in the list of header
+fragment-urls, we can assume that the link exists. If a fragment url is found
+that does not exist inside the list of header fragments, it gets added to the
+quickfix list for closer inspection.
+
+If {quickfix} isn't provided, it defalts to 1, which means a quickfix list
+will be opened if the file contains any headers. When set to 0, a list of
+quickfix-ready entries will be returned instead in the format of:
+
+    `{'lnum': 23, 'col': 3, 'text': '#unknown-header', 'bufnr': 5}`
+
+EXTERNAL
+
+If {quickfix} is provided and equals 1 and |mkdx-setting-links-external-enable|,
+if set to `1`, |mkdx| also scans the document for any external links
+(http://, https://, // or any absolute / relative link) and
+uses neovim's |job-control| or vim's |job| feature together with `cURL` to
+asynchronously check if all those links are still in the air.
+
+These links will be added to the quickfix list but, they will not be added to
+the final result of calling this function. One can always use |getqflist|
+after calling this function to fetch the quickfix list entries afterwards.
+
+==============================================================================
+mkdx#WrapText({mode}, {start}, {end}, {repeat})        *mkdx-function-wrap-text*
+
+Wrap text in {start} and {end} delimiters.
+
+The argument {mode} can be supplied to control what is selected.
+When set to string `n`, the word under the cursor will be wrapped. When set to
+`v`, the visual selection will be wrapped. If {mode} is omitted, it will
+default to using `n`.
+
+The {start} argument defines the string to use at the start of the target to
+wrap. When omitted, it is set to an empty string.
+
+The {end} argument defines the string to use at the end of the target to wrap.
+When omitted, the value of {start} is used.
+
+The final argument {repeat} can be used to enable repeat support for
+repeat.vim. This requires you to setup a <Plug>(custom-plug) mapping. You
+would then supply the name of your plug as value for {repeat}. In this case it
+would be `custom-plug`.
+
+When {repeat} is supplied and repeat.vim is installed, the function will call:
+
+`   silent! repeat#set("\<Plug>(" . ` {repeat} ` . ")")`
+
+Note: If you are considering to repeat a visual mode command, this will work
+still but in this case it will repeat on the previously selected text.
+
+A mapping that wraps text in '*' symbols:
+
+    `" non repeatable`
+    `nnoremap <space>b :<C-U>call mkdx#WrapText('n', '*')<Cr>`
+
+    `" repeatable`
+    `noremap <silent> <Plug>(custom-wrap)`
+                    `\ :<C-U>call mkdx#WrapText('n', '*', '*', 'custom-wrap')`
+
+    `" now map the named <Plug> mapping to an actual key combination`
+    `au FileType markdown nmap <buffer> <space>b <Plug>(custom-wrap)`
+
+A non-repeatable mapping with a different ending:
+
+    `nnoremap <space>p :<C-U>call mkdx#WrapText('n', '<p>', '</p>')<Cr>`
+
+==============================================================================
+mkdx#ToggleCheckboxTask()                   *mkdx-function-toggle-checkbox-task*
+
+This function will toggle a checkbox on the current line, or every line in a
+visual selection. The checkbox can have a default state defined by:
+|mkdx-setting-checkbox-initial-state|. Any leading whitespace is preserved.
+This function recognizes lists defined by any of |mkdx-setting-tokens-list| and
+checklists and will execute the following actions:
+
+If the current line is a list item that does not contain a checkbox, the
+checkbox is inserted after the list token. Otherwise, the checkbox is removed
+
+    - list item       `     => ` - [ ] checklist item
+    * list item       `     => ` * [ ] checklist item
+    1. list item      `     => ` 1. [ ] checklist item
+
+    - [ ] checklist item  ` => ` - list item
+    * [ ] checklist item  ` => ` * list item
+    1. [ ] checklist item ` => ` 1. list item
+
+Otherwise a checkbox is toggled normally:
+
+    this is a line `     => ` [ ] this is a task
+    [ ] this is a task ` => ` this is a line
+
+==============================================================================
+mkdx#ToggleChecklist()                          *mkdx-function-toggle-checklist*
+
+Like |mkdx-function-toggle-checkbox-task|, but toggles a list token
+(and a space) in addition to the checkbox on the current line, or every line
+in a visual selection. The list token used is defined by
+|mkdx-setting-tokens-list|. Any leading whitespace is preserved.
+This function recognizes lists defined by any of |mkdx-setting-tokens-list|
+and will execute the following actions:
+
+If the current line is a list item, a checkbox will be added as seen in
+|mkdx-function-toggle-checkbox-task|:
+
+    - list item       `     => ` - [ ] checklist item
+    * list item       `     => ` * [ ] checklist item
+    1. list item      `     => ` 1. [ ] checklist item
+
+In addition to that, non-list items are transformed into checklist items.
+Checkbox state is preserved:
+
+    a line  `        => ` - [ ] a line
+    [ ] a checkbox ` => ` - [ ] a checkbox
+    [x] marked      `=>`  - [x] marked
+
+Otherwise, toggling between a regular line and a checklist item will be
+performed, when toggling back and forth, the state of the checkbox is lost
+and |mkdx-setting-checkbox-initial-state| is used instead:
+
+    - [x] checklist item  `=>` checklist item
+    checklist item        `=>` - [ ] checklist item
+
+==============================================================================
+mkdx#ToggleList()                                    *mkdx-function-toggle-list*
+
+This function will toggle a list token on the current line, or every line in
+a visual selection. The token can be specified using |mkdx-setting-tokens-list|.
+Any leading whitespace is preserved. This function also recognizes regular
+tasks and checklist items (defined with |mkdx-setting-tokens-list|) and will
+execute the following actions:
+
+If the current line is a regular task, a list token is prepended. If a list
+token is already present, it is removed. The state of the checkbox is also
+preserved:
+
+    [ ] task `              => ` - [ ] checklist item
+    - [ ] checklist item  ` => ` [ ] task
+    * [ ] checklist item  ` => ` [ ] task
+    1. [ ] checklist item ` => ` [ ] task
+
+Otherwise, a list marker is toggled as normal
+
+    list item `   => ` - list item
+    - list item ` => ` list item
+
+==============================================================================
+mkdx#ToggleToKbd([{mode}])                         *mkdx-function-toggle-to-kbd*
+
+This function will toggle the |WORD| under the cursor in normal mode or a
+visual selection into a markdown keyboard mapping.
+
+Some examples:
+
+    `C-S-j  =>   <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>j</kbd>`
+    `C-S-c  =>   <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>c</kbd>`
+
+uppercase characters `S`, `C` and `M` are recognized as modifiers
+as well as lowercase `shift`, `control` and `meta` keywords.
+Any modifier may appear only once in a mapping, all later occurences are
+parsed as regular keystrokes.
+
+(Note the last kbd tag has a regular lowercase `c` in it)
+
+    `C-S-C        =>  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>c</kbd>`
+
+In these mappings the first 3 characters are all modifiers, `ctrl`, `shift`
+and `meta` respectively, so any other "would be modifiers" will now be parsed
+to regular keys.
+
+    `C-S-M-C  =>  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>meta</kbd>+<kbd>c</kbd>`
+    `C-S-M-S  =>  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>meta</kbd>+<kbd>s</kbd>`
+    `C-S-M-M  =>  <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>meta</kbd>+<kbd>m</kbd>`
+
+Multiple space separated mappings in a visual selection
+will also be converted:
+
+    `S-m S-p  =>  <kbd>shift</kbd>+<kbd>m</kbd> <kbd>shift</kbd>+<kbd>p</kbd>`
+
+==============================================================================
+mkdx#Complete({findstart}, {base})                      *mkdx-function-complete*
+
+This function will be executed by |completefunc| and will return completions
+relevant to the current context.
+
+==============================================================================
+mkdx#CompleteLink()                                *mkdx-function-complete-link*
+
+Every time a `#` character is typed in |Insert-mode|, check if the inserted
+character is inside a link within the URL attribute.
+
+Markdown ("`|`" is the cursor position):
+`   [link](#|)`
+
+HTML ("`|`" is the cursor position):
+`   <a href="#|">link</a>`
+
+Completions will update while typing.
+Completions will not work outside of a link context, if you want to complete a
+fragment link without it being in a header, use <C-n> or <C-p> instead.
+
+==============================================================================
+mkdx#InsertCtrlNHandler()                  *mkdx-function-insert-ctrl-n-handler*
+
+Handles <C-n> completions in |Insert-mode| when in a recognized context and
+when |mkdx-setting-links-fragment-complete| is enabled (default on),
+otherwise default completions will be shown.
+
+==============================================================================
+mkdx#InsertCtrlPHandler()                  *mkdx-function-insert-ctrl-p-handler*
+
+Handles <C-p> completions in |Insert-mode| when in a recognized context and
+when |mkdx-setting-links-fragment-complete| is enabled (default on),
+otherwise default completions will be shown.
+
+==============================================================================
+mkdx#fold({lnum})                                           *mkdx-function-fold*
+
+Folding is disabled by default.
+This function should be called by 'foldexpr' with {lnum} set.
+When |mkdx-setting-fold-enable| is enabled, 'foldmethod' will be set to `expr`
+and 'foldexpr' will be set to `mkdx#fold(v:lnum)`.
+
+There are two kinds of folds that mkdx understands:
+
+1) Fold fenced code blocks, e.g:
+    `~~~viml`
+    `:let g:mkdx#settings.fold.enable = 1`
+    `~~~`
+
+2) The table of contents generated by mkdx:
+   `# TOC`
+
+   `- Introduction`
+
+3) The table of contents generated inside `<details>...</details>` tags:
+   `# TOC`
+
+   `<details>`
+   `  <summary>Click to expand TOC</summary>`
+     `...`
+   `</details>`
+
+Folding can be disabled for {fence} and {toc} individually by changing
+|mkdx-setting-fold-components|.
+
+==============================================================================
+mkdx#WrapStrike([{mode}[, {plug}]])                  *mkdx-function-wrap-strike*
+
+Wraps |mkdx-function-wrap-text| specifically for wrapping strikethrough style.
+See |mkdx-setting-tokens-stike| for more details. Both arguments are passed to
+`mkdx#WrapText`. When {mode} is omitted it defaults to 'n' and the current
+word under the cursor will be wrapped. When {plug} is omitted, it defaults to
+an empty string.
+
+==============================================================================
+mkdx#gf([{mode}])                                             *mkdx-function-gf*
+
+This function is used when positioned within markdown links, it provides
+functionality required for |mkdx-mapping-jump-to-file| (<gf>) as well as
+|mkdx-mapping-open-external-file| (<gx>).
+
+When on a markdown link, will open the location, if it is a file, regular |gf|
+is used to open the file, when it is a URL and |mkdx-setting-gf-on-steroids|
+is enabled, it will use `open` to open an URL or image, fails silently otherwise.
+
+The definition of images to `open` is defined by
+|mkdx-setting-image-extension-pattern|.
+
+The optional {mode} argument can either be `'f'` or `'x'`, this indicates
+which type of functionality should be invoked. When `'x'` and with
+|mkdx-setting-gf-on-steroids| DISABLED, it will always use `open`. Otherwise,
+when it is `'f'` and |mkdx-setting-gf-on-steroids| DISABLED, it will always
+use |mkdx-mapping-jump-to-file|.
+
+When |mkdx-setting-gf-on-steroids| is enabled, this argument is ignored and
+the "correct" implementation is used based on what is found. If it looks like
+an image or URL, `open` will be used, otherwise |mkdx-mapping-jump-to-file|
+will be used.
+
+==============================================================================
+mkdx#gf_visual([{mode}])                               *mkdx-function-gf-visual*
+
+This function mimicks |mkdx-function-gf| but in visual mode. Selecting text
+and pressing <gf> / <gx> will apply the mapping on the selection instead.
+
+This is useful in scenarios where |mkdx-function-gf| does not work properly
+(yet) as a fallback method.
+
+==============================================================================
+mkdx#MaybeRestoreVisual()                   *mkdx-function-maybe-restore-visual*
+
+When |mkdx-setting-restore-visual| is enabled, this function restores the last
+visual selection.
+
+==============================================================================
+mkdx#IndentHandler({indent})                      *mkdx-function-indent-handler*
+
+When {indent} is nonzero, indents as usual, otherwise unindents as usual.
+Additionally, when indenting / unindenting within a numbered list, the
+list will be renumbered accordingly.
+
+==============================================================================
+mkdx#InsertIndentHandler({indent})         *mkdx-function-insert-indent-handler*
+
+Store the cursor position and call |mkdx-function-indent-handler| with {indent}
+as argument. After indenting or unindenting the cursor position will be
+updated to mimic the behaviour of |i_CTRL-T| and |i_CTRL-T|.
+
+==============================================================================
+mkdx#JumpToSection({to})                         *mkdx-function-jump-to-section*
+
+The {to} argument is required and must be one of `'next'` or `'prev'`. When
+`'next'` jumps to the next section and when `'prev'` jumps to the previous
+section.
+
+==============================================================================
+|ERRORS|                                                             *mkdx-errors*
+
+Whenever a setting in `g:mkdx#settings` is updated, the new value will be
+validated before being set. If the value passes validations, it will be
+updated, otherwise an error will be thrown.
+
+Every error contains at least 1 helptag. This would point to the setting that
+you tried to modify. If you set `g:mkdx#settings.tokens.fence` to `5`, the first
+helptag would be `mkdx-setting-tokens-fence`.
+
+When a validation fails, a more specific error code will be given that can be
+found in the sections below.
+
+Every setting can be overwritten in any way as long as the format remains
+valid. The errors try to point you in the right direction be as descriptive
+as possible. An error is also not critical, the bad value will be rolled back
+and no harm will be done :)
+
+==============================================================================
+Type                                                           *mkdx-error-type*
+
+This error occurs whenever you try to set a setting in `g:mkdx#settings` that
+does not equal the current type of that setting. When this happens, mkdx will
+not apply the new value and instead, roll back to the old value.
+
+==============================================================================
+Minimum length                                           *mkdx-error-min-length*
+
+Given a {list} or a {string}, this validation fails if either |len()| or
+|strlen()| (respectively) fails based on a defined {length}. The description of
+the error includes the minimum length the setting should have.
+
+For strings, this can be defined as:
+
+`   strlen(string) < length`
+
+For lists, this can be defined as:
+
+`   len(list) < length`
+
+The error will point out what valid options are in the context of the variable
+that you are trying to modify.
+
+==============================================================================
+Between                                                     *mkdx-error-between*
+
+Given an {integer} value, checks if it is between a defined {min} and {max}
+value. The check is inclusive for both {min} and {max} values:
+
+`   integer < min || integer > max`
+
+The error will point out what valid options are in the context of the variable
+that you are trying to modify.
+
+==============================================================================
+Only valid                                               *mkdx-error-only-valid*
+
+Given a {value} this validation will fail when {value} is not in the defined
+{options}. This check only works for primitive values such as numbers and
+strings.
+
+`   index(options, value) == -1`
+
+The error will point out what valid options are in the context of the variable
+that you are trying to modify.
+
+==============================================================================
+Only list                                                 *mkdx-error-only-list*
+
+Like |mkdx-error-only-valid| but for lists of values. Given a {list}
+containing some values, checks if all values in the {list} match that of an
+option in this specific validation:
+
+`  len(filter(list, {idx, value -> index(valid, value) == -1})) > 0`
+
+The error will point out what valid options are in the context of the variable
+that you are trying to modify.
+
+==============================================================================
+DEPRECATED                                                     *mkdx-deprecated*
+
+The following section provides information about deprecated functionality,
+plugs, mappings etc...
+
+==============================================================================
+V1.8.0                                                  *mkdx-deprecated-v1.8.0*
+
+Deprecated plugs:
+    - `mkdx-checkbox-next` replaced by:
+      - `mkdx-checkbox-next-n`
+      - `mkdx-checkbox-next-v`
+    - `mkdx-checkbox-prev` replaced by:
+      - `mkdx-checkbox-prev-n`
+      - `mkdx-checkbox-prev-v`
+    - `mkdx-toggle-quote` replaced by:
+      - `mkdx-toggle-quote-n`
+      - `mkdx-toggle-quote-v`
+    - `mkdx-toggle-checklist` replaced by:
+      - `mkdx-toggle-checklist-n`
+      - `mkdx-toggle-checklist-v`
+    - `mkdx-toggle-checkbox` replaced by:
+      - `mkdx-toggle-checkbox-n`
+      - `mkdx-toggle-checkbox-v`
+    - `mkdx-toggle-list` replaced by:
+      - `mkdx-toggle-list-n`
+      - `mkdx-toggle-list-v`
+
+While the old plugs will still work, they will no longer restore visual mode
+regardless of |mkdx-setting-restore-visual|.
+
+==============================================================================
+DEVELOPMENT                                                   *mkdx-development*
+
+This section does not describe much yet, it is primarily here so that over
+time as I (@SidOfc) move machines, I can go here to see how to release mkdx
+properly, things such as zipping and excluding gifs etc...
+
+mkdx uses tagged releases to indicate a version, whenever a new version is
+"done" and the README / CHANGELOG / doc/mkdx.txt files are updated,
+tag the commit using:
+
+    `git tag -a 'vX.X.X' -m 'vX.X.X'`
+
+where `X.X.X` is replaced by the version number at the top of the file.
+Remember that tags must be pushed separately:
+
+    `git push && git push --tags`
+
+will perform both a regular `git push` and also `git push --tags` if it
+succeeds.
+
+Aside from deploying to git to allow modern installation via plugins, a zip
+file must also be created and deployed to
+https://www.vim.org/scripts/script.php?script_id=5620.
+
+To keep the filesize within acceptable range, use the following command:
+
+    `zip -r mkdx-X.X.X.zip mkdx -x "*git*" -x "*.gif" -x "*test*"`
+
+This excludes git, README gifs, and test files from the final zip.
+deploying to vim.org is recommended after pushing the updated README and
+CHANGELOG to github. This allows for easier copying of the changelog section
+in the README file.
+
+vim:tw=78:sw=4:ft=help:norl:

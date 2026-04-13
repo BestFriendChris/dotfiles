@@ -1,0 +1,8 @@
+Execute (Teardown):
+  let g:mkdx#settings = g:vim_dev__vader_settings
+  let &ft             = g:vim_dev__vader_ft
+
+  unlet g:vim_dev__vader_settings
+  unlet g:vim_dev__vader_ft
+
+  call mkdx#testing(0)

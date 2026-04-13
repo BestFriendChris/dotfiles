@@ -1,0 +1,348 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A paragraph of text):
+  Hello there.
+  this is an awesome short
+  paragraph of text
+  that I use to test links
+
+Do (2eviw<prefix>ln):
+  :normal! 2eviw\<cr> lnhello
+
+Expect (The word "Hello" to be a link):
+  Hello [there](hello).
+  this is an awesome short
+  paragraph of text
+  that I use to test links
+
+Do (jV<prefix>ln):
+  jV lnhello
+
+Expect (The word "Hello" to be a link):
+  Hello there.
+  [this is an awesome short](hello)
+  paragraph of text
+  that I use to test links
+
+Do (jVj<prefix>ln):
+  jVj lnhello
+
+Expect (The word "Hello" to be a link):
+  Hello there.
+  [this is an awesome short
+  paragraph of text](hello)
+  that I use to test links
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "Hello world"):
+  Hello world hello world
+
+  hello
+
+Do (2<prefix>ln):
+  2 lnhttps://github.com/SidOfc/mkdx\<esc>
+
+Expect (Selection wrapped as link):
+  [Hello world](https://github.com/SidOfc/mkdx) hello world
+
+  hello
+
+Do (v2e<prefix>ln):
+  v2e lnhttps://github.com/SidOfc/mkdx\<esc>
+
+Expect (Selection wrapped as link):
+  [Hello world](https://github.com/SidOfc/mkdx) hello world
+
+  hello
+
+Do (wv2e<prefix>ln):
+  wv2e lnhttps://github.com/SidOfc/mkdx\<esc>
+
+Expect (Selection wrapped as link):
+  Hello [world hello](https://github.com/SidOfc/mkdx) world
+
+  hello
+
+Do ($<prefix>ln):
+  :normal! $\<cr> ln
+
+Expect (The last word to be a link):
+  Hello world hello [world]()
+
+  hello
+
+Do (^<prefix>ln):
+  :normal! ^\<cr> ln
+
+Expect (The first word to be a link):
+  [Hello]() world hello world
+
+  hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>b (bolden "Hello")):
+   b
+
+Expect (The word "Hello" to be bold):
+  **Hello** world
+
+Given (A paragraph of text):
+  Hello there
+  this is an awesome short
+  paragraph of text
+  that I use to test links
+
+Do (Vj<prefix>b):
+  Vj b
+
+Expect (The word "Hello" to be bold):
+  **Hello there
+  this is an awesome short**
+  paragraph of text
+  that I use to test links
+
+Do (wvj<prefix>b):
+  wvj b
+
+Expect (The word "Hello" to be bold):
+  Hello **there
+  this is** an awesome short
+  paragraph of text
+  that I use to test links
+
+Do (Wrapping with count to wrap [count] words forward):
+  2 b
+
+Expect (The first two words to be wrapped):
+  **Hello there**
+  this is an awesome short
+  paragraph of text
+  that I use to test links
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (Text with a WORD):
+  Hello-world
+
+Do (<prefix>b):
+   b
+
+Expect (the WORD to be wrapped):
+  **Hello-world**
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A paragraph of text):
+  Hello there
+  this is an awesome short
+  paragraph of text
+
+Do (jv5el<prefix>b):
+  jv5e b
+
+Expect (Selection including newline to be wrapped):
+  Hello there
+  **this is an awesome short**
+  paragraph of text
+
+Do (jvj2e<prefix>b):
+  jvj2e b
+
+Expect (Multiline selection including newline to be wrapped):
+  Hello there
+  **this is an awesome short
+  paragraph of** text
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>b (bolden selection)):
+  v2e b
+
+Expect (The selection to be bold):
+  **Hello world**
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>/ (italicize "Hello")):
+   /
+
+Expect (The word "Hello" to be italic):
+  *Hello* world
+
+Given (A paragraph of text):
+  Hello there
+  this is an awesome short
+  paragraph of text
+
+Do (jv5el<prefix>/):
+  jv5e /
+
+Expect (Line including newline to be wrapped):
+  Hello there
+  *this is an awesome short*
+  paragraph of text
+
+Do (jvj2e<prefix>/):
+  jvj2e /
+
+Expect (Line including newline to be wrapped):
+  Hello there
+  *this is an awesome short
+  paragraph of* text
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>/ (italicize selection)):
+  v2e /
+
+Expect (The selection to be italic):
+  *Hello world*
+
+Do (Wrapping with count to wrap [count] words forward):
+  2 /
+
+Expect (The first two words to be wrapped):
+  *Hello world*
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>s (strike "Hello")):
+   s
+
+Expect (The word "Hello" to be strikethrough):
+  <strike>Hello</strike> world
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>s (strike selection)):
+  v2e s
+
+Expect (The selection to be strikethrough):
+  <strike>Hello world</strike>
+
+Do (Wrapping with count to wrap [count] words forward):
+  2 s
+
+Expect (The first two words to be wrapped):
+  <strike>Hello world</strike>
+
+Given (A paragraph of text):
+  Hello there
+  this is an awesome short
+  paragraph of text
+
+Do (jV<prefix>s):
+  jV s
+
+Expect (Line including newline to be wrapped):
+  Hello there
+  <strike>this is an awesome short</strike>
+  paragraph of text
+
+Do (jwv3e<prefix>s):
+  jwv3e s
+
+Expect (Line including newline to be wrapped):
+  Hello there
+  this <strike>is an awesome</strike> short
+  paragraph of text
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>` (inline-code "Hello")):
+   `
+
+Expect (The word "Hello" to be inline-code):
+  `Hello` world
+
+Do (Wrapping with count to wrap [count] words forward):
+  2 `
+
+Expect (The first two words to be wrapped):
+  `Hello world`
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+" Given (A paragraph of text):
+"   Hello there
+"   this is an awesome short
+"   paragraph of text
+
+" Do (Vj<prefix>`):
+"   Vj `
+
+" FIXME mkdx#WrapCutTextInCodeBlock() might use a method which works with
+"       real buffers, but not the virtual "vader" buffers
+" Expect (Line including newline to be wrapped):
+"   ```
+"   Hello there
+"   this is an awesome short
+"   ```
+"   paragraph of text
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A paragraph of text):
+  Hello there
+  this is an awesome short
+  paragraph of text
+
+Do (vj<prefix>`):
+  vj999l `
+
+Expect (Line including newline to be wrapped):
+  `Hello there
+  this is an awesome short`
+  paragraph of text
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "Hello world"):
+  Hello world
+
+Do (<prefix>` (inline-code selection)):
+  v2e `
+
+Expect (The selection to be inline-code):
+  `Hello world`
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A line "image.png is awesome"):
+  image.png is awesome
+
+Do (<prefix>ln (create image tag for selection)):
+  v3e ln
+
+Expect (The selection to be wrapped in an image link):
+  ![image.png](image.png) is awesome
+
+Given (A line ending in an image):
+  check this example.png
+
+  some more text
+
+Do (2wv3e<prefix>ln):
+  2wv3e ln
+
+Expect (Selection to be wrapped and the empty line maintained):
+  check this ![example.png](example.png)
+
+  some more text

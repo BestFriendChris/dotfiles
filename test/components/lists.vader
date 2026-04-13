@@ -1,0 +1,369 @@
+Execute (Enable required settings):
+  let g:mkdx#settings.highlight.enable = 1
+  let g:mkdx#settings.enter.shift      = 1
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given markdown (Checklists):
+  - [ ] unstarted
+  - [-] pending
+  - [x] complete
+
+Execute (Syntax groups are correctly set):
+  AssertEqual SyntaxAt(1, 1), 'mkdxListItem'
+  AssertEqual SyntaxAt(1, 3), 'mkdxCheckboxEmpty'
+  AssertEqual SyntaxAt(2, 3), 'mkdxCheckboxPending'
+  AssertEqual SyntaxAt(3, 3), 'mkdxCheckboxComplete'
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown quote):
+  > quote text
+
+Do (<space><enter> at end of an empty quote line adds a new empty quote line):
+  A\<cr> \<cr>
+
+Expect (An empty list item):
+  > quote text
+  >  
+  > 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown quote):
+  > quote text
+
+Do (<enter> at end of the quote inserts a quote mark on a new line):
+  A\<cr>
+
+Expect (An empty list item):
+  > quote text
+  > 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown multi line quote):
+  > quote text
+  > some more
+
+Do (<o> on a quoted line inserts a new empty quote mark in the middle):
+  o
+
+Expect (An empty list item):
+  > quote text
+  > 
+  > some more
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown list):
+  - list item
+  - list item
+
+Do (<enter> at end of list item inserts empty list item):
+  A\<cr>
+
+Expect (An empty list item):
+  - list item
+  - 
+  - list item
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown list):
+  - list item
+  - list item
+
+Do (<o> on a list item inserts a new empty list item):
+  o
+
+Expect (An empty list item):
+  - list item
+  - 
+  - list item
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown list):
+  - list item
+  - list item
+
+Do (<O> on a list item prepends a new empty list item):
+  O
+
+Expect (An empty list item):
+  - 
+  - list item
+  - list item
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A markdown list):
+  - list item
+  - list item
+
+Do (<enter> in the middle of list item performs regular <enter>):
+  6la\<cr>
+
+Expect (An empty list item):
+  - list 
+  - item
+  - list item
+
+Do (<shift>+<enter> in the middle of list item performs indented <enter>):
+  6la\<s-cr>
+
+Expect (An empty list item):
+  - list 
+    item
+  - list item
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested markdown list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (<shift>+<enter> in the middle of list item performs indented <enter>):
+  2j11la\<s-cr>
+
+Expect (An empty list item):
+  1. task
+  2. task
+      2.1. sub
+           task
+      2.2. subtask
+  3. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested markdown list with multi-line items):
+  1. task
+  2. task
+      2.1. sub
+           task
+      2.2. subtask
+  3. hello
+
+Do (<enter> after finishing an inline item with <shift>+<enter> creates new list item):
+  3jA\<cr>hello
+
+Expect (An empty list item):
+  1. task
+  2. task
+      2.1. sub
+           task
+      2.2. hello
+      2.3. subtask
+  3. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested markdown list in a quote block):
+  > 1. task
+  > 2. task
+  >     2.1. subtask
+  >     2.2. subtask
+  > 3. hello
+
+Do (<enter> in the middle of list item performs regular <enter>):
+  2j10la\<cr>
+
+Expect (An empty list item):
+  > 1. task
+  > 2. task
+  >     2.1. 
+  >     2.2. subtask
+  >     2.3. subtask
+  > 3. hello
+
+Do (<shift>+<enter> in the middle of list item performs indented <enter>):
+  2j13la\<s-cr>
+
+Expect (An empty list item):
+  > 1. task
+  > 2. task
+  >     2.1. sub
+  >          task
+  >     2.2. subtask
+  > 3. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested markdown check-list in a quote block):
+  > 1. [ ] task
+  > 2. [-] task
+  >     2.1. [x] subtask
+  >     2.2. [-] subtask
+  > 3. [ ] hello
+
+Do (<shift>+<enter> in the middle of list item performs indented <enter>):
+  2jA\<s-cr>hello
+
+Expect (An empty list item):
+  > 1. [ ] task
+  > 2. [-] task
+  >     2.1. [x] subtask
+  >              hello
+  >     2.2. [-] subtask
+  > 3. [ ] hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (Press <o> on the item increments other list items):
+  o
+
+Expect (List items are correctly incremented and new empty list item):
+  1. task
+  2. 
+  3. task
+      3.1. subtask
+      3.2. subtask
+  4. hello
+  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (Press <O> on the item increments other list items):
+  O
+
+Expect (List items are correctly incremented and new empty list item):
+  1. 
+  2. task
+  3. task
+      3.1. subtask
+      3.2. subtask
+  4. hello
+  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (Press <O> + <enter> on the item decrements following list items):
+  O\<cr>
+
+Expect (List items are correctly decremented and the line is now empty):
+  
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (Press <o> on the first nested item increments other list items):
+  2jo
+
+Expect (List items are correctly incremented and new empty list item):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. 
+      2.3. subtask
+  3. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (Press <O> on the first nested item increments other list items):
+  2jO
+
+Expect (List items are correctly incremented and new empty list item):
+  1. task
+  2. task
+      2.1. 
+      2.2. subtask
+      2.3. subtask
+  3. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+      2.2. subtask
+  3. hello
+
+Do (Press <Tab> on the second nested list item makes it a child of the first):
+  3j\<Tab>
+
+Expect (List items are correctly indented):
+  1. task
+  2. task
+      2.1. subtask
+          2.1.1. subtask
+  3. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A deeply nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+          2.1.1. subtask
+  3. hello
+
+Do (Press <S-Tab> on the first nested list item unindents all its children):
+  2j\<S-Tab>
+
+Expect (List items are correctly indented):
+  1. task
+  2. task
+  3. subtask
+      3.1. subtask
+  4. hello
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Given (A deeply nested numbered list):
+  1. task
+  2. task
+      2.1. subtask
+          2.1.1. subtask
+  3. hello
+
+Do (Press <Tab> on the last list item sets its number correctly):
+  G\<Tab>
+
+Expect (List items are correctly indented):
+  1. task
+  2. task
+      2.1. subtask
+          2.1.1. subtask
+      2.2. hello
