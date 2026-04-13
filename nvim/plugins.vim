@@ -1,5 +1,5 @@
-call bfc#plugins#load('dracula')
-call bfc#plugins#colorscheme('dracula')
+"call bfc#plugins#load('dracula')
+call bfc#plugins#colorscheme('retrobox')
 
 call bfc#plugins#load('nvim-treesitter')
 
