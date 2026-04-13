@@ -1,3 +1,8 @@
 [tools]
+aube = "latest"
+jq = "latest"
+pitchfork = "latest"
+python = "latest"
 usage = "latest"
+uv = "latest"
 zig = "latest"
