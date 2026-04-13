@@ -10,14 +10,11 @@ require('render-markdown').setup({
     render_modes = { 'n', 'c', 't' },
     -- Filetypes this plugin will run on.
     file_types = { 'markdown' },
+    anti_conceal = { enabled = false, },
     heading = {
       position = "inline",
       width = "block",
       right_pad = 1,
-      border = true,
-      below = '▔',
-      above = '▁',
-
     },
     code = {
       border = 'thick',
