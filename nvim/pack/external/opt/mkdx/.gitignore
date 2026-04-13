@@ -1,0 +1,4 @@
+doc/tags
+test*.md
+test*.vim
+test*.lua
