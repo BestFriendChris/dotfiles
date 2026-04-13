@@ -185,26 +185,21 @@ format = '[┨](bold yellow)[$symbol($version)]($style)[┠](bold yellow)'
 
 [custom.jj]
 command = '''
-jj log -r@ --limit 1 --ignore-working-copy --no-graph --color always  -T '
+jj log -r@ --limit 1 --no-graph --color always -T '
   separate(" ",
-    if(conflict, label("conflict",  "⊗")),
+    if(conflict, label("conflict", "⊗")),
     coalesce(
       if(hidden, label("hidden", change_id.shortest(4) ++ " hidden")),
       if(divergent, label("divergent", change_id.shortest(4) ++ "??")),
       change_id.shortest(4),
-    )
-  )
-'
-jj log -r@ --limit 1 --no-graph -T "" --stat --color always | tail -n1 | sd '(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)' '\033[1;36m(${1}m)\033[0m' | sd '\(0m\)' '' | sd "\n" " "
-jj log -r@ --limit 1 --ignore-working-copy --no-graph --color always  -T '
-  separate(" ",
+    ) ++ if(diff.files().len() > 0, "§" ++ diff.files().len() ++ "m§"),
     bookmarks.map(|x| if(
         x.name().substr(0, 10).starts_with(x.name()),
         x.name().substr(0, 10),
         x.name().substr(0, 9) ++ "…")
       ).join(" "),
     if(description,
-      label("working_copy", 
+      label("working_copy",
         surround("\"","\"",
           if(
              description.first_line().substr(0, 24).starts_with(description.first_line()),
@@ -215,7 +210,7 @@ jj log -r@ --limit 1 --ignore-working-copy --no-graph --color always  -T '
       )
     ),
   )
-'
+' | perl -pe 's/§(\d+)m§/\e[1;36m(${1}m)\e[0m/'
 '''
 when = "jj root --ignore-working-copy"
 detect_folders = [".jj"]
