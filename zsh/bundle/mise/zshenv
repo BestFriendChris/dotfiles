@@ -1,0 +1,5 @@
+CWD=$0:A:h
+fpath+=( \
+  $CWD/completions \
+)
+

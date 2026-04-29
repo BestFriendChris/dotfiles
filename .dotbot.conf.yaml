@@ -16,6 +16,7 @@
       path: kitty/*
       glob: true
     ~/.config/lazygit/config.yml: lazygit/config.yml
+    ~/.config/mise: mise
     ~/.config/nnn/plugins/nuke: nnn/plugins/nuke
     ~/.config/nvim: nvim
     ~/.config/starship.toml: starship/starship.toml

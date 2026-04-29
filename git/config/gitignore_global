@@ -5,6 +5,7 @@ Session*.vim
 tags
 .worktrees/
 .workspaces/
+mise.local.toml
 .jj-*
 .jot/
 **/.claude/settings.local.json
