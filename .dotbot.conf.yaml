@@ -18,7 +18,6 @@
     ~/.config/mise: mise
     ~/.config/nnn/plugins/nuke: nnn/plugins/nuke
     ~/.config/nvim: nvim
-    ~/.config/starship.toml: starship/starship.toml
     ~/.config/task: taskwarrior
     ~/.config/ghostty: ghostty
     ~/.config/weechat: weechat
